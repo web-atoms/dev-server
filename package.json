@@ -1,0 +1,22 @@
+{
+  "name": "web-atoms-dev-server",
+  "version": "1.0.0",
+  "description": "Web Atoms Development server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neurospeech/web-atoms-dev-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/neurospeech/web-atoms-dev-server/issues"
+  },
+  "homepage": "https://github.com/neurospeech/web-atoms-dev-server#readme",
+  "dependencies": {
+    "@types/node": "^10.11.3"
+  }
+}
