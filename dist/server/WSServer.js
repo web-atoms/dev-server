@@ -68,7 +68,7 @@
                         console.error(e);
                     }
                 });
-            }, 100);
+            }, 500);
         };
         return WSServer;
     }());

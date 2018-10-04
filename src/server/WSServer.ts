@@ -66,6 +66,6 @@ export default class WSServer {
                     console.error(e);
                 }
             });
-        }, 100);
+        }, 500);
     }
 }
