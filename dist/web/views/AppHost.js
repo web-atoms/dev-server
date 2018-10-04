@@ -14,13 +14,12 @@ var __extends = (this && this.__extends) || (function () {
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "web-atoms-core/dist/web/controls/AtomListBox", "web-atoms-core/dist/web/controls/AtomFrame", "web-atoms-core/dist/web/controls/AtomGridView", "web-atoms-core/dist/web/controls/AtomControl", "../../view-models/AppHostViewModel"], factory);
+        define(["require", "exports", "web-atoms-core/dist/web/controls/AtomListBox", "web-atoms-core/dist/web/controls/AtomGridView", "web-atoms-core/dist/web/controls/AtomControl", "../../view-models/AppHostViewModel"], factory);
     }
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var AtomListBox_1 = require("web-atoms-core/dist/web/controls/AtomListBox");
-    var AtomFrame_1 = require("web-atoms-core/dist/web/controls/AtomFrame");
     var AtomGridView_1 = require("web-atoms-core/dist/web/controls/AtomGridView");
     var AtomControl_1 = require("web-atoms-core/dist/web/controls/AtomControl");
     var AppHostViewModel_1 = require("../../view-models/AppHostViewModel");
@@ -48,10 +47,10 @@ var __extends = (this && this.__extends) || (function () {
             this.append(e2);
             var e5 = document.createTextNode("\r\n\r\n    ");
             this.element.appendChild(e5);
-            var e6 = new AtomFrame_1.AtomFrame(this.app);
-            e6.setPrimitiveValue(e6.element, "column", "1");
-            e6.bind(e6.element, "url", [["viewModel", "url"]], false, function (v1) { return (v1); });
+            var e6 = document.createElement("iframe");
             this.append(e6);
+            this.setPrimitiveValue(e6, "column", "1");
+            this.bind(e6, "href", [["viewModel", "url"]], false, function (v1) { return (v1); });
             var e7 = document.createTextNode("\r\n\r\n");
             this.element.appendChild(e7);
         };

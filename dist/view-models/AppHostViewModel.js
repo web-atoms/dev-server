@@ -71,6 +71,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     var NavigationService_1 = require("web-atoms-core/dist/services/NavigationService");
     var AtomViewModel_1 = require("web-atoms-core/dist/view-model/AtomViewModel");
     var FileService_1 = require("../services/FileService");
+    function replaceSrc(src) {
+        src = src.split("\\").join("/");
+        var tokens = src.split("/");
+        if (tokens[0] === "src") {
+            tokens[0] = "dist";
+        }
+        return tokens.join("/");
+    }
     var AppHostViewModel = /** @class */ (function (_super) {
         __extends(AppHostViewModel, _super);
         function AppHostViewModel(app, navigationService, fileService) {
@@ -83,7 +91,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
             if (!this.file) {
                 return;
             }
-            this.url = "CURRENT/" + this.file.dir + "/" + this.file.name;
+            this.url = "CURRENT/" + replaceSrc(this.file.dir) + "/" + this.file.name;
         };
         AppHostViewModel.prototype.init = function () {
             return __awaiter(this, void 0, void 0, function () {

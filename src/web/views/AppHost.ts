@@ -57,16 +57,15 @@ export default  class AppHost extends AtomGridView {
         
         this.element.appendChild(e5);
 
-            const e6 = new AtomFrame(this.app);
-            
-            
-            
-        e6.setPrimitiveValue(e6.element, "column", "1" );
+        const e6 = document.createElement("iframe");
+        
+        this.append(e6);
+        
+        this.setPrimitiveValue(e6, "column", "1" );
         
 
-            e6.bind(e6.element, "url",  [["viewModel","url"]], false , (v1) => (v1) );
-            this.append(e6);
-
+            this.bind(e6, "href",  [["viewModel","url"]], false , (v1) => (v1) );
+        
 
         const e7 = document.createTextNode("\r\n\r\n");
         
