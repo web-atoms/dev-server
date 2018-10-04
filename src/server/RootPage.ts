@@ -1,5 +1,6 @@
 import { Request, Response, Router } from "express";
 import { readFileSync } from "fs";
+import * as path from "path";
 
 const args = process.argv;
 
@@ -15,7 +16,9 @@ router.get("/", (req: Request, res: Response) => {
 
     const dev = args.find((a) => a === "dev");
 
-    const devServer = dev ? "/_files/" : "/_files/node_modules/web-atoms-dev-server/";
+    // const devServer = dev ? "/_files/" : "/_files/node_modules/web-atoms-dev-server/";
+
+    const devServer = __dirname + "../../";
 
     const text: string = readFileSync("./package.json", { encoding: "utf-8", flag: "r" });
 
