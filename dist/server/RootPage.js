@@ -14,7 +14,7 @@
     var args = process.argv;
     // Assign router to the express.Router() instance
     var router = express_1.Router();
-    function prepareHtml(req, res, viewPath) {
+    function prepareHtml(req, res, viewPath, autoRefresh) {
         while (viewPath.startsWith("/")) {
             viewPath = viewPath.substr(1);
         }
@@ -36,11 +36,12 @@
                 }
             }
         }
-        return "<!DOCTYPE html>\n\n    <html>\n    <head>\n\n        <meta name=\"viewport\"   content=\"width=device-width\"/>\n        <title>Web Atoms - </title>\n        <script src=\"/_files/node_modules/web-atoms-amd-loader/umd.js\"></script>\n    </head>\n    <body>\n        <script>\n                " + da.join("\r\n") + "\n                UMD.map(\"" + current + "\",\"/_files/\");\n                UMD.map(\"web-atoms-dev-server\", \"" + devServer + "\");\n                UMD.lang = \"en-US\";\n                UMD.loadView(\"" + viewPath + "\", true);\n        </script>\n    </body>\n    </html>";
+        var refresh = autoRefresh ? "<script src=\"" + devServer + "/refresh.js\"></script>" : "";
+        return "<!DOCTYPE html>\n\n    <html>\n    <head>\n\n        <meta name=\"viewport\"   content=\"width=device-width\"/>\n        <title>Web Atoms - </title>\n        <script src=\"/_files/node_modules/web-atoms-amd-loader/umd.js\"></script>\n        " + refresh + "\n    </head>\n    <body>\n        <script>\n                " + da.join("\r\n") + "\n                UMD.map(\"" + current + "\",\"/_files/\");\n                UMD.map(\"web-atoms-dev-server\", \"" + devServer + "\");\n                UMD.lang = \"en-US\";\n                UMD.loadView(\"" + viewPath + "\", true);\n        </script>\n    </body>\n    </html>";
     }
     router.get(/^\/uiv\//, function (req, res) {
         var p = req.path.replace("uiv/", "");
-        var html = prepareHtml(req, res, p);
+        var html = prepareHtml(req, res, p, true);
         res.setHeader("cache-control", "no-cache");
         return res.send(html);
     });
@@ -48,7 +49,7 @@
     // is mounted on in the server.ts file.
     // In this case it's /welcome
     router.get("/", function (req, res) {
-        var html = prepareHtml(req, res, "web-atoms-dev-server/dist/web/views/AppHost");
+        var html = prepareHtml(req, res, "web-atoms-dev-server/dist/web/views/AppHost", false);
         res.setHeader("cache-control", "no-cache");
         return res.send(html);
     });

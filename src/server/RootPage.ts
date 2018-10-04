@@ -7,7 +7,7 @@ const args = process.argv;
 // Assign router to the express.Router() instance
 const router: Router = Router();
 
-function prepareHtml(req: Request, res: Response, viewPath: string): string {
+function prepareHtml(req: Request, res: Response, viewPath: string, autoRefresh: boolean): string {
 
     while (viewPath.startsWith("/")) {
         viewPath = viewPath.substr(1);
@@ -36,6 +36,8 @@ function prepareHtml(req: Request, res: Response, viewPath: string): string {
         }
     }
 
+    const refresh = autoRefresh ? `<script src="${devServer}/refresh.js"></script>` : "";
+
     return `<!DOCTYPE html>
 
     <html>
@@ -44,6 +46,7 @@ function prepareHtml(req: Request, res: Response, viewPath: string): string {
         <meta name="viewport"   content="width=device-width"/>
         <title>Web Atoms - </title>
         <script src="/_files/node_modules/web-atoms-amd-loader/umd.js"></script>
+        ${refresh}
     </head>
     <body>
         <script>
@@ -60,7 +63,7 @@ function prepareHtml(req: Request, res: Response, viewPath: string): string {
 
 router.get(/^\/uiv\//, (req, res) => {
     const p = req.path.replace("uiv/", "");
-    const html = prepareHtml(req, res, p);
+    const html = prepareHtml(req, res, p, true);
     res.setHeader("cache-control", "no-cache");
     return res.send(html);
 });
@@ -70,7 +73,7 @@ router.get(/^\/uiv\//, (req, res) => {
 // In this case it's /welcome
 router.get("/", (req: Request, res: Response) => {
 
-    const html = prepareHtml(req, res, "web-atoms-dev-server/dist/web/views/AppHost");
+    const html = prepareHtml(req, res, "web-atoms-dev-server/dist/web/views/AppHost", false);
     res.setHeader("cache-control", "no-cache");
     return res.send(html);
 });

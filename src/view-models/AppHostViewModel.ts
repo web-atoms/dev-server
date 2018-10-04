@@ -6,7 +6,6 @@ import IFilePath from "../models/IFilePath";
 import { IWSMessage } from "../models/IWSMessage";
 import { ModuleFiles } from "../ModuleFiles";
 import FileService from "../services/FileService";
-import WebSocketService from "../services/WebSocketService";
 
 function replaceSrc(src: string): string {
     src = src.split("\\").join("/");
@@ -29,12 +28,9 @@ export class AppHostViewModel extends AtomViewModel {
     constructor(
         @Inject app: App,
         @Inject public readonly navigationService: NavigationService,
-        @Inject public readonly fileService: FileService,
-        @Inject private readonly webSocketService: WebSocketService
+        @Inject public readonly fileService: FileService
     ) {
         super(app);
-
-        this.registerDisposable(webSocketService.listen((m) => this.onMessage(m)));
     }
 
     public onMessage(m: IWSMessage): void {
