@@ -9,7 +9,7 @@ const router: Router = Router();
 
 function prepareHtml(req: Request, res: Response, viewPath: string): string {
 
-    if (viewPath.startsWith("//")) {
+    while (viewPath.startsWith("/")) {
         viewPath = viewPath.substr(1);
     }
 

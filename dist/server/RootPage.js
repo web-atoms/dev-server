@@ -15,7 +15,7 @@
     // Assign router to the express.Router() instance
     var router = express_1.Router();
     function prepareHtml(req, res, viewPath) {
-        if (viewPath.startsWith("//")) {
+        while (viewPath.startsWith("/")) {
             viewPath = viewPath.substr(1);
         }
         var devServer = "/_dev";
