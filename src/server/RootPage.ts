@@ -61,6 +61,7 @@ function prepareHtml(req: Request, res: Response, viewPath: string): string {
 router.get(/^\/uiv\//, (req, res) => {
     const p = req.path.replace("uiv/", "");
     const html = prepareHtml(req, res, p);
+    res.setHeader("cache-control", "no-cache");
     return res.send(html);
 });
 
@@ -70,6 +71,7 @@ router.get(/^\/uiv\//, (req, res) => {
 router.get("/", (req: Request, res: Response) => {
 
     const html = prepareHtml(req, res, "web-atoms-dev-server/dist/web/views/AppHost");
+    res.setHeader("cache-control", "no-cache");
     return res.send(html);
 });
 

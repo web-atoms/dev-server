@@ -41,6 +41,7 @@
     router.get(/^\/uiv\//, function (req, res) {
         var p = req.path.replace("uiv/", "");
         var html = prepareHtml(req, res, p);
+        res.setHeader("cache-control", "no-cache");
         return res.send(html);
     });
     // The / here corresponds to the route that the WelcomeController
@@ -48,6 +49,7 @@
     // In this case it's /welcome
     router.get("/", function (req, res) {
         var html = prepareHtml(req, res, "web-atoms-dev-server/dist/web/views/AppHost");
+        res.setHeader("cache-control", "no-cache");
         return res.send(html);
     });
     exports.RootPage = router;
