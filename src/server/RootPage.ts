@@ -19,6 +19,9 @@ function prepareHtml(req: Request, res: Response, viewPath: string): string {
 
     const json: any = JSON.parse(text);
 
+    const current = json.name;
+    viewPath = viewPath.replace("$CURRENT$", current);
+
     const d = json.dependencies || {};
 
     const da: string[] = [];
@@ -45,7 +48,7 @@ function prepareHtml(req: Request, res: Response, viewPath: string): string {
     <body>
         <script>
                 ${da.join("\r\n")}
-                UMD.map("CURRENT","/_files/");
+                UMD.map("${current}","/_files/");
                 UMD.map("web-atoms-dev-server", "${devServer}");
                 UMD.lang = "en-US";
                 UMD.loadView("${viewPath}", true);

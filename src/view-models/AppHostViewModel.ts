@@ -37,7 +37,7 @@ export class AppHostViewModel extends AtomViewModel {
         if (!this.file) {
             return;
         }
-        this.url = `/uiv/CURRENT/${replaceSrc(this.file.dir)}/${this.file.name}`;
+        this.url = `/uiv/$CURRENT$/${replaceSrc(this.file.dir)}/${this.file.name}`;
     }
 
     public async init(): Promise<any> {
