@@ -10,6 +10,5 @@ export declare class AppHostViewModel extends AtomViewModel {
     file: IFilePath;
     url: string;
     constructor(app: App, navigationService: NavigationService, fileService: FileService);
-    watchUrl(): void;
     init(): Promise<any>;
 }

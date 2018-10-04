@@ -8,7 +8,8 @@
 
     <AtomListBox 
         items="[$viewModel.files]"
-        selected-item="$[viewModel.file]">
+        value-path="url"
+        value="$[viewModel.url]">
         <div 
             template="itemTemplate"
             text="{`${$data.dir}/${$data.name}`}"></div>

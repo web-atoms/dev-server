@@ -87,22 +87,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
             _this.fileService = fileService;
             return _this;
         }
-        AppHostViewModel.prototype.watchUrl = function () {
-            if (!this.file) {
-                return;
-            }
-            this.url = "/uiv/$CURRENT$/" + replaceSrc(this.file.dir) + "/" + this.file.name;
-        };
         AppHostViewModel.prototype.init = function () {
             return __awaiter(this, void 0, void 0, function () {
-                var _a;
-                return __generator(this, function (_b) {
-                    switch (_b.label) {
-                        case 0:
-                            _a = this;
-                            return [4 /*yield*/, this.fileService.getModules()];
+                var urls, _i, urls_1, iterator;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, this.fileService.getModules()];
                         case 1:
-                            _a.files = (_b.sent()).files;
+                            urls = (_a.sent()).files;
+                            for (_i = 0, urls_1 = urls; _i < urls_1.length; _i++) {
+                                iterator = urls_1[_i];
+                                iterator.url = "/uiv/$CURRENT$/" + replaceSrc(iterator.dir) + "/" + iterator.name;
+                            }
+                            this.files = urls;
                             return [2 /*return*/];
                     }
                 });
@@ -112,12 +109,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
             AtomViewModel_1.BindableUrlParameter("url"),
             __metadata("design:type", String)
         ], AppHostViewModel.prototype, "url", void 0);
-        __decorate([
-            AtomViewModel_1.Watch,
-            __metadata("design:type", Function),
-            __metadata("design:paramtypes", []),
-            __metadata("design:returntype", void 0)
-        ], AppHostViewModel.prototype, "watchUrl", null);
         AppHostViewModel = __decorate([
             __param(0, Inject_1.Inject),
             __param(1, Inject_1.Inject),

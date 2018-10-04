@@ -32,16 +32,11 @@ export class AppHostViewModel extends AtomViewModel {
         super(app);
     }
 
-    @Watch
-    public watchUrl(): void {
-        if (!this.file) {
-            return;
-        }
-        this.url = `/uiv/$CURRENT$/${replaceSrc(this.file.dir)}/${this.file.name}`;
-    }
-
     public async init(): Promise<any> {
-        this.files = (await this.fileService.getModules()).files;
-
+        const urls = (await this.fileService.getModules()).files;
+        for (const iterator of urls) {
+            iterator.url = `/uiv/$CURRENT$/${replaceSrc(iterator.dir)}/${iterator.name}`;
+        }
+        this.files = urls;
     }
 }

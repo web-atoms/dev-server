@@ -4,4 +4,5 @@ export default interface IFilePath {
     dir: string;
     ext: string;
     root: string;
+    url: string;
 }
