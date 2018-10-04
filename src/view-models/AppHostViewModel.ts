@@ -25,6 +25,9 @@ export class AppHostViewModel extends AtomViewModel {
 
     @Watch
     public watchUrl(): void {
+        if (!this.file) {
+            return;
+        }
         this.url = `CURRENT/${this.file.dir}/${this.file.name}`;
     }
 

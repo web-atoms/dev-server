@@ -80,6 +80,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
             return _this;
         }
         AppHostViewModel.prototype.watchUrl = function () {
+            if (!this.file) {
+                return;
+            }
             this.url = "CURRENT/" + this.file.dir + "/" + this.file.name;
         };
         AppHostViewModel.prototype.init = function () {
