@@ -39,4 +39,8 @@ export class AppHostViewModel extends AtomViewModel {
         }
         this.files = urls;
     }
+
+    public refreshUrl(): void {
+        this.refresh("url");
+    }
 }

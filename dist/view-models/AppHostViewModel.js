@@ -105,6 +105,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                 });
             });
         };
+        AppHostViewModel.prototype.refreshUrl = function () {
+            this.refresh("url");
+        };
         __decorate([
             AtomViewModel_1.BindableUrlParameter("url"),
             __metadata("design:type", String)
