@@ -5,6 +5,7 @@ export default class WSServer {
     static configure(ws: W.Server): void;
     private watcher;
     private lastTimeout;
+    private pingTimer;
     constructor(client: W);
     private dispose();
     private watchPath(d);

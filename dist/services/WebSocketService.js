@@ -21,9 +21,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
         function WebSocketService() {
         }
         WebSocketService.prototype.listen = function (a) {
-            var w = new WebSocket("/listen");
+            var w = new WebSocket("ws://" + location.host + "/listen");
             w.onmessage = function (evt) {
-                a(evt.data);
+                // tslint:disable-next-line:no-console
+                console.log(evt.data);
+                a(JSON.parse(evt.data));
             };
             return new types_1.AtomDisposable(function () {
                 w.close();

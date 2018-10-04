@@ -7,10 +7,12 @@ export default class WebSocketService  {
 
     public listen(a: (d: IWSMessage) => void): IDisposable {
 
-        const w = new WebSocket("/listen");
+        const w = new WebSocket(`ws://${location.host}/listen`);
 
         w.onmessage = (evt) => {
-            a(evt.data);
+            // tslint:disable-next-line:no-console
+            console.log(evt.data);
+            a(JSON.parse(evt.data));
         };
 
         return new AtomDisposable(() => {

@@ -14,15 +14,27 @@ export default class WSServer {
 
     private watcher: fs.FSWatcher;
     private lastTimeout: NodeJS.Timer;
+    private pingTimer: NodeJS.Timer;
 
     constructor(private client: W) {
+
+        this.pingTimer = setInterval(() => {
+            this.client.ping();
+        }, 15000);
+
         this.watchPath("./dist");
         client.on("message", (d) => {
-            this.watchPath(d);
+            const msg = JSON.parse(d.toString());
+            if (msg.type === "watch") {
+                this.watchPath(msg.path);
+            }
         });
     }
 
     private dispose(): void {
+        if (this.pingTimer) {
+            clearInterval(this.pingTimer);
+        }
         if (this.watcher) {
             this.watcher.close();
         }
@@ -42,14 +54,17 @@ export default class WSServer {
     }
 
     private postUpdate(): void {
-        if (!this.lastTimeout) {
+        if (this.lastTimeout) {
             clearTimeout(this.lastTimeout);
             this.lastTimeout = null;
         }
         this.lastTimeout = setTimeout(() => {
-            this.client.send({ type: "refresh" }, (e) => {
-                // tslint:disable-next-line:no-console
-                console.error(e);
+            const json = JSON.stringify({ type: "refresh" });
+            this.client.send(json, (e) => {
+                if (e) {
+                    // tslint:disable-next-line:no-console
+                    console.error(e);
+                }
             });
         }, 100);
     }

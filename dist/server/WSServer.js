@@ -14,9 +14,15 @@
         function WSServer(client) {
             var _this = this;
             this.client = client;
+            this.pingTimer = setInterval(function () {
+                _this.client.ping();
+            }, 15000);
             this.watchPath("./dist");
             client.on("message", function (d) {
-                _this.watchPath(d);
+                var msg = JSON.parse(d.toString());
+                if (msg.type === "watch") {
+                    _this.watchPath(msg.path);
+                }
             });
         }
         WSServer.configure = function (ws) {
@@ -28,6 +34,9 @@
             });
         };
         WSServer.prototype.dispose = function () {
+            if (this.pingTimer) {
+                clearInterval(this.pingTimer);
+            }
             if (this.watcher) {
                 this.watcher.close();
             }
@@ -47,14 +56,17 @@
         };
         WSServer.prototype.postUpdate = function () {
             var _this = this;
-            if (!this.lastTimeout) {
+            if (this.lastTimeout) {
                 clearTimeout(this.lastTimeout);
                 this.lastTimeout = null;
             }
             this.lastTimeout = setTimeout(function () {
-                _this.client.send({ type: "refresh" }, function (e) {
-                    // tslint:disable-next-line:no-console
-                    console.error(e);
+                var json = JSON.stringify({ type: "refresh" });
+                _this.client.send(json, function (e) {
+                    if (e) {
+                        // tslint:disable-next-line:no-console
+                        console.error(e);
+                    }
                 });
             }, 100);
         };
