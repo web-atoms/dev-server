@@ -91,7 +91,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
             if (!this.file) {
                 return;
             }
-            this.url = "CURRENT/" + replaceSrc(this.file.dir) + "/" + this.file.name;
+            this.url = "/uiv/CURRENT/" + replaceSrc(this.file.dir) + "/" + this.file.name;
         };
         AppHostViewModel.prototype.init = function () {
             return __awaiter(this, void 0, void 0, function () {

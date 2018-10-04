@@ -7,16 +7,11 @@ const args = process.argv;
 // Assign router to the express.Router() instance
 const router: Router = Router();
 
-// The / here corresponds to the route that the WelcomeController
-// is mounted on in the server.ts file.
-// In this case it's /welcome
-router.get("/", (req: Request, res: Response) => {
+function prepareHtml(req: Request, res: Response, viewPath: string): string {
 
-    const url = req.path.substr(5);
-
-    const dev = args.find((a) => a === "dev");
-
-    // const devServer = dev ? "/_files/" : "/_files/node_modules/web-atoms-dev-server/";
+    if (viewPath.startsWith("//")) {
+        viewPath = viewPath.substr(1);
+    }
 
     const devServer = "/_dev";
 
@@ -38,7 +33,7 @@ router.get("/", (req: Request, res: Response) => {
         }
     }
 
-    res.send(`<!DOCTYPE html>
+    return `<!DOCTYPE html>
 
     <html>
     <head>
@@ -53,11 +48,26 @@ router.get("/", (req: Request, res: Response) => {
                 UMD.map("CURRENT","/_files/");
                 UMD.map("web-atoms-dev-server", "${devServer}");
                 UMD.lang = "en-US";
-                UMD.loadView("web-atoms-dev-server/dist/web/views/AppHost", true);
+                UMD.loadView("${viewPath}", true);
         </script>
     </body>
-    </html>
-    `);
+    </html>`;
+
+}
+
+router.get(/^\/uiv\//, (req, res) => {
+    const p = req.path.replace("uiv/", "");
+    const html = prepareHtml(req, res, p);
+    return res.send(html);
+});
+
+// The / here corresponds to the route that the WelcomeController
+// is mounted on in the server.ts file.
+// In this case it's /welcome
+router.get("/", (req: Request, res: Response) => {
+
+    const html = prepareHtml(req, res, "web-atoms-dev-server/dist/web/views/AppHost");
+    return res.send(html);
 });
 
 export const RootPage: Router = router;
