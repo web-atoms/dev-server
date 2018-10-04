@@ -1,11 +1,8 @@
 // tslint:disable
 import {BindableProperty} from "web-atoms-core/dist/core/BindableProperty";
 import {AtomListBox} from "web-atoms-core/dist/web/controls/AtomListBox";
-import {AtomFrame} from "web-atoms-core/dist/web/controls/AtomFrame";
 import {AtomGridView} from "web-atoms-core/dist/web/controls/AtomGridView";
 import {AtomControl} from "web-atoms-core/dist/web/controls/AtomControl";
-import {AtomComboBox} from "web-atoms-core/dist/web/controls/AtomComboBox";
-import {AtomGridSplitter} from "web-atoms-core/dist/web/controls/AtomGridSplitter";
 
     import { AppHostViewModel } from "../../view-models/AppHostViewModel";
     import AppHostStyle from "../styles/AppHostStyle";
@@ -123,7 +120,7 @@ export default  class AppHost extends AtomGridView {
 
             e13.bind(e13.element, "value",  [["viewModel","url"]], true  );
 
-        e13.itemTemplate = AppHost_itemTemplate_1_54Creator(this);
+        e13.itemTemplate = AppHost_itemTemplate_1_1Creator(this);
             
             e11.appendChild(e13.element);
 
@@ -158,8 +155,8 @@ export default  class AppHost extends AtomGridView {
                 }
             }
 
-            function AppHost_itemTemplate_1_54Creator(__creator){
-                return  class AppHost_itemTemplate_1_54 extends AtomControl {
+            function AppHost_itemTemplate_1_1Creator(__creator){
+                return  class AppHost_itemTemplate_1_1 extends AtomControl {
 
                 
 

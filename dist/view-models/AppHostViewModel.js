@@ -61,7 +61,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "web-atoms-core/dist/App", "web-atoms-core/dist/di/Inject", "web-atoms-core/dist/services/NavigationService", "web-atoms-core/dist/view-model/AtomViewModel", "../services/FileService"], factory);
+        define(["require", "exports", "web-atoms-core/dist/App", "web-atoms-core/dist/di/Inject", "web-atoms-core/dist/services/NavigationService", "web-atoms-core/dist/view-model/AtomViewModel", "../services/FileService", "../services/WebSocketService"], factory);
     }
 })(function (require, exports) {
     "use strict";
@@ -71,6 +71,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     var NavigationService_1 = require("web-atoms-core/dist/services/NavigationService");
     var AtomViewModel_1 = require("web-atoms-core/dist/view-model/AtomViewModel");
     var FileService_1 = require("../services/FileService");
+    var WebSocketService_1 = require("../services/WebSocketService");
     function replaceSrc(src) {
         src = src.split("\\").join("/");
         var tokens = src.split("/");
@@ -81,12 +82,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
     var AppHostViewModel = /** @class */ (function (_super) {
         __extends(AppHostViewModel, _super);
-        function AppHostViewModel(app, navigationService, fileService) {
+        function AppHostViewModel(app, navigationService, fileService, webSocketService) {
             var _this = _super.call(this, app) || this;
             _this.navigationService = navigationService;
             _this.fileService = fileService;
+            _this.webSocketService = webSocketService;
+            _this.registerDisposable(webSocketService.listen(function (m) { return _this.onMessage(m); }));
             return _this;
         }
+        AppHostViewModel.prototype.onMessage = function (m) {
+            if (m.type === "refresh") {
+                this.refreshUrl();
+            }
+        };
         AppHostViewModel.prototype.init = function () {
             return __awaiter(this, void 0, void 0, function () {
                 var urls, _i, urls_1, iterator;
@@ -116,9 +124,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
             __param(0, Inject_1.Inject),
             __param(1, Inject_1.Inject),
             __param(2, Inject_1.Inject),
+            __param(3, Inject_1.Inject),
             __metadata("design:paramtypes", [App_1.App,
                 NavigationService_1.NavigationService,
-                FileService_1.default])
+                FileService_1.default,
+                WebSocketService_1.default])
         ], AppHostViewModel);
         return AppHostViewModel;
     }(AtomViewModel_1.AtomViewModel));

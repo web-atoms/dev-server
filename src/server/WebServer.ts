@@ -15,11 +15,11 @@ class WebServer {
 
     private mountRoutes(): void {
 
-        const router = express.Router();
-
         this.express.use(RootPage);
 
         this.express.use(ModuleFilesPage);
+
+        // this.express.use();
 
         this.express.use(e({
             root: "./",

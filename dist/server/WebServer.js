@@ -19,9 +19,9 @@
             this.mountRoutes();
         }
         WebServer.prototype.mountRoutes = function () {
-            var router = express.Router();
             this.express.use(RootPage_1.RootPage);
             this.express.use(ModuleFilesPage_1.ModuleFilesPage);
+            // this.express.use();
             this.express.use(e({
                 root: "./",
                 baseDir: "_files",

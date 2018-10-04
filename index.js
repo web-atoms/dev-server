@@ -3,11 +3,20 @@ var process = require("process");
 var portfinder = require("portfinder");
 var os = require("os");
 var colors = require("colors/safe");
+var http = require("http");
+var WSServer = require("./dist/server/WSServer").default;
+var WebSocketServer = require("ws").Server;
 
 var ifaces = os.networkInterfaces();
 
 function listen(port) {
-    app.default.listen(port,(err) => {
+    var server = http.createServer(app.default);
+
+    var wss = new WebSocketServer({ server: server, path: "/listen" });
+
+    WSServer.configure(wss);
+
+    server.listen(port,(err) => {
         if(err) {
             return console.log(err);
         }
