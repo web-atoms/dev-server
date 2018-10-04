@@ -48,7 +48,7 @@ export default  class AppHost extends AtomGridView {
 
             e2.bind(e2.element, "selectedItem",  [["viewModel","file"]], true  );
 
-        e2.itemTemplate = AppHost_itemTemplate_1_5Creator(this);
+        e2.itemTemplate = AppHost_itemTemplate_1_7Creator(this);
             
             this.append(e2);
 
@@ -66,7 +66,7 @@ export default  class AppHost extends AtomGridView {
 
             this.bind(e6, "src",  [["viewModel","url"]], false , (v1) => (v1) );
 
-        this.setPrimitiveValue(e6, "style", "border: none; margin:5px" );
+        this.setPrimitiveValue(e6, "style", "border: none; padding:5px; width:100%; height:100%;" );
         
         
 
@@ -76,8 +76,8 @@ export default  class AppHost extends AtomGridView {
                 }
             }
 
-            function AppHost_itemTemplate_1_5Creator(__creator){
-                return  class AppHost_itemTemplate_1_5 extends AtomControl {
+            function AppHost_itemTemplate_1_7Creator(__creator){
+                return  class AppHost_itemTemplate_1_7 extends AtomControl {
 
                 
 

@@ -43,7 +43,7 @@ var __extends = (this && this.__extends) || (function () {
             e2.element.appendChild(e4);
             e2.bind(e2.element, "items", [["viewModel", "files"]], false, function (v1) { return (v1); });
             e2.bind(e2.element, "selectedItem", [["viewModel", "file"]], true);
-            e2.itemTemplate = AppHost_itemTemplate_1_5Creator(this);
+            e2.itemTemplate = AppHost_itemTemplate_1_7Creator(this);
             this.append(e2);
             var e5 = document.createTextNode("\r\n\r\n    ");
             this.element.appendChild(e5);
@@ -51,20 +51,20 @@ var __extends = (this && this.__extends) || (function () {
             this.append(e6);
             this.setPrimitiveValue(e6, "column", "1");
             this.bind(e6, "src", [["viewModel", "url"]], false, function (v1) { return (v1); });
-            this.setPrimitiveValue(e6, "style", "border: none; margin:5px");
+            this.setPrimitiveValue(e6, "style", "border: none; padding:5px; width:100%; height:100%;");
             var e7 = document.createTextNode("\r\n\r\n");
             this.element.appendChild(e7);
         };
         return AppHost;
     }(AtomGridView_1.AtomGridView));
     exports.default = AppHost;
-    function AppHost_itemTemplate_1_5Creator(__creator) {
+    function AppHost_itemTemplate_1_7Creator(__creator) {
         return /** @class */ (function (_super) {
-            __extends(AppHost_itemTemplate_1_5, _super);
-            function AppHost_itemTemplate_1_5() {
+            __extends(AppHost_itemTemplate_1_7, _super);
+            function AppHost_itemTemplate_1_7() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
-            AppHost_itemTemplate_1_5.prototype.create = function () {
+            AppHost_itemTemplate_1_7.prototype.create = function () {
                 var _this = this;
                 _super.prototype.create.call(this);
                 ;
@@ -73,7 +73,7 @@ var __extends = (this && this.__extends) || (function () {
                     return _this.setLocalValue(_this.element, "text", (_this.data.dir) + "/" + (_this.data.name));
                 });
             };
-            return AppHost_itemTemplate_1_5;
+            return AppHost_itemTemplate_1_7;
         }(AtomControl_1.AtomControl));
     }
 });
