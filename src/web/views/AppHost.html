@@ -14,17 +14,20 @@
         <a href="[$viewModel.url]" target="_tab">Open in New Tab</a>
     </header>
 
-    <AtomListBox 
-        row="1"
-        items="[$viewModel.files]"
-        value-path="url"
-        value="$[viewModel.url]">
-        <div 
-            template="itemTemplate">
-            <div text="{$data.name}" title="{$data.dir}"></div>
-            <div style="font-size: small" text="{$data.dir}"></div>
-        </div>
-    </AtomListBox>
+    <div
+        row="1">
+        <AtomListBox 
+            style="overflow: auto"
+            items="[$viewModel.files]"
+            value-path="url"
+            value="$[viewModel.url]">
+            <div 
+                template="itemTemplate">
+                <div text="{$data.name}" title="{$data.dir}"></div>
+                <div style="font-size: small" text="{$data.dir}"></div>
+            </div>
+        </AtomListBox>
+    </div>
 
     <iframe
         row="1"

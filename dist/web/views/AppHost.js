@@ -65,43 +65,50 @@ var __extends = (this && this.__extends) || (function () {
             e2.appendChild(e9);
             var e10 = document.createTextNode("\r\n\r\n    ");
             this.element.appendChild(e10);
-            var e11 = new AtomListBox_1.AtomListBox(this.app);
-            var e12 = document.createTextNode("\r\n        ");
-            e11.element.appendChild(e12);
-            var e13 = document.createTextNode("\r\n    ");
-            e11.element.appendChild(e13);
-            e11.setPrimitiveValue(e11.element, "row", "1");
-            e11.bind(e11.element, "items", [["viewModel", "files"]], false, function (v1) { return (v1); });
-            e11.setPrimitiveValue(e11.element, "valuePath", "url");
-            e11.bind(e11.element, "value", [["viewModel", "url"]], true);
-            e11.itemTemplate = AppHost_itemTemplate_1_49Creator(this);
+            var e11 = document.createElement("div");
             this.append(e11);
-            var e14 = document.createTextNode("\r\n\r\n    ");
-            this.element.appendChild(e14);
-            var e15 = document.createElement("iframe");
-            this.append(e15);
-            this.setPrimitiveValue(e15, "row", "1");
-            this.setPrimitiveValue(e15, "column", "1");
-            this.bind(e15, "src", [["viewModel", "url"]], false, function (v1) { return (v1); });
-            this.setPrimitiveValue(e15, "style", "border: none; padding:5px; width:100%; height:100%;");
-            var e16 = document.createTextNode("\r\n\r\n");
-            this.element.appendChild(e16);
+            this.setPrimitiveValue(e11, "row", "1");
+            var e12 = document.createTextNode("\r\n        ");
+            e11.appendChild(e12);
+            var e13 = new AtomListBox_1.AtomListBox(this.app);
+            var e14 = document.createTextNode("\r\n            ");
+            e13.element.appendChild(e14);
+            var e15 = document.createTextNode("\r\n        ");
+            e13.element.appendChild(e15);
+            e13.setPrimitiveValue(e13.element, "style", "overflow: auto");
+            e13.bind(e13.element, "items", [["viewModel", "files"]], false, function (v1) { return (v1); });
+            e13.setPrimitiveValue(e13.element, "valuePath", "url");
+            e13.bind(e13.element, "value", [["viewModel", "url"]], true);
+            e13.itemTemplate = AppHost_itemTemplate_1_52Creator(this);
+            e11.appendChild(e13.element);
+            var e16 = document.createTextNode("\r\n    ");
+            e11.appendChild(e16);
+            var e17 = document.createTextNode("\r\n\r\n    ");
+            this.element.appendChild(e17);
+            var e18 = document.createElement("iframe");
+            this.append(e18);
+            this.setPrimitiveValue(e18, "row", "1");
+            this.setPrimitiveValue(e18, "column", "1");
+            this.bind(e18, "src", [["viewModel", "url"]], false, function (v1) { return (v1); });
+            this.setPrimitiveValue(e18, "style", "border: none; padding:5px; width:100%; height:100%;");
+            var e19 = document.createTextNode("\r\n\r\n");
+            this.element.appendChild(e19);
         };
         return AppHost;
     }(AtomGridView_1.AtomGridView));
     exports.default = AppHost;
-    function AppHost_itemTemplate_1_49Creator(__creator) {
+    function AppHost_itemTemplate_1_52Creator(__creator) {
         return /** @class */ (function (_super) {
-            __extends(AppHost_itemTemplate_1_49, _super);
-            function AppHost_itemTemplate_1_49() {
+            __extends(AppHost_itemTemplate_1_52, _super);
+            function AppHost_itemTemplate_1_52() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
-            AppHost_itemTemplate_1_49.prototype.create = function () {
+            AppHost_itemTemplate_1_52.prototype.create = function () {
                 var _this = this;
                 _super.prototype.create.call(this);
                 ;
                 this.element = document.createElement("div");
-                var e1 = document.createTextNode("\r\n            ");
+                var e1 = document.createTextNode("\r\n                ");
                 this.element.appendChild(e1);
                 var e2 = document.createElement("div");
                 this.append(e2);
@@ -111,7 +118,7 @@ var __extends = (this && this.__extends) || (function () {
                 this.runAfterInit(function () {
                     return _this.setLocalValue(e2, "title", (_this.data.dir));
                 });
-                var e3 = document.createTextNode("\r\n            ");
+                var e3 = document.createTextNode("\r\n                ");
                 this.element.appendChild(e3);
                 var e4 = document.createElement("div");
                 this.append(e4);
@@ -119,10 +126,10 @@ var __extends = (this && this.__extends) || (function () {
                 this.runAfterInit(function () {
                     return _this.setLocalValue(e4, "text", (_this.data.dir));
                 });
-                var e5 = document.createTextNode("\r\n        ");
+                var e5 = document.createTextNode("\r\n            ");
                 this.element.appendChild(e5);
             };
-            return AppHost_itemTemplate_1_49;
+            return AppHost_itemTemplate_1_52;
         }(AtomControl_1.AtomControl));
     }
 });

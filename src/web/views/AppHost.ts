@@ -91,60 +91,75 @@ export default  class AppHost extends AtomGridView {
         
         this.element.appendChild(e10);
 
-            const e11 = new AtomListBox(this.app);
-            
-            
+        const e11 = document.createElement("div");
+        
+        this.append(e11);
+        
+        this.setPrimitiveValue(e11, "row", "1" );
+        
+        
         const e12 = document.createTextNode("\r\n        ");
         
-        e11.element.appendChild(e12);
+        e11.appendChild(e12);
 
-        const e13 = document.createTextNode("\r\n    ");
-        
-        e11.element.appendChild(e13);
+            const e13 = new AtomListBox(this.app);
             
-        e11.setPrimitiveValue(e11.element, "row", "1" );
-        
-
-            e11.bind(e11.element, "items",  [["viewModel","files"]], false , (v1) => (v1) );
-
-        e11.setPrimitiveValue(e11.element, "valuePath", "url" );
-        
-
-            e11.bind(e11.element, "value",  [["viewModel","url"]], true  );
-
-        e11.itemTemplate = AppHost_itemTemplate_1_49Creator(this);
             
-            this.append(e11);
-
-
-        const e14 = document.createTextNode("\r\n\r\n    ");
+        const e14 = document.createTextNode("\r\n            ");
         
-        this.element.appendChild(e14);
+        e13.element.appendChild(e14);
 
-        const e15 = document.createElement("iframe");
+        const e15 = document.createTextNode("\r\n        ");
         
-        this.append(e15);
-        
-        this.setPrimitiveValue(e15, "row", "1" );
+        e13.element.appendChild(e15);
+            
+        e13.setPrimitiveValue(e13.element, "style", "overflow: auto" );
         
 
-        this.setPrimitiveValue(e15, "column", "1" );
+            e13.bind(e13.element, "items",  [["viewModel","files"]], false , (v1) => (v1) );
+
+        e13.setPrimitiveValue(e13.element, "valuePath", "url" );
         
 
-            this.bind(e15, "src",  [["viewModel","url"]], false , (v1) => (v1) );
+            e13.bind(e13.element, "value",  [["viewModel","url"]], true  );
 
-        this.setPrimitiveValue(e15, "style", "border: none; padding:5px; width:100%; height:100%;" );
+        e13.itemTemplate = AppHost_itemTemplate_1_52Creator(this);
+            
+            e11.appendChild(e13.element);
+
+
+        const e16 = document.createTextNode("\r\n    ");
+        
+        e11.appendChild(e16);
+
+        const e17 = document.createTextNode("\r\n\r\n    ");
+        
+        this.element.appendChild(e17);
+
+        const e18 = document.createElement("iframe");
+        
+        this.append(e18);
+        
+        this.setPrimitiveValue(e18, "row", "1" );
+        
+
+        this.setPrimitiveValue(e18, "column", "1" );
+        
+
+            this.bind(e18, "src",  [["viewModel","url"]], false , (v1) => (v1) );
+
+        this.setPrimitiveValue(e18, "style", "border: none; padding:5px; width:100%; height:100%;" );
         
         
 
-        const e16 = document.createTextNode("\r\n\r\n");
+        const e19 = document.createTextNode("\r\n\r\n");
         
-        this.element.appendChild(e16);
+        this.element.appendChild(e19);
                 }
             }
 
-            function AppHost_itemTemplate_1_49Creator(__creator){
-                return  class AppHost_itemTemplate_1_49 extends AtomControl {
+            function AppHost_itemTemplate_1_52Creator(__creator){
+                return  class AppHost_itemTemplate_1_52 extends AtomControl {
 
                 
 
@@ -159,7 +174,7 @@ export default  class AppHost extends AtomGridView {
                     
                     
                     
-        const e1 = document.createTextNode("\r\n            ");
+        const e1 = document.createTextNode("\r\n                ");
         
         this.element.appendChild(e1);
 
@@ -174,7 +189,7 @@ export default  class AppHost extends AtomGridView {
             this.setLocalValue(e2, "title", (this.data.dir)) );
         
 
-        const e3 = document.createTextNode("\r\n            ");
+        const e3 = document.createTextNode("\r\n                ");
         
         this.element.appendChild(e3);
 
@@ -189,7 +204,7 @@ export default  class AppHost extends AtomGridView {
             this.setLocalValue(e4, "text", (this.data.dir)) );
         
 
-        const e5 = document.createTextNode("\r\n        ");
+        const e5 = document.createTextNode("\r\n            ");
         
         this.element.appendChild(e5);
                 }
