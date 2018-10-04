@@ -8,7 +8,8 @@ export declare class AppHostViewModel extends AtomViewModel {
     readonly fileService: FileService;
     files: IFilePath[];
     file: IFilePath;
+    url: string;
     constructor(app: App, navigationService: NavigationService, fileService: FileService);
-    readonly url: string;
+    watchUrl(): void;
     init(): Promise<any>;
 }

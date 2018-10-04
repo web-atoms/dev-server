@@ -79,13 +79,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
             _this.fileService = fileService;
             return _this;
         }
-        Object.defineProperty(AppHostViewModel.prototype, "url", {
-            get: function () {
-                return "CURRENT/" + this.file.dir + "/" + this.file.name;
-            },
-            enumerable: true,
-            configurable: true
-        });
+        AppHostViewModel.prototype.watchUrl = function () {
+            this.url = "CURRENT/" + this.file.dir + "/" + this.file.name;
+        };
         AppHostViewModel.prototype.init = function () {
             return __awaiter(this, void 0, void 0, function () {
                 var _a;
@@ -102,10 +98,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
             });
         };
         __decorate([
+            AtomViewModel_1.BindableUrlParameter("url"),
+            __metadata("design:type", String)
+        ], AppHostViewModel.prototype, "url", void 0);
+        __decorate([
             AtomViewModel_1.Watch,
-            __metadata("design:type", String),
-            __metadata("design:paramtypes", [])
-        ], AppHostViewModel.prototype, "url", null);
+            __metadata("design:type", Function),
+            __metadata("design:paramtypes", []),
+            __metadata("design:returntype", void 0)
+        ], AppHostViewModel.prototype, "watchUrl", null);
         AppHostViewModel = __decorate([
             __param(0, Inject_1.Inject),
             __param(1, Inject_1.Inject),
