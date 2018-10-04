@@ -32,7 +32,7 @@ export class AppHostViewModel extends AtomViewModel {
     }
 
     public async init(): Promise<any> {
-        this.files = await this.fileService.getModules();
+        this.files = (await this.fileService.getModules()).files;
 
     }
 }

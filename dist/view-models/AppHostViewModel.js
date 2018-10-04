@@ -94,7 +94,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                             _a = this;
                             return [4 /*yield*/, this.fileService.getModules()];
                         case 1:
-                            _a.files = _b.sent();
+                            _a.files = (_b.sent()).files;
                             return [2 /*return*/];
                     }
                 });
