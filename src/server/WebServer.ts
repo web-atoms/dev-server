@@ -27,6 +27,11 @@ class WebServer {
             showdir: true
         }));
 
+        this.express.use(e({
+            root: __dirname + "/../../",
+            baseDir: "_dev",
+            showdir: true
+        }));
     }
 
 }

@@ -21,7 +21,7 @@
         var url = req.path.substr(5);
         var dev = args.find(function (a) { return a === "dev"; });
         // const devServer = dev ? "/_files/" : "/_files/node_modules/web-atoms-dev-server/";
-        var devServer = __dirname + "../../";
+        var devServer = "/_dev";
         var text = fs_1.readFileSync("./package.json", { encoding: "utf-8", flag: "r" });
         var json = JSON.parse(text);
         var d = json.dependencies || {};

@@ -18,7 +18,7 @@ router.get("/", (req: Request, res: Response) => {
 
     // const devServer = dev ? "/_files/" : "/_files/node_modules/web-atoms-dev-server/";
 
-    const devServer = __dirname + "../../";
+    const devServer = "/_dev";
 
     const text: string = readFileSync("./package.json", { encoding: "utf-8", flag: "r" });
 
