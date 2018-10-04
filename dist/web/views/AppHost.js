@@ -14,7 +14,7 @@ var __extends = (this && this.__extends) || (function () {
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "web-atoms-core/dist/web/controls/AtomListBox", "web-atoms-core/dist/web/controls/AtomFrame", "web-atoms-core/dist/web/controls/AtomGridView", "../../view-models/AppHostViewModel"], factory);
+        define(["require", "exports", "web-atoms-core/dist/web/controls/AtomListBox", "web-atoms-core/dist/web/controls/AtomFrame", "web-atoms-core/dist/web/controls/AtomGridView", "web-atoms-core/dist/web/controls/AtomControl", "../../view-models/AppHostViewModel"], factory);
     }
 })(function (require, exports) {
     "use strict";
@@ -22,6 +22,7 @@ var __extends = (this && this.__extends) || (function () {
     var AtomListBox_1 = require("web-atoms-core/dist/web/controls/AtomListBox");
     var AtomFrame_1 = require("web-atoms-core/dist/web/controls/AtomFrame");
     var AtomGridView_1 = require("web-atoms-core/dist/web/controls/AtomGridView");
+    var AtomControl_1 = require("web-atoms-core/dist/web/controls/AtomControl");
     var AppHostViewModel_1 = require("../../view-models/AppHostViewModel");
     var AppHost = /** @class */ (function (_super) {
         __extends(AppHost, _super);
@@ -29,7 +30,6 @@ var __extends = (this && this.__extends) || (function () {
             return _super !== null && _super.apply(this, arguments) || this;
         }
         AppHost.prototype.create = function () {
-            var _this = this;
             _super.prototype.create.call(this);
             var __creator = this;
             this.viewModel = this.resolve(AppHostViewModel_1.AppHostViewModel);
@@ -40,27 +40,41 @@ var __extends = (this && this.__extends) || (function () {
             var e2 = new AtomListBox_1.AtomListBox(this.app);
             var e3 = document.createTextNode("\r\n        ");
             e2.element.appendChild(e3);
-            var e4 = document.createElement("div");
-            e2.append(e4);
-            e2.runAfterInit(function () {
-                return e2.setLocalValue(e4, "text", (_this.data.dir) + "/" + (_this.data.name));
-            });
-            var e5 = document.createTextNode("\r\n    ");
-            e2.element.appendChild(e5);
+            var e4 = document.createTextNode("\r\n    ");
+            e2.element.appendChild(e4);
             e2.bind(e2.element, "items", [["viewModel", "files"]], false, function (v1) { return (v1); });
             e2.bind(e2.element, "selectedItem", [["viewModel", "file"]], true);
+            e2.itemTemplate = AppHost_itemTemplate_1_2Creator(this);
             this.append(e2);
-            var e6 = document.createTextNode("\r\n\r\n    ");
-            this.element.appendChild(e6);
-            var e7 = new AtomFrame_1.AtomFrame(this.app);
-            e7.setPrimitiveValue(e7.element, "column", "1");
-            e7.bind(e7.element, "url", [["viewModel", "url"]], false, function (v1) { return (v1); });
-            this.append(e7);
-            var e8 = document.createTextNode("\r\n\r\n");
-            this.element.appendChild(e8);
+            var e5 = document.createTextNode("\r\n\r\n    ");
+            this.element.appendChild(e5);
+            var e6 = new AtomFrame_1.AtomFrame(this.app);
+            e6.setPrimitiveValue(e6.element, "column", "1");
+            e6.bind(e6.element, "url", [["viewModel", "url"]], false, function (v1) { return (v1); });
+            this.append(e6);
+            var e7 = document.createTextNode("\r\n\r\n");
+            this.element.appendChild(e7);
         };
         return AppHost;
     }(AtomGridView_1.AtomGridView));
     exports.default = AppHost;
+    function AppHost_itemTemplate_1_2Creator(__creator) {
+        return /** @class */ (function (_super) {
+            __extends(AppHost_itemTemplate_1_2, _super);
+            function AppHost_itemTemplate_1_2() {
+                return _super !== null && _super.apply(this, arguments) || this;
+            }
+            AppHost_itemTemplate_1_2.prototype.create = function () {
+                var _this = this;
+                _super.prototype.create.call(this);
+                ;
+                this.element = document.createElement("div");
+                this.runAfterInit(function () {
+                    return _this.setLocalValue(_this.element, "text", (_this.data.dir) + "/" + (_this.data.name));
+                });
+            };
+            return AppHost_itemTemplate_1_2;
+        }(AtomControl_1.AtomControl));
+    }
 });
 //# sourceMappingURL=AppHost.js.map

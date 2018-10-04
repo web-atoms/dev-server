@@ -9,7 +9,9 @@
     <AtomListBox 
         items="[$viewModel.files]"
         selected-item="$[viewModel.file]">
-        <div text="{`${$data.dir}/${$data.name}`}"></div>
+        <div 
+            template="itemTemplate"
+            text="{`${$data.dir}/${$data.name}`}"></div>
     </AtomListBox>
 
     <AtomFrame column="1" url="[$viewModel.url]"></AtomFrame>
