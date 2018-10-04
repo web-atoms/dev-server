@@ -14,8 +14,10 @@
         value-path="url"
         value="$[viewModel.url]">
         <div 
-            template="itemTemplate"
-            text="{`${$data.dir}/${$data.name}`}"></div>
+            template="itemTemplate">
+            <div text="{$data.name}"></div>
+            <div style="font-size: small" text="{$data.dir}"></div>
+        </div>
     </AtomListBox>
 
     <iframe

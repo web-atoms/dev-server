@@ -47,7 +47,7 @@ var __extends = (this && this.__extends) || (function () {
             e2.bind(e2.element, "items", [["viewModel", "files"]], false, function (v1) { return (v1); });
             e2.setPrimitiveValue(e2.element, "valuePath", "url");
             e2.bind(e2.element, "value", [["viewModel", "url"]], true);
-            e2.itemTemplate = AppHost_itemTemplate_1_12Creator(this);
+            e2.itemTemplate = AppHost_itemTemplate_1_17Creator(this);
             this.append(e2);
             var e5 = document.createTextNode("\r\n\r\n    ");
             this.element.appendChild(e5);
@@ -62,22 +62,36 @@ var __extends = (this && this.__extends) || (function () {
         return AppHost;
     }(AtomGridView_1.AtomGridView));
     exports.default = AppHost;
-    function AppHost_itemTemplate_1_12Creator(__creator) {
+    function AppHost_itemTemplate_1_17Creator(__creator) {
         return /** @class */ (function (_super) {
-            __extends(AppHost_itemTemplate_1_12, _super);
-            function AppHost_itemTemplate_1_12() {
+            __extends(AppHost_itemTemplate_1_17, _super);
+            function AppHost_itemTemplate_1_17() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
-            AppHost_itemTemplate_1_12.prototype.create = function () {
+            AppHost_itemTemplate_1_17.prototype.create = function () {
                 var _this = this;
                 _super.prototype.create.call(this);
                 ;
                 this.element = document.createElement("div");
+                var e1 = document.createTextNode("\r\n            ");
+                this.element.appendChild(e1);
+                var e2 = document.createElement("div");
+                this.append(e2);
                 this.runAfterInit(function () {
-                    return _this.setLocalValue(_this.element, "text", (_this.data.dir) + "/" + (_this.data.name));
+                    return _this.setLocalValue(e2, "text", (_this.data.name));
                 });
+                var e3 = document.createTextNode("\r\n            ");
+                this.element.appendChild(e3);
+                var e4 = document.createElement("div");
+                this.append(e4);
+                this.setPrimitiveValue(e4, "style", "font-size: small");
+                this.runAfterInit(function () {
+                    return _this.setLocalValue(e4, "text", (_this.data.dir));
+                });
+                var e5 = document.createTextNode("\r\n        ");
+                this.element.appendChild(e5);
             };
-            return AppHost_itemTemplate_1_12;
+            return AppHost_itemTemplate_1_17;
         }(AtomControl_1.AtomControl));
     }
 });

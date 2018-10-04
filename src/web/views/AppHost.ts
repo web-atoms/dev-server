@@ -57,7 +57,7 @@ export default  class AppHost extends AtomGridView {
 
             e2.bind(e2.element, "value",  [["viewModel","url"]], true  );
 
-        e2.itemTemplate = AppHost_itemTemplate_1_12Creator(this);
+        e2.itemTemplate = AppHost_itemTemplate_1_17Creator(this);
             
             this.append(e2);
 
@@ -85,8 +85,8 @@ export default  class AppHost extends AtomGridView {
                 }
             }
 
-            function AppHost_itemTemplate_1_12Creator(__creator){
-                return  class AppHost_itemTemplate_1_12 extends AtomControl {
+            function AppHost_itemTemplate_1_17Creator(__creator){
+                return  class AppHost_itemTemplate_1_17 extends AtomControl {
 
                 
 
@@ -100,9 +100,37 @@ export default  class AppHost extends AtomGridView {
                     this.element = document.createElement("div");
                     
                     
-            this.runAfterInit( () =>
-            this.setLocalValue(this.element, "text", `${(this.data.dir)}/${(this.data.name)}`) );
                     
+        const e1 = document.createTextNode("\r\n            ");
+        
+        this.element.appendChild(e1);
+
+        const e2 = document.createElement("div");
+        
+        this.append(e2);
+        
+            this.runAfterInit( () =>
+            this.setLocalValue(e2, "text", (this.data.name)) );
+        
+
+        const e3 = document.createTextNode("\r\n            ");
+        
+        this.element.appendChild(e3);
+
+        const e4 = document.createElement("div");
+        
+        this.append(e4);
+        
+        this.setPrimitiveValue(e4, "style", "font-size: small" );
+        
+
+            this.runAfterInit( () =>
+            this.setLocalValue(e4, "text", (this.data.dir)) );
+        
+
+        const e5 = document.createTextNode("\r\n        ");
+        
+        this.element.appendChild(e5);
                 }
             }
 
