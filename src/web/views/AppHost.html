@@ -10,6 +10,7 @@
     rows="50, *">
 
     <header row="0:2" style="padding:5px">
+        <input type="search" value="^[$viewModel.search]" placeholder="Search..."/>
         <button event-click="{ () => $viewModel.refreshUrl() }">Refresh</button>
         <a href="[$viewModel.url]" target="_tab">Open in New Tab</a>
     </header>
@@ -22,6 +23,7 @@
             value-path="url"
             value="$[viewModel.url]">
             <div 
+                style-display="[$data.visible ? '' : 'none']"
                 template="itemTemplate">
                 <div text="{$data.name}" title="{$data.dir}"></div>
                 <div style="font-size: small" text="{$data.dir}"></div>

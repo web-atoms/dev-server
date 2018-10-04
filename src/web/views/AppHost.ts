@@ -52,111 +52,128 @@ export default  class AppHost extends AtomGridView {
         
         e2.appendChild(e3);
 
-        const e4 = document.createElement("button");
+        const e4 = document.createElement("input");
         
         e2.appendChild(e4);
         
-            this.runAfterInit( () =>
-            this.setLocalValue(e4, "eventClick", () => (this.viewModel).refreshUrl()) );
+        this.setPrimitiveValue(e4, "type", "search" );
         
-        const e5 = document.createTextNode("Refresh");
-        
-        e4.appendChild(e5);
 
-        const e6 = document.createTextNode("\r\n        ");
+            this.bind(e4, "value",  [["viewModel","search"]], ["change", "keyup", "keydown", "blur"]  );
+
+        this.setPrimitiveValue(e4, "placeholder", "Search..." );
+        
+        
+
+        const e5 = document.createTextNode("\r\n        ");
+        
+        e2.appendChild(e5);
+
+        const e6 = document.createElement("button");
         
         e2.appendChild(e6);
+        
+            this.runAfterInit( () =>
+            this.setLocalValue(e6, "eventClick", () => (this.viewModel).refreshUrl()) );
+        
+        const e7 = document.createTextNode("Refresh");
+        
+        e6.appendChild(e7);
 
-        const e7 = document.createElement("a");
+        const e8 = document.createTextNode("\r\n        ");
         
-        e2.appendChild(e7);
-        
-            this.bind(e7, "href",  [["viewModel","url"]], false , (v1) => (v1) );
+        e2.appendChild(e8);
 
-        this.setPrimitiveValue(e7, "target", "_tab" );
-        
-        
-        const e8 = document.createTextNode("Open in New Tab");
-        
-        e7.appendChild(e8);
-
-        const e9 = document.createTextNode("\r\n    ");
+        const e9 = document.createElement("a");
         
         e2.appendChild(e9);
+        
+            this.bind(e9, "href",  [["viewModel","url"]], false , (v1) => (v1) );
 
-        const e10 = document.createTextNode("\r\n\r\n    ");
+        this.setPrimitiveValue(e9, "target", "_tab" );
         
-        this.element.appendChild(e10);
+        
+        const e10 = document.createTextNode("Open in New Tab");
+        
+        e9.appendChild(e10);
 
-        const e11 = document.createElement("div");
+        const e11 = document.createTextNode("\r\n    ");
         
-        this.append(e11);
+        e2.appendChild(e11);
+
+        const e12 = document.createTextNode("\r\n\r\n    ");
         
-        this.setPrimitiveValue(e11, "style", "overflow: auto; width: 100%; height: 100%" );
+        this.element.appendChild(e12);
+
+        const e13 = document.createElement("div");
+        
+        this.append(e13);
+        
+        this.setPrimitiveValue(e13, "style", "overflow: auto; width: 100%; height: 100%" );
         
 
-        this.setPrimitiveValue(e11, "row", "1" );
+        this.setPrimitiveValue(e13, "row", "1" );
         
         
-        const e12 = document.createTextNode("\r\n        ");
+        const e14 = document.createTextNode("\r\n        ");
         
-        e11.appendChild(e12);
+        e13.appendChild(e14);
 
-            const e13 = new AtomListBox(this.app);
+            const e15 = new AtomListBox(this.app);
             
             
-        const e14 = document.createTextNode("\r\n            ");
+        const e16 = document.createTextNode("\r\n            ");
         
-        e13.element.appendChild(e14);
+        e15.element.appendChild(e16);
 
-        const e15 = document.createTextNode("\r\n        ");
+        const e17 = document.createTextNode("\r\n        ");
         
-        e13.element.appendChild(e15);
+        e15.element.appendChild(e17);
             
-            e13.bind(e13.element, "items",  [["viewModel","files"]], false , (v1) => (v1) );
+            e15.bind(e15.element, "items",  [["viewModel","files"]], false , (v1) => (v1) );
 
-        e13.setPrimitiveValue(e13.element, "valuePath", "url" );
+        e15.setPrimitiveValue(e15.element, "valuePath", "url" );
         
 
-            e13.bind(e13.element, "value",  [["viewModel","url"]], true  );
+            e15.bind(e15.element, "value",  [["viewModel","url"]], true  );
 
-        e13.itemTemplate = AppHost_itemTemplate_1_1Creator(this);
+        e15.itemTemplate = AppHost_itemTemplate_1_7Creator(this);
             
-            e11.appendChild(e13.element);
+            e13.appendChild(e15.element);
 
 
-        const e16 = document.createTextNode("\r\n    ");
+        const e18 = document.createTextNode("\r\n    ");
         
-        e11.appendChild(e16);
+        e13.appendChild(e18);
 
-        const e17 = document.createTextNode("\r\n\r\n    ");
-        
-        this.element.appendChild(e17);
-
-        const e18 = document.createElement("iframe");
-        
-        this.append(e18);
-        
-        this.setPrimitiveValue(e18, "row", "1" );
-        
-
-        this.setPrimitiveValue(e18, "column", "1" );
-        
-
-            this.bind(e18, "src",  [["viewModel","url"]], false , (v1) => (v1) );
-
-        this.setPrimitiveValue(e18, "style", "border: none; padding:5px; width:100%; height:100%;" );
-        
-        
-
-        const e19 = document.createTextNode("\r\n\r\n");
+        const e19 = document.createTextNode("\r\n\r\n    ");
         
         this.element.appendChild(e19);
+
+        const e20 = document.createElement("iframe");
+        
+        this.append(e20);
+        
+        this.setPrimitiveValue(e20, "row", "1" );
+        
+
+        this.setPrimitiveValue(e20, "column", "1" );
+        
+
+            this.bind(e20, "src",  [["viewModel","url"]], false , (v1) => (v1) );
+
+        this.setPrimitiveValue(e20, "style", "border: none; padding:5px; width:100%; height:100%;" );
+        
+        
+
+        const e21 = document.createTextNode("\r\n\r\n");
+        
+        this.element.appendChild(e21);
                 }
             }
 
-            function AppHost_itemTemplate_1_1Creator(__creator){
-                return  class AppHost_itemTemplate_1_1 extends AtomControl {
+            function AppHost_itemTemplate_1_7Creator(__creator){
+                return  class AppHost_itemTemplate_1_7 extends AtomControl {
 
                 
 
@@ -170,6 +187,7 @@ export default  class AppHost extends AtomGridView {
                     this.element = document.createElement("div");
                     
                     
+            this.bind(this.element, "styleDisplay",  [["data","visible"]], false , (v1) => (v1) ? '' : 'none' );
                     
         const e1 = document.createTextNode("\r\n                ");
         

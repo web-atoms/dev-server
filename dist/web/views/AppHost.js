@@ -46,68 +46,76 @@ var __extends = (this && this.__extends) || (function () {
             this.setPrimitiveValue(e2, "style", "padding:5px");
             var e3 = document.createTextNode("\r\n        ");
             e2.appendChild(e3);
-            var e4 = document.createElement("button");
+            var e4 = document.createElement("input");
             e2.appendChild(e4);
-            this.runAfterInit(function () {
-                return _this.setLocalValue(e4, "eventClick", function () { return (_this.viewModel).refreshUrl(); });
-            });
-            var e5 = document.createTextNode("Refresh");
-            e4.appendChild(e5);
-            var e6 = document.createTextNode("\r\n        ");
+            this.setPrimitiveValue(e4, "type", "search");
+            this.bind(e4, "value", [["viewModel", "search"]], ["change", "keyup", "keydown", "blur"]);
+            this.setPrimitiveValue(e4, "placeholder", "Search...");
+            var e5 = document.createTextNode("\r\n        ");
+            e2.appendChild(e5);
+            var e6 = document.createElement("button");
             e2.appendChild(e6);
-            var e7 = document.createElement("a");
-            e2.appendChild(e7);
-            this.bind(e7, "href", [["viewModel", "url"]], false, function (v1) { return (v1); });
-            this.setPrimitiveValue(e7, "target", "_tab");
-            var e8 = document.createTextNode("Open in New Tab");
-            e7.appendChild(e8);
-            var e9 = document.createTextNode("\r\n    ");
+            this.runAfterInit(function () {
+                return _this.setLocalValue(e6, "eventClick", function () { return (_this.viewModel).refreshUrl(); });
+            });
+            var e7 = document.createTextNode("Refresh");
+            e6.appendChild(e7);
+            var e8 = document.createTextNode("\r\n        ");
+            e2.appendChild(e8);
+            var e9 = document.createElement("a");
             e2.appendChild(e9);
-            var e10 = document.createTextNode("\r\n\r\n    ");
-            this.element.appendChild(e10);
-            var e11 = document.createElement("div");
-            this.append(e11);
-            this.setPrimitiveValue(e11, "style", "overflow: auto; width: 100%; height: 100%");
-            this.setPrimitiveValue(e11, "row", "1");
-            var e12 = document.createTextNode("\r\n        ");
-            e11.appendChild(e12);
-            var e13 = new AtomListBox_1.AtomListBox(this.app);
-            var e14 = document.createTextNode("\r\n            ");
-            e13.element.appendChild(e14);
-            var e15 = document.createTextNode("\r\n        ");
-            e13.element.appendChild(e15);
-            e13.bind(e13.element, "items", [["viewModel", "files"]], false, function (v1) { return (v1); });
-            e13.setPrimitiveValue(e13.element, "valuePath", "url");
-            e13.bind(e13.element, "value", [["viewModel", "url"]], true);
-            e13.itemTemplate = AppHost_itemTemplate_1_1Creator(this);
-            e11.appendChild(e13.element);
-            var e16 = document.createTextNode("\r\n    ");
-            e11.appendChild(e16);
-            var e17 = document.createTextNode("\r\n\r\n    ");
-            this.element.appendChild(e17);
-            var e18 = document.createElement("iframe");
-            this.append(e18);
-            this.setPrimitiveValue(e18, "row", "1");
-            this.setPrimitiveValue(e18, "column", "1");
-            this.bind(e18, "src", [["viewModel", "url"]], false, function (v1) { return (v1); });
-            this.setPrimitiveValue(e18, "style", "border: none; padding:5px; width:100%; height:100%;");
-            var e19 = document.createTextNode("\r\n\r\n");
+            this.bind(e9, "href", [["viewModel", "url"]], false, function (v1) { return (v1); });
+            this.setPrimitiveValue(e9, "target", "_tab");
+            var e10 = document.createTextNode("Open in New Tab");
+            e9.appendChild(e10);
+            var e11 = document.createTextNode("\r\n    ");
+            e2.appendChild(e11);
+            var e12 = document.createTextNode("\r\n\r\n    ");
+            this.element.appendChild(e12);
+            var e13 = document.createElement("div");
+            this.append(e13);
+            this.setPrimitiveValue(e13, "style", "overflow: auto; width: 100%; height: 100%");
+            this.setPrimitiveValue(e13, "row", "1");
+            var e14 = document.createTextNode("\r\n        ");
+            e13.appendChild(e14);
+            var e15 = new AtomListBox_1.AtomListBox(this.app);
+            var e16 = document.createTextNode("\r\n            ");
+            e15.element.appendChild(e16);
+            var e17 = document.createTextNode("\r\n        ");
+            e15.element.appendChild(e17);
+            e15.bind(e15.element, "items", [["viewModel", "files"]], false, function (v1) { return (v1); });
+            e15.setPrimitiveValue(e15.element, "valuePath", "url");
+            e15.bind(e15.element, "value", [["viewModel", "url"]], true);
+            e15.itemTemplate = AppHost_itemTemplate_1_7Creator(this);
+            e13.appendChild(e15.element);
+            var e18 = document.createTextNode("\r\n    ");
+            e13.appendChild(e18);
+            var e19 = document.createTextNode("\r\n\r\n    ");
             this.element.appendChild(e19);
+            var e20 = document.createElement("iframe");
+            this.append(e20);
+            this.setPrimitiveValue(e20, "row", "1");
+            this.setPrimitiveValue(e20, "column", "1");
+            this.bind(e20, "src", [["viewModel", "url"]], false, function (v1) { return (v1); });
+            this.setPrimitiveValue(e20, "style", "border: none; padding:5px; width:100%; height:100%;");
+            var e21 = document.createTextNode("\r\n\r\n");
+            this.element.appendChild(e21);
         };
         return AppHost;
     }(AtomGridView_1.AtomGridView));
     exports.default = AppHost;
-    function AppHost_itemTemplate_1_1Creator(__creator) {
+    function AppHost_itemTemplate_1_7Creator(__creator) {
         return /** @class */ (function (_super) {
-            __extends(AppHost_itemTemplate_1_1, _super);
-            function AppHost_itemTemplate_1_1() {
+            __extends(AppHost_itemTemplate_1_7, _super);
+            function AppHost_itemTemplate_1_7() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
-            AppHost_itemTemplate_1_1.prototype.create = function () {
+            AppHost_itemTemplate_1_7.prototype.create = function () {
                 var _this = this;
                 _super.prototype.create.call(this);
                 ;
                 this.element = document.createElement("div");
+                this.bind(this.element, "styleDisplay", [["data", "visible"]], false, function (v1) { return (v1) ? '' : 'none'; });
                 var e1 = document.createTextNode("\r\n                ");
                 this.element.appendChild(e1);
                 var e2 = document.createElement("div");
@@ -129,7 +137,7 @@ var __extends = (this && this.__extends) || (function () {
                 var e5 = document.createTextNode("\r\n            ");
                 this.element.appendChild(e5);
             };
-            return AppHost_itemTemplate_1_1;
+            return AppHost_itemTemplate_1_7;
         }(AtomControl_1.AtomControl));
     }
 });

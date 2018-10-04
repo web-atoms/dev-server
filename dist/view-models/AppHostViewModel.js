@@ -92,6 +92,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                 this.refreshUrl();
             }
         };
+        AppHostViewModel.prototype.onSearch = function () {
+            var s = this.search;
+            if (s) {
+                s = s.toLowerCase();
+            }
+            for (var _i = 0, _a = this.files; _i < _a.length; _i++) {
+                var iterator = _a[_i];
+                iterator.visible = s ? (iterator.name.toLowerCase().indexOf(s) !== -1) : true;
+            }
+        };
         AppHostViewModel.prototype.init = function () {
             return __awaiter(this, void 0, void 0, function () {
                 var urls, _i, urls_1, iterator;
@@ -103,6 +113,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                             for (_i = 0, urls_1 = urls; _i < urls_1.length; _i++) {
                                 iterator = urls_1[_i];
                                 iterator.url = "/uiv/$CURRENT$/" + replaceSrc(iterator.dir) + "/" + iterator.name;
+                                iterator.visible = true;
                             }
                             this.files = urls;
                             return [2 /*return*/];
@@ -117,6 +128,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
             AtomViewModel_1.BindableUrlParameter("url"),
             __metadata("design:type", String)
         ], AppHostViewModel.prototype, "url", void 0);
+        __decorate([
+            AtomViewModel_1.Watch,
+            __metadata("design:type", Function),
+            __metadata("design:paramtypes", []),
+            __metadata("design:returntype", void 0)
+        ], AppHostViewModel.prototype, "onSearch", null);
         AppHostViewModel = __decorate([
             __param(0, Inject_1.Inject),
             __param(1, Inject_1.Inject),

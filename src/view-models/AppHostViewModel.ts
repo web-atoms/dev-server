@@ -25,6 +25,8 @@ export class AppHostViewModel extends AtomViewModel {
     @BindableUrlParameter("url")
     public url: string;
 
+    public search: string;
+
     constructor(
         @Inject app: App,
         @Inject public readonly navigationService: NavigationService,
@@ -39,10 +41,22 @@ export class AppHostViewModel extends AtomViewModel {
         }
     }
 
+    @Watch
+    public onSearch(): void {
+        let s = this.search;
+        if (s) {
+            s = s.toLowerCase();
+        }
+        for (const iterator of this.files) {
+            iterator.visible = s ? ( iterator.name.toLowerCase().indexOf(s) !== -1 ) : true;
+        }
+    }
+
     public async init(): Promise<any> {
         const urls = (await this.fileService.getModules()).files;
         for (const iterator of urls) {
             iterator.url = `/uiv/$CURRENT$/${replaceSrc(iterator.dir)}/${iterator.name}`;
+            iterator.visible = true;
         }
         this.files = urls;
     }

@@ -10,8 +10,10 @@ export declare class AppHostViewModel extends AtomViewModel {
     files: IFilePath[];
     file: IFilePath;
     url: string;
+    search: string;
     constructor(app: App, navigationService: NavigationService, fileService: FileService);
     onMessage(m: IWSMessage): void;
+    onSearch(): void;
     init(): Promise<any>;
     refreshUrl(): void;
 }
