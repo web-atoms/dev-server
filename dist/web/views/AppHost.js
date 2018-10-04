@@ -33,6 +33,7 @@ var __extends = (this && this.__extends) || (function () {
             _super.prototype.create.call(this);
             var __creator = this;
             this.defaultControlStyle = AppHostStyle_1.default;
+            this.setPrimitiveValue(this.element, "styleClass", this.controlStyle.root);
             this.viewModel = this.resolve(AppHostViewModel_1.AppHostViewModel);
             this.setPrimitiveValue(this.element, "columns", "200, *");
             this.setPrimitiveValue(this.element, "rows", "*");
@@ -46,7 +47,7 @@ var __extends = (this && this.__extends) || (function () {
             e2.bind(e2.element, "items", [["viewModel", "files"]], false, function (v1) { return (v1); });
             e2.setPrimitiveValue(e2.element, "valuePath", "url");
             e2.bind(e2.element, "value", [["viewModel", "url"]], true);
-            e2.itemTemplate = AppHost_itemTemplate_1_11Creator(this);
+            e2.itemTemplate = AppHost_itemTemplate_1_12Creator(this);
             this.append(e2);
             var e5 = document.createTextNode("\r\n\r\n    ");
             this.element.appendChild(e5);
@@ -61,13 +62,13 @@ var __extends = (this && this.__extends) || (function () {
         return AppHost;
     }(AtomGridView_1.AtomGridView));
     exports.default = AppHost;
-    function AppHost_itemTemplate_1_11Creator(__creator) {
+    function AppHost_itemTemplate_1_12Creator(__creator) {
         return /** @class */ (function (_super) {
-            __extends(AppHost_itemTemplate_1_11, _super);
-            function AppHost_itemTemplate_1_11() {
+            __extends(AppHost_itemTemplate_1_12, _super);
+            function AppHost_itemTemplate_1_12() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
-            AppHost_itemTemplate_1_11.prototype.create = function () {
+            AppHost_itemTemplate_1_12.prototype.create = function () {
                 var _this = this;
                 _super.prototype.create.call(this);
                 ;
@@ -76,7 +77,7 @@ var __extends = (this && this.__extends) || (function () {
                     return _this.setLocalValue(_this.element, "text", (_this.data.dir) + "/" + (_this.data.name));
                 });
             };
-            return AppHost_itemTemplate_1_11;
+            return AppHost_itemTemplate_1_12;
         }(AtomControl_1.AtomControl));
     }
 });
