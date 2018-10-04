@@ -1,7 +1,9 @@
 <script>
     import { AppHostViewModel } from "~/src/view-models/AppHostViewModel";
+    import AppHostStyle from "~/src/web/styles/AppHostStyle";
 </script>
 <AtomGridView
+    default-style="{ AppHostStyle }"
     view-model="{ this.resolve(AppHostViewModel) }"
     columns="200, *"
     rows="*">

@@ -14,7 +14,7 @@ var __extends = (this && this.__extends) || (function () {
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "web-atoms-core/dist/web/controls/AtomListBox", "web-atoms-core/dist/web/controls/AtomGridView", "web-atoms-core/dist/web/controls/AtomControl", "../../view-models/AppHostViewModel"], factory);
+        define(["require", "exports", "web-atoms-core/dist/web/controls/AtomListBox", "web-atoms-core/dist/web/controls/AtomGridView", "web-atoms-core/dist/web/controls/AtomControl", "../../view-models/AppHostViewModel", "../styles/AppHostStyle"], factory);
     }
 })(function (require, exports) {
     "use strict";
@@ -23,6 +23,7 @@ var __extends = (this && this.__extends) || (function () {
     var AtomGridView_1 = require("web-atoms-core/dist/web/controls/AtomGridView");
     var AtomControl_1 = require("web-atoms-core/dist/web/controls/AtomControl");
     var AppHostViewModel_1 = require("../../view-models/AppHostViewModel");
+    var AppHostStyle_1 = require("../styles/AppHostStyle");
     var AppHost = /** @class */ (function (_super) {
         __extends(AppHost, _super);
         function AppHost() {
@@ -31,6 +32,7 @@ var __extends = (this && this.__extends) || (function () {
         AppHost.prototype.create = function () {
             _super.prototype.create.call(this);
             var __creator = this;
+            this.defaultControlStyle = AppHostStyle_1.default;
             this.viewModel = this.resolve(AppHostViewModel_1.AppHostViewModel);
             this.setPrimitiveValue(this.element, "columns", "200, *");
             this.setPrimitiveValue(this.element, "rows", "*");
@@ -44,7 +46,7 @@ var __extends = (this && this.__extends) || (function () {
             e2.bind(e2.element, "items", [["viewModel", "files"]], false, function (v1) { return (v1); });
             e2.setPrimitiveValue(e2.element, "valuePath", "url");
             e2.bind(e2.element, "value", [["viewModel", "url"]], true);
-            e2.itemTemplate = AppHost_itemTemplate_1_9Creator(this);
+            e2.itemTemplate = AppHost_itemTemplate_1_11Creator(this);
             this.append(e2);
             var e5 = document.createTextNode("\r\n\r\n    ");
             this.element.appendChild(e5);
@@ -59,13 +61,13 @@ var __extends = (this && this.__extends) || (function () {
         return AppHost;
     }(AtomGridView_1.AtomGridView));
     exports.default = AppHost;
-    function AppHost_itemTemplate_1_9Creator(__creator) {
+    function AppHost_itemTemplate_1_11Creator(__creator) {
         return /** @class */ (function (_super) {
-            __extends(AppHost_itemTemplate_1_9, _super);
-            function AppHost_itemTemplate_1_9() {
+            __extends(AppHost_itemTemplate_1_11, _super);
+            function AppHost_itemTemplate_1_11() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
-            AppHost_itemTemplate_1_9.prototype.create = function () {
+            AppHost_itemTemplate_1_11.prototype.create = function () {
                 var _this = this;
                 _super.prototype.create.call(this);
                 ;
@@ -74,7 +76,7 @@ var __extends = (this && this.__extends) || (function () {
                     return _this.setLocalValue(_this.element, "text", (_this.data.dir) + "/" + (_this.data.name));
                 });
             };
-            return AppHost_itemTemplate_1_9;
+            return AppHost_itemTemplate_1_11;
         }(AtomControl_1.AtomControl));
     }
 });

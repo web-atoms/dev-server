@@ -6,6 +6,7 @@ import {AtomGridView} from "web-atoms-core/dist/web/controls/AtomGridView";
 import {AtomControl} from "web-atoms-core/dist/web/controls/AtomControl";
 
     import { AppHostViewModel } from "../../view-models/AppHostViewModel";
+    import AppHostStyle from "../styles/AppHostStyle";
 
 export default  class AppHost extends AtomGridView {
 
@@ -21,6 +22,9 @@ export default  class AppHost extends AtomGridView {
                     
                     
                     
+            this.defaultControlStyle =  AppHostStyle ;
+            
+
                 this.viewModel =  this.resolve(AppHostViewModel) ;
 
         this.setPrimitiveValue(this.element, "columns", "200, *" );
@@ -51,7 +55,7 @@ export default  class AppHost extends AtomGridView {
 
             e2.bind(e2.element, "value",  [["viewModel","url"]], true  );
 
-        e2.itemTemplate = AppHost_itemTemplate_1_9Creator(this);
+        e2.itemTemplate = AppHost_itemTemplate_1_11Creator(this);
             
             this.append(e2);
 
@@ -79,8 +83,8 @@ export default  class AppHost extends AtomGridView {
                 }
             }
 
-            function AppHost_itemTemplate_1_9Creator(__creator){
-                return  class AppHost_itemTemplate_1_9 extends AtomControl {
+            function AppHost_itemTemplate_1_11Creator(__creator){
+                return  class AppHost_itemTemplate_1_11 extends AtomControl {
 
                 
 
