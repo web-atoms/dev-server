@@ -10,6 +10,7 @@ router.get("/flat-modules", (req: Request, res: Response) => {
 
     const files: ParsedPath [] = [];
     populate("./", files);
+    res.setHeader("cache-control", "no-cache");
 
     return res.send({ files });
 

@@ -66,68 +66,85 @@ export default  class AppHost extends AtomGridView {
         
         e4.appendChild(e5);
 
-        const e6 = document.createTextNode("\r\n    ");
+        const e6 = document.createTextNode("\r\n        ");
         
         e2.appendChild(e6);
 
-        const e7 = document.createTextNode("\r\n\r\n    ");
+        const e7 = document.createElement("a");
         
-        this.element.appendChild(e7);
+        e2.appendChild(e7);
+        
+            this.bind(e7, "href",  [["viewModel","url"]], false , (v1) => (v1) );
 
-            const e8 = new AtomListBox(this.app);
+        this.setPrimitiveValue(e7, "target", "_tab" );
+        
+        
+        const e8 = document.createTextNode("Open in New Tab");
+        
+        e7.appendChild(e8);
+
+        const e9 = document.createTextNode("\r\n    ");
+        
+        e2.appendChild(e9);
+
+        const e10 = document.createTextNode("\r\n\r\n    ");
+        
+        this.element.appendChild(e10);
+
+            const e11 = new AtomListBox(this.app);
             
             
-        const e9 = document.createTextNode("\r\n        ");
+        const e12 = document.createTextNode("\r\n        ");
         
-        e8.element.appendChild(e9);
+        e11.element.appendChild(e12);
 
-        const e10 = document.createTextNode("\r\n    ");
+        const e13 = document.createTextNode("\r\n    ");
         
-        e8.element.appendChild(e10);
+        e11.element.appendChild(e13);
             
-        e8.setPrimitiveValue(e8.element, "row", "1" );
+        e11.setPrimitiveValue(e11.element, "row", "1" );
         
 
-            e8.bind(e8.element, "items",  [["viewModel","files"]], false , (v1) => (v1) );
+            e11.bind(e11.element, "items",  [["viewModel","files"]], false , (v1) => (v1) );
 
-        e8.setPrimitiveValue(e8.element, "valuePath", "url" );
+        e11.setPrimitiveValue(e11.element, "valuePath", "url" );
         
 
-            e8.bind(e8.element, "value",  [["viewModel","url"]], true  );
+            e11.bind(e11.element, "value",  [["viewModel","url"]], true  );
 
-        e8.itemTemplate = AppHost_itemTemplate_1_43Creator(this);
+        e11.itemTemplate = AppHost_itemTemplate_1_49Creator(this);
             
-            this.append(e8);
+            this.append(e11);
 
 
-        const e11 = document.createTextNode("\r\n\r\n    ");
+        const e14 = document.createTextNode("\r\n\r\n    ");
         
-        this.element.appendChild(e11);
+        this.element.appendChild(e14);
 
-        const e12 = document.createElement("iframe");
+        const e15 = document.createElement("iframe");
         
-        this.append(e12);
+        this.append(e15);
         
-        this.setPrimitiveValue(e12, "row", "1" );
-        
-
-        this.setPrimitiveValue(e12, "column", "1" );
+        this.setPrimitiveValue(e15, "row", "1" );
         
 
-            this.bind(e12, "src",  [["viewModel","url"]], false , (v1) => (v1) );
-
-        this.setPrimitiveValue(e12, "style", "border: none; padding:5px; width:100%; height:100%;" );
-        
+        this.setPrimitiveValue(e15, "column", "1" );
         
 
-        const e13 = document.createTextNode("\r\n\r\n");
+            this.bind(e15, "src",  [["viewModel","url"]], false , (v1) => (v1) );
+
+        this.setPrimitiveValue(e15, "style", "border: none; padding:5px; width:100%; height:100%;" );
         
-        this.element.appendChild(e13);
+        
+
+        const e16 = document.createTextNode("\r\n\r\n");
+        
+        this.element.appendChild(e16);
                 }
             }
 
-            function AppHost_itemTemplate_1_43Creator(__creator){
-                return  class AppHost_itemTemplate_1_43 extends AtomControl {
+            function AppHost_itemTemplate_1_49Creator(__creator){
+                return  class AppHost_itemTemplate_1_49 extends AtomControl {
 
                 
 

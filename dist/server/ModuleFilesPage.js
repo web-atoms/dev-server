@@ -18,6 +18,7 @@
     router.get("/flat-modules", function (req, res) {
         var files = [];
         populate("./", files);
+        res.setHeader("cache-control", "no-cache");
         return res.send({ files: files });
     });
     function populate(dir, files) {
