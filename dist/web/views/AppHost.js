@@ -67,7 +67,7 @@ var __extends = (this && this.__extends) || (function () {
             this.element.appendChild(e10);
             var e11 = document.createElement("div");
             this.append(e11);
-            this.setPrimitiveValue(e11, "style", "overflow: auto");
+            this.setPrimitiveValue(e11, "style", "overflow: auto; width: 100%; height: 100%");
             this.setPrimitiveValue(e11, "row", "1");
             var e12 = document.createTextNode("\r\n        ");
             e11.appendChild(e12);
@@ -79,7 +79,7 @@ var __extends = (this && this.__extends) || (function () {
             e13.bind(e13.element, "items", [["viewModel", "files"]], false, function (v1) { return (v1); });
             e13.setPrimitiveValue(e13.element, "valuePath", "url");
             e13.bind(e13.element, "value", [["viewModel", "url"]], true);
-            e13.itemTemplate = AppHost_itemTemplate_1_53Creator(this);
+            e13.itemTemplate = AppHost_itemTemplate_1_54Creator(this);
             e11.appendChild(e13.element);
             var e16 = document.createTextNode("\r\n    ");
             e11.appendChild(e16);
@@ -97,13 +97,13 @@ var __extends = (this && this.__extends) || (function () {
         return AppHost;
     }(AtomGridView_1.AtomGridView));
     exports.default = AppHost;
-    function AppHost_itemTemplate_1_53Creator(__creator) {
+    function AppHost_itemTemplate_1_54Creator(__creator) {
         return /** @class */ (function (_super) {
-            __extends(AppHost_itemTemplate_1_53, _super);
-            function AppHost_itemTemplate_1_53() {
+            __extends(AppHost_itemTemplate_1_54, _super);
+            function AppHost_itemTemplate_1_54() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
-            AppHost_itemTemplate_1_53.prototype.create = function () {
+            AppHost_itemTemplate_1_54.prototype.create = function () {
                 var _this = this;
                 _super.prototype.create.call(this);
                 ;
@@ -129,7 +129,7 @@ var __extends = (this && this.__extends) || (function () {
                 var e5 = document.createTextNode("\r\n            ");
                 this.element.appendChild(e5);
             };
-            return AppHost_itemTemplate_1_53;
+            return AppHost_itemTemplate_1_54;
         }(AtomControl_1.AtomControl));
     }
 });

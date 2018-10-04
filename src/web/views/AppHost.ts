@@ -95,7 +95,7 @@ export default  class AppHost extends AtomGridView {
         
         this.append(e11);
         
-        this.setPrimitiveValue(e11, "style", "overflow: auto" );
+        this.setPrimitiveValue(e11, "style", "overflow: auto; width: 100%; height: 100%" );
         
 
         this.setPrimitiveValue(e11, "row", "1" );
@@ -123,7 +123,7 @@ export default  class AppHost extends AtomGridView {
 
             e13.bind(e13.element, "value",  [["viewModel","url"]], true  );
 
-        e13.itemTemplate = AppHost_itemTemplate_1_53Creator(this);
+        e13.itemTemplate = AppHost_itemTemplate_1_54Creator(this);
             
             e11.appendChild(e13.element);
 
@@ -158,8 +158,8 @@ export default  class AppHost extends AtomGridView {
                 }
             }
 
-            function AppHost_itemTemplate_1_53Creator(__creator){
-                return  class AppHost_itemTemplate_1_53 extends AtomControl {
+            function AppHost_itemTemplate_1_54Creator(__creator){
+                return  class AppHost_itemTemplate_1_54 extends AtomControl {
 
                 
 
