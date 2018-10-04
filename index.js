@@ -1,4 +1,4 @@
-var app = require("./bin/WebServer");
+var app = require("./dist/server/WebServer");
 var process = require("process");
 
 var port = process.env.PORT || 8080;

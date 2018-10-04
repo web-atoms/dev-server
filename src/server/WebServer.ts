@@ -1,6 +1,8 @@
 import * as express from "express";
 
 import * as e from "ecstatic";
+import { ModuleFilesPage } from "./ModuleFilesPage";
+import { RootPage } from "./RootPage";
 
 class WebServer {
 
@@ -15,13 +17,9 @@ class WebServer {
 
         const router = express.Router();
 
-        router.get("/", (req, res) => {
-            res.json({
-                message: "Hello World!"
-            });
-        });
+        this.express.use(RootPage);
 
-        this.express.use("/", router);
+        this.express.use(ModuleFilesPage);
 
         this.express.use(e({
             root: "./",

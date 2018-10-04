@@ -1,0 +1,17 @@
+<script>
+    import { AppHostViewModel } from "~/src/view-models/AppHostViewModel";
+</script>
+<AtomGridView
+    view-model="{ this.resolve(AppHostViewModel) }"
+    columns="200, *"
+    rows="*">
+
+    <AtomListBox 
+        items="[$viewModel.files]"
+        selected-item="$[viewModel.file]">
+        <div text="{`${$data.dir}/${$data.name}`}"></div>
+    </AtomListBox>
+
+    <AtomFrame column="1" url="[$viewModel.url]"></AtomFrame>
+
+</AtomGridView>
