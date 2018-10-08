@@ -23,12 +23,13 @@ var __extends = (this && this.__extends) || (function () {
     var AppHostStyle = /** @class */ (function (_super) {
         __extends(AppHostStyle, _super);
         function AppHostStyle() {
-            var _this = _super !== null && _super.apply(this, arguments) || this;
-            _this.root = _this.createClass("root", function () { return ({
-                fontFamily: "arial"
-            }); });
-            return _this;
+            return _super !== null && _super.apply(this, arguments) || this;
         }
+        AppHostStyle.prototype.root = function () {
+            return {
+                fontFamily: "arial"
+            };
+        };
         return AppHostStyle;
     }(AtomStyle_1.AtomStyle));
     exports.default = AppHostStyle;
