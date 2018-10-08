@@ -25,11 +25,15 @@ var __extends = (this && this.__extends) || (function () {
         function AppHostStyle() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
-        AppHostStyle.prototype.root = function () {
-            return {
-                fontFamily: "arial"
-            };
-        };
+        Object.defineProperty(AppHostStyle.prototype, "root", {
+            get: function () {
+                return {
+                    fontFamily: "arial"
+                };
+            },
+            enumerable: true,
+            configurable: true
+        });
         return AppHostStyle;
     }(AtomStyle_1.AtomStyle));
     exports.default = AppHostStyle;

@@ -3,7 +3,7 @@ import { IStyleDeclaration } from "web-atoms-core/dist/web/styles/IStyleDeclarat
 
 export default class AppHostStyle extends AtomStyle {
 
-    public root(): IStyleDeclaration {
+    public get root(): IStyleDeclaration {
         return {
             fontFamily: "arial"
         };
