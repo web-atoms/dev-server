@@ -1,0 +1,30 @@
+<script>
+    import DomTreeViewModel from "~src/view-models/inspector/DomTreeViewModel";
+    import DomTreeStyle from "~src/web/styles/DomTreeStyle";
+    import RightArrowDataUrl from "~src/web/images/RightArrowDataUrl";
+    import DownArrowDataUrl from "~src/web/images/DownArrowDataUrl";
+</script>
+<AtomItemsControl
+    view-model="{ this.resolve(DomTreeViewModel) }"
+    default-style="{ DomTreeStyle }"
+    style-class="{ this.controlStyle.root }"
+    items="[$viewModel.body.children]">
+
+    <div template="itemTemplate"
+        class="[$data.className]">
+        <img 
+            src="[ $data.expanded ? DownArrowDataUrl : RightArrowDataUrl ]" 
+            event-click="{ () => $viewModel.toggleChildren($data) }"/>
+        <span
+            event-click="{ () => $viewModel.selectNode($data) }"
+            class="[ $viewModel.node == $data ? 'selected' : 'unselected' ]"
+            text="{ $data.label }"></span>
+        <AtomItemsControl
+            items="[ $data.expanded ? $data.children : [] ]"
+            style-class="{ __creator.controlStyle.root }"
+            style-display="[ $data.expanded ? '' : 'none' ]"
+            item-template="{ __creator.itemTemplate }"
+            ></AtomItemsControl>
+    </div>
+
+</AtomItemsControl>

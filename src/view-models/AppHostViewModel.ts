@@ -1,4 +1,5 @@
 import { App } from "web-atoms-core/dist/App";
+import { Atom } from "web-atoms-core/dist/Atom";
 import { Inject } from "web-atoms-core/dist/di/Inject";
 import { NavigationService } from "web-atoms-core/dist/services/NavigationService";
 import { AtomViewModel, BindableUrlParameter, Watch } from "web-atoms-core/dist/view-model/AtomViewModel";
@@ -63,5 +64,9 @@ export class AppHostViewModel extends AtomViewModel {
 
     public refreshUrl(): void {
         this.refresh("url");
+    }
+
+    public inspect(url: string): string {
+        return Atom.url("/_inspect", { url });
     }
 }

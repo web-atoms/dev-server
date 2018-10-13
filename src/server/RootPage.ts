@@ -46,6 +46,12 @@ function prepareHtml(req: Request, res: Response, viewPath: string, autoRefresh:
         <meta name="viewport"   content="width=device-width"/>
         <title>Web Atoms - </title>
         <script src="/_files/node_modules/web-atoms-amd-loader/umd.js"></script>
+        <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+        </style>
         ${refresh}
     </head>
     <body>
@@ -74,6 +80,12 @@ router.get(/^\/uiv\//, (req, res) => {
 router.get("/", (req: Request, res: Response) => {
 
     const html = prepareHtml(req, res, "web-atoms-dev-server/dist/web/views/AppHost", false);
+    res.setHeader("cache-control", "no-cache");
+    return res.send(html);
+});
+
+router.get("/_inspect", (req, res) => {
+    const html = prepareHtml(req, res, "web-atoms-dev-server/dist/web/views/inspector/Inspector", false);
     res.setHeader("cache-control", "no-cache");
     return res.send(html);
 });

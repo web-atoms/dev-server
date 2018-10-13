@@ -88,12 +88,12 @@ export default  class AppHost extends AtomGridView {
         
         e2.appendChild(e9);
         
-            this.bind(e9, "href",  [["viewModel","url"]], false , (v1) => (v1) );
+            this.bind(e9, "href",  [["viewModel"],["viewModel","url"]], false , (v1,v2) => (v1).inspect((v2)) );
 
         this.setPrimitiveValue(e9, "target", "_tab" );
         
         
-        const e10 = document.createTextNode("Open in New Tab");
+        const e10 = document.createTextNode("Inspect");
         
         e9.appendChild(e10);
 
@@ -137,7 +137,7 @@ export default  class AppHost extends AtomGridView {
 
             e15.bind(e15.element, "value",  [["viewModel","url"]], true  );
 
-        e15.itemTemplate = AppHost_itemTemplate_1_7Creator(this);
+        e15.itemTemplate = AppHost_itemTemplate_1_14Creator(this);
             
             e13.appendChild(e15.element);
 
@@ -172,8 +172,8 @@ export default  class AppHost extends AtomGridView {
                 }
             }
 
-            function AppHost_itemTemplate_1_7Creator(__creator){
-                return  class AppHost_itemTemplate_1_7 extends AtomControl {
+            function AppHost_itemTemplate_1_14Creator(__creator){
+                return  class AppHost_itemTemplate_1_14 extends AtomControl {
 
                 
 
@@ -198,10 +198,10 @@ export default  class AppHost extends AtomGridView {
         this.append(e2);
         
             this.runAfterInit( () =>
-            this.setLocalValue(e2, "text", (this.data.name)) );
+            this.setLocalValue(e2, "text", ((this.data) ? this.data.name : undefined)) );
 
             this.runAfterInit( () =>
-            this.setLocalValue(e2, "title", (this.data.dir)) );
+            this.setLocalValue(e2, "title", ((this.data) ? this.data.dir : undefined)) );
         
 
         const e3 = document.createTextNode("\r\n                ");
@@ -216,7 +216,7 @@ export default  class AppHost extends AtomGridView {
         
 
             this.runAfterInit( () =>
-            this.setLocalValue(e4, "text", (this.data.dir)) );
+            this.setLocalValue(e4, "text", ((this.data) ? this.data.dir : undefined)) );
         
 
         const e5 = document.createTextNode("\r\n            ");

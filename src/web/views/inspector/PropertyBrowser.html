@@ -1,0 +1,16 @@
+<script>
+    import PropertyBrowserViewModel from "~src/view-models/inspector/PropertyBrowserViewModel";
+</script>
+
+<AtomItemsControl
+    view-model="{ this.resolve(PropertyBrowserViewModel) }"
+    items="[$viewModel.properties]">
+
+    <div template="itemTemplate">
+        <span text="{$data.index}"></span>
+
+        <span text="[ $data.isObject ? '' : $data.value]"></span>
+
+    </div>
+
+</AtomItemsControl>
