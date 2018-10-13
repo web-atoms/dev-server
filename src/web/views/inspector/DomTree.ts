@@ -1,7 +1,7 @@
 // tslint:disable
 import {BindableProperty} from "web-atoms-core/dist/core/BindableProperty";
-import {AtomControl} from "web-atoms-core/dist/web/controls/AtomControl";
 import {AtomItemsControl} from "web-atoms-core/dist/web/controls/AtomItemsControl";
+import {AtomControl} from "web-atoms-core/dist/web/controls/AtomControl";
 
     import DomTreeViewModel from "../../../view-models/inspector/DomTreeViewModel";
     import DomTreeStyle from "../../styles/DomTreeStyle";
@@ -31,7 +31,7 @@ export default  class DomTree extends AtomItemsControl {
 
             this.bind(this.element, "items",  [["viewModel","body","children"]], false , (v1) => (v1) );
 
-        this.itemTemplate = DomTree_itemTemplate_1_30Creator(this);
+        this.itemTemplate = DomTree_itemTemplate_1_2Creator(this);
             
                     
         const e1 = document.createTextNode("\r\n\r\n    ");
@@ -44,8 +44,8 @@ export default  class DomTree extends AtomItemsControl {
                 }
             }
 
-            function DomTree_itemTemplate_1_30Creator(__creator){
-                return  class DomTree_itemTemplate_1_30 extends AtomControl {
+            function DomTree_itemTemplate_1_2Creator(__creator){
+                return  class DomTree_itemTemplate_1_2 extends AtomControl {
 
                 
 

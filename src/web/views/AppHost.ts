@@ -137,7 +137,7 @@ export default  class AppHost extends AtomGridView {
 
             e15.bind(e15.element, "value",  [["viewModel","url"]], true  );
 
-        e15.itemTemplate = AppHost_itemTemplate_1_14Creator(this);
+        e15.itemTemplate = AppHost_itemTemplate_1_1Creator(this);
             
             e13.appendChild(e15.element);
 
@@ -172,8 +172,8 @@ export default  class AppHost extends AtomGridView {
                 }
             }
 
-            function AppHost_itemTemplate_1_14Creator(__creator){
-                return  class AppHost_itemTemplate_1_14 extends AtomControl {
+            function AppHost_itemTemplate_1_1Creator(__creator){
+                return  class AppHost_itemTemplate_1_1 extends AtomControl {
 
                 
 

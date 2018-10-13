@@ -23,7 +23,7 @@ export default  class PropertyBrowser extends AtomItemsControl {
 
             this.bind(this.element, "items",  [["viewModel","properties"]], false , (v1) => (v1) );
 
-        this.itemTemplate = PropertyBrowser_itemTemplate_1_31Creator(this);
+        this.itemTemplate = PropertyBrowser_itemTemplate_1_3Creator(this);
             
                     
         const e1 = document.createTextNode("\r\n\r\n    ");
@@ -36,8 +36,8 @@ export default  class PropertyBrowser extends AtomItemsControl {
                 }
             }
 
-            function PropertyBrowser_itemTemplate_1_31Creator(__creator){
-                return  class PropertyBrowser_itemTemplate_1_31 extends AtomControl {
+            function PropertyBrowser_itemTemplate_1_3Creator(__creator){
+                return  class PropertyBrowser_itemTemplate_1_3 extends AtomControl {
 
                 
 
