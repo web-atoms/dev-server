@@ -1,3 +1,4 @@
+import { PropertyMap } from "web-atoms-core/dist/core/PropertyMap";
 export default class PropertyModel {
 
     public static isArray(t: any): boolean {
@@ -16,18 +17,28 @@ export default class PropertyModel {
         }
 
         const list: PropertyModel[] = [];
-        for (const key in t) {
-            if (t.hasOwnProperty(key)) {
-                const element = t[key];
-                list.push(new PropertyModel(
-                    t,
-                    key,
-                    typeof element === "object",
-                    PropertyModel.isArray(element)));
+        const map = PropertyMap.from(t);
+        const names = map.names.sort( (a, b) => a.localeCompare(b));
+        for (const iterator of names) {
+            if (/^__/i.test(iterator)) {
+                continue;
             }
+            let element: any = null;
+            try {
+                element = t[iterator];
+            } catch (e) {
+                element = e.message;
+            }
+            list.push(new PropertyModel(
+                t,
+                iterator,
+                typeof element === "object",
+                PropertyModel.isArray(element)));
         }
         return list;
     }
+
+    public expanded: boolean = false;
 
     constructor(
         public target: any,

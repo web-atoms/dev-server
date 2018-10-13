@@ -32,7 +32,7 @@ export default  class Inspector extends AtomGridView {
         this.setPrimitiveValue(this.element, ",", "" );
         
 
-        this.setPrimitiveValue(this.element, "columns", "250,5,*,5,250" );
+        this.setPrimitiveValue(this.element, "columns", "250,5,*,5,350" );
         
 
                 this.viewModel =  this.resolve(InspectorViewModel, 'owner') ;
@@ -45,6 +45,8 @@ export default  class Inspector extends AtomGridView {
             
             
             
+        e2.setPrimitiveValue(e2.element, "style", "overflow: auto; width: 100%; height: 100%" );
+        
             this.append(e2);
 
 
@@ -101,6 +103,9 @@ export default  class Inspector extends AtomGridView {
             
             
         e10.setPrimitiveValue(e10.element, "column", "4" );
+        
+
+        e10.setPrimitiveValue(e10.element, "style", "overflow: auto; width: 100%; height: 100%" );
         
             this.append(e10);
 

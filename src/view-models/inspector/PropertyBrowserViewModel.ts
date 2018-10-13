@@ -8,9 +8,18 @@ export default class PropertyBrowserViewModel extends AtomViewModel {
     @BindableReceive("selected-node")
     public node: HTMLNodeModel;
 
+    public search: string = "";
+
+    public filter: (p: PropertyModel) => boolean;
+
     public model: any;
 
     public properties: PropertyModel[] = [];
+
+    @Watch
+    public watchSearch(): void {
+        this.setupSearch(this.search);
+    }
 
     @Watch
     public watchModel(): any {
@@ -20,6 +29,19 @@ export default class PropertyBrowserViewModel extends AtomViewModel {
     @Watch
     public watchNode(): any {
         this.model = this.fetchControl(this.node.node);
+    }
+
+    public toggle(node: PropertyModel): void {
+        node.expanded = !node.expanded;
+    }
+
+    private setupSearch(text: string): void {
+        if (!text) {
+            this.filter = null;
+            return;
+        }
+        text = text.toLowerCase();
+        this.filter = !text ? null : (p) => p.index.toString().toLowerCase().indexOf(text) !== -1;
     }
 
     private fetchControl(e: any): AtomControl {

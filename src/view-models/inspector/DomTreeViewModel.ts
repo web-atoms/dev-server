@@ -23,6 +23,12 @@ export default class DomTreeViewModel extends AtomViewModel {
     }
 
     public selectNode(node: HTMLNodeModel): void {
+        if (node === this.body) {
+            if (this.body.children && this.body.children.length) {
+                this.node = this.body.children[0];
+                return;
+            }
+        }
         this.node = node;
     }
 

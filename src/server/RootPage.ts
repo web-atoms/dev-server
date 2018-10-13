@@ -85,7 +85,7 @@ router.get("/", (req: Request, res: Response) => {
 });
 
 router.get("/_inspect", (req, res) => {
-    const html = prepareHtml(req, res, "web-atoms-dev-server/dist/web/views/inspector/Inspector", false);
+    const html = prepareHtml(req, res, "web-atoms-dev-server/dist/web/views/inspector/Inspector", true);
     res.setHeader("cache-control", "no-cache");
     return res.send(html);
 });

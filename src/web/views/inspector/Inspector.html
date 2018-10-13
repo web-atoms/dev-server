@@ -6,10 +6,10 @@
 <AtomGridView
     style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; position: absolute; width:100%; height: 100%; padding:0; margin: 0;",
     atom-properties=" frame: null "
-    columns="250,5,*,5,250"
+    columns="250,5,*,5,350"
     view-model="{ this.resolve(InspectorViewModel, 'owner') }">
 
-    <DomTree></DomTree>
+    <DomTree style="overflow: auto; width: 100%; height: 100%"></DomTree>
 
     <AtomGridSplitter column="1" ></AtomGridSplitter>
 
@@ -21,6 +21,6 @@
 
     <AtomGridSplitter column="3" ></AtomGridSplitter>
 
-    <PropertyBrowser column="4"></PropertyBrowser>
+    <PropertyBrowser column="4" style="overflow: auto; width: 100%; height: 100%"></PropertyBrowser>
     
 </AtomGridView>

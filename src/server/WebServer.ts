@@ -25,14 +25,14 @@ class WebServer {
             root: "./",
             baseDir: "_files",
             showdir: true,
-            cache: "no-cache"
+            cache: 1
         }));
 
         this.express.use(e({
             root: __dirname + "/../../",
             baseDir: "_dev",
             showdir: true,
-            cache: "no-cache"
+            cache: 1
         }));
     }
 
