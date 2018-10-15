@@ -67,7 +67,8 @@ export default class AppHostViewModel extends AtomViewModel {
             iterator.visible = true;
         }
         this.files = urls.filter( (f) => {
-            const fm = fileMatcher[platform];
+            const fm: RegExp = fileMatcher[platform];
+            fm.lastIndex = 0;
             if (fm) {
                 return fm.test(f.ext);
             }
