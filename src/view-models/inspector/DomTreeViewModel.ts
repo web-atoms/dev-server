@@ -14,8 +14,9 @@ export default class DomTreeViewModel extends AtomViewModel {
         if (!this.body) {
             return;
         }
-        this.body.expanded = true;
-        this.selectNode(this.body);
+        const body = this.body;
+        body.expanded = true;
+        this.node = body.children ? body.children[0] : body;
     }
 
     public toggleChildren(node: HTMLNodeModel): void {
@@ -23,12 +24,12 @@ export default class DomTreeViewModel extends AtomViewModel {
     }
 
     public selectNode(node: HTMLNodeModel): void {
-        if (node === this.body) {
-            if (this.body.children && this.body.children.length) {
-                this.node = this.body.children[0];
-                return;
-            }
-        }
+        // if (node === this.body) {
+        //     if (this.body.children && this.body.children.length) {
+        //         this.node = this.body.children[0];
+        //         return;
+        //     }
+        // }
         this.node = node;
     }
 

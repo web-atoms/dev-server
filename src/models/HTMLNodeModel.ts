@@ -31,7 +31,11 @@ export default class HTMLNodeModel implements IDisposable {
         const a = [];
         const ce = new ChildEnumerator(this.node);
         while (ce.next()) {
-            a.push(new HTMLNodeModel(ce.current));
+            const node = ce.current;
+            if ( /script/i.test(node.nodeName) ) {
+                continue;
+            }
+            a.push(new HTMLNodeModel(node));
         }
         return a;
     }

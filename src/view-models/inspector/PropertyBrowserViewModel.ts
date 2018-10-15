@@ -28,7 +28,11 @@ export default class PropertyBrowserViewModel extends AtomViewModel {
 
     @Watch
     public watchNode(): any {
-        this.model = this.fetchControl(this.node.node);
+        const node = this.node;
+        if (!node) {
+            return;
+        }
+        this.model = this.fetchControl(node.node);
     }
 
     public toggle(node: PropertyModel): void {
