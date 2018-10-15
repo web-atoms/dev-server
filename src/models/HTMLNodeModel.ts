@@ -46,9 +46,9 @@ export default class HTMLNodeModel implements IDisposable {
         public label?: string) {
         this.atomControl = (node as any).atomControl;
         if (this.atomControl) {
-            this.label = `${this.atomControl.constructor.name}.${this.node.nodeName}`;
+            this.label = `${this.atomControl.constructor.name}.<${this.node.nodeName.toLowerCase()}>`;
         } else {
-            this.label = this.node.nodeName;
+            this.label = `<${this.node.nodeName.toLowerCase()}>`;
         }
         const me = new MutationObserver((list, e) => {
             for (const iterator of list) {

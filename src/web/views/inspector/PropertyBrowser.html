@@ -1,25 +1,26 @@
 <script>
     import PropertyBrowserViewModel from "~src/view-models/inspector/PropertyBrowserViewModel";
+    import PropertyBrowserStyle from "~src/web/styles/PropertyBrowserStyle";
 </script>
 <AtomItemsControl
+    default-style="{ PropertyBrowserStyle }"
+    style-class="{ this.controlStyle.root }"
     view-model="{ this.resolve(PropertyBrowserViewModel) }"
     items="[$viewModel.properties]"
     filter="[ $viewModel.filter ]">
 
-    <div>
-        <input type="search" value="^[viewModel.search]"/>
-        <div presenter="itemsPresenter"></div>
-    </div>
+    <input type="search" value="^[viewModel.search]"/>
+    <div class="presenter" presenter="itemsPresenter"></div>
 
     <div
-        style="padding:3px" 
+        class="item"
         template="itemTemplate">
         <span
-            style="font-weight: bold"
+            class="index"
             text="{$data.index}"></span>
 
         <span
-            style="max-height: 20px; max-width: 100px; overflow: hidden; display: inline-block"
+            class="closed-value"
             title="[ $data.isObject ? 'Click to see more...' : $data.value ]"
             style-display="[ $data.expanded ? 'none' : 'inline-block' ]"
             style-color="[ $data.isObject ? 'blue' : '' ]"
@@ -28,14 +29,13 @@
             text="[ $data.isObject ? '(...)' : $data.value]"></span>
 
         <span
+            class="close-button"
             event-click="{ () => $viewModel.toggle($data) }"
             style-display="[ $data.expanded ? 'inline-block' : 'none' ]"
-            style-color="blue"
-            style-cursor="pointer"
             text="( ^ )"></span>
 
         <AtomItemsControl
-            style="margin-left: 20px"
+            class="items"
             items="[ $data.expanded ? ( $data.isObject ? $data.value : []) : [] ]"
             style-display="[ $data.expanded ? '' : 'none' ]"
             item-template="{ __creator.itemTemplate }">

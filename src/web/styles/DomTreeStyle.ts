@@ -15,7 +15,8 @@ export default class DomTreeStyle extends AtomStyle {
         return {
             subclasses: {
                 " > div.node": {
-                    padding: "3px",
+                    padding: "2px",
+                    fontSize: "9pt",
                     subclasses: {
                         " > img": {
                             display: "none",
