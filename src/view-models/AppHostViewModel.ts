@@ -66,8 +66,8 @@ export default class AppHostViewModel extends AtomViewModel {
             iterator.url = `/uiv/$CURRENT$/${replaceSrc(iterator.dir)}/${iterator.name}`;
             iterator.visible = true;
         }
+        const fm: RegExp = fileMatcher[platform];
         this.files = urls.filter( (f) => {
-            const fm: RegExp = fileMatcher[platform];
             fm.lastIndex = 0;
             if (fm) {
                 return fm.test(f.ext);
