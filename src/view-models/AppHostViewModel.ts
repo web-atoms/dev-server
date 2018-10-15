@@ -8,6 +8,8 @@ import { IWSMessage } from "../models/IWSMessage";
 import { ModuleFiles } from "../ModuleFiles";
 import FileService from "../services/FileService";
 
+declare var bridge: any;
+
 function replaceSrc(src: string): string {
     src = src.split("\\").join("/");
     const tokens = src.split("/");
@@ -17,7 +19,7 @@ function replaceSrc(src: string): string {
     return tokens.join("/");
 }
 
-export class AppHostViewModel extends AtomViewModel {
+export default class AppHostViewModel extends AtomViewModel {
 
     public files: IFilePath[];
 
@@ -54,12 +56,23 @@ export class AppHostViewModel extends AtomViewModel {
     }
 
     public async init(): Promise<any> {
+
+        const cl = this.navigationService.location;
+
+        const platform: string = (cl.query.platform || "web").toString();
+
         const urls = (await this.fileService.getModules()).files;
         for (const iterator of urls) {
             iterator.url = `/uiv/$CURRENT$/${replaceSrc(iterator.dir)}/${iterator.name}`;
             iterator.visible = true;
         }
-        this.files = urls;
+        this.files = urls.filter( (f) => {
+            const fm = fileMatcher[platform];
+            if (fm) {
+                return fm.test(f.ext);
+            }
+            return true;
+        } );
     }
 
     public refreshUrl(): void {
@@ -69,4 +82,15 @@ export class AppHostViewModel extends AtomViewModel {
     public inspect(url: string): string {
         return Atom.url("/_inspect", { url });
     }
+
+    public openUrl(data: IFilePath): void {
+        const url = this.navigationService.location;
+        url.path = data.url;
+        this.navigationService.location = url;
+    }
 }
+
+const fileMatcher = {
+    xf: /\.xaml/gi,
+    web: /\.html/gi
+};

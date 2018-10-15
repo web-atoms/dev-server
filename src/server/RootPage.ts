@@ -38,6 +38,19 @@ function prepareHtml(req: Request, res: Response, viewPath: string, autoRefresh:
 
     const refresh = autoRefresh ? `<script src="${devServer}/refresh.js"></script>` : "";
 
+    const body = `
+            ${da.join("\r\n")}
+            UMD.map("${current}","/_files/");
+            UMD.map("web-atoms-dev-server", "${devServer}");
+            UMD.lang = "en-US";
+            UMD.loadView("${viewPath}", true);
+`;
+
+    if (req.query.platform === "xf") {
+        return `${body}
+        bridge.connectDebugger("/listen");`;
+    }
+
     return `<!DOCTYPE html>
 
     <html>
@@ -56,11 +69,7 @@ function prepareHtml(req: Request, res: Response, viewPath: string, autoRefresh:
     </head>
     <body>
         <script>
-                ${da.join("\r\n")}
-                UMD.map("${current}","/_files/");
-                UMD.map("web-atoms-dev-server", "${devServer}");
-                UMD.lang = "en-US";
-                UMD.loadView("${viewPath}", true);
+            ${body}
         </script>
     </body>
     </html>`;
@@ -79,7 +88,9 @@ router.get(/^\/uiv\//, (req, res) => {
 // In this case it's /welcome
 router.get("/", (req: Request, res: Response) => {
 
-    const html = prepareHtml(req, res, "web-atoms-dev-server/dist/web/views/AppHost", false);
+    const pf = req.query.platform || "web";
+
+    const html = prepareHtml(req, res, `web-atoms-dev-server/dist/${pf}/views/AppHost`, false);
     res.setHeader("cache-control", "no-cache");
     return res.send(html);
 });

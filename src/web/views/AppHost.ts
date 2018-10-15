@@ -4,7 +4,7 @@ import {AtomListBox} from "web-atoms-core/dist/web/controls/AtomListBox";
 import {AtomGridView} from "web-atoms-core/dist/web/controls/AtomGridView";
 import {AtomControl} from "web-atoms-core/dist/web/controls/AtomControl";
 
-    import { AppHostViewModel } from "../../view-models/AppHostViewModel";
+    import AppHostViewModel from "../../view-models/AppHostViewModel";
     import AppHostStyle from "../styles/AppHostStyle";
 
 export default  class AppHost extends AtomGridView {
