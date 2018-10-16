@@ -1,5 +1,21 @@
+import * as colors from "colors/safe";
 import * as fs from "fs";
 import * as W from "ws";
+
+interface ILogPayload {
+
+    type: "error" | "warning" | "warn" | "log";
+    message: string;
+
+}
+
+type IWSMessage = {
+    type: "watch",
+    path: string
+} | {
+    type: "console",
+    payload: ILogPayload
+};
 
 export default class WSServer {
 
@@ -24,11 +40,38 @@ export default class WSServer {
 
         this.watchPath("./dist");
         client.on("message", (d) => {
-            const msg = JSON.parse(d.toString());
-            if (msg.type === "watch") {
-                this.watchPath(msg.path);
-            }
+            const msg = JSON.parse(d.toString()) as IWSMessage;
+            this.processMessage(msg as IWSMessage);
         });
+    }
+
+    private processMessage(msg: IWSMessage): void {
+        switch (msg.type) {
+            case "watch":
+                this.watchPath(msg.path);
+                break;
+            case "console":
+                this.logMessage(msg.payload);
+                break;
+        }
+    }
+
+    private logMessage(paylad: ILogPayload): void {
+        switch (paylad.type) {
+            case "error":
+                // tslint:disable-next-line:no-console
+                console.log(colors.red(paylad.message));
+                break;
+            case "warn":
+            case "warning":
+                // tslint:disable-next-line:no-console
+                console.log(colors.yellow(paylad.message));
+                break;
+            case "log":
+                // tslint:disable-next-line:no-console
+                console.log(colors.gray(paylad.message));
+                break;
+        }
     }
 
     private dispose(): void {
