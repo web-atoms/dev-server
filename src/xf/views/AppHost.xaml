@@ -3,15 +3,24 @@
         xmlns="http://xamarin.com/schemas/2014/forms"
         Title="Search View"
         xmlns:AppHostViewModel="js-import-def:~src/view-models/AppHostViewModel"
-        viewModel="${ this.resolve(AppHostViewModel) }">
+        viewModel="${ this.resolve(AppHostViewModel) }">    
     <ListView
+        HasUnevenRows="True"
+        RowHeight="70"
         ItemsSource="[$viewModel.files]">
         <ListView.ItemTemplate>
             <DataTemplate>
+             <StackLayout Padding="10" 
+                eventTapGesture="{{ () => $viewModel.openUrl($data) }">
                 <Label
-                    Text="${$data.name}"
-                    eventTapGesture="{{ () => $viewModel.openUrl($data) }"
+                    Text="${$data.name}"  
+                    FontSize="14"
+                    TextColor="#2e2e2e"                  
                     />
+                <Label Text="${$data.dir}"
+                         FontSize="14"
+                         TextColor="#0000EE"/>
+             </StackLayout>
             </DataTemplate>
         </ListView.ItemTemplate>
     </ListView>

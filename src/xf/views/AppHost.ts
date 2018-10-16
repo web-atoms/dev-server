@@ -15,7 +15,7 @@
 
                     this.loadXaml(`	<ContentPage xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns="http://xamarin.com/schemas/2014/forms" Title="Search View" x:Name="e2">
 	  
-	  <ListView x:Name="e1">
+	  <ListView HasUnevenRows="True" RowHeight="70" x:Name="e1">
 	    
 	    
 	  </ListView>
@@ -46,11 +46,17 @@ function Root_e1_Creator(__creator: any): any {
                 protected create(): void {
                     super.create();
 
-                    this.element = this.createControl("Xamarin.Forms.Label");
+                    this.element = this.createControl("Xamarin.Forms.StackLayout");
 
                     
 
-                    this.loadXaml(`	<Label xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns="http://xamarin.com/schemas/2014/forms" x:Name="e1"/>`);
+                    this.loadXaml(`	<StackLayout Padding="10" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns="http://xamarin.com/schemas/2014/forms" x:Name="e3">
+	  
+	  <Label FontSize="14" TextColor="#2e2e2e" x:Name="e1"/>
+	  
+	  <Label FontSize="14" TextColor="#0000EE" x:Name="e2"/>
+	  
+	</StackLayout>`);
 
                     
             const e1 = this.find("e1");
@@ -58,8 +64,17 @@ function Root_e1_Creator(__creator: any): any {
             this.runAfterInit( () =>
             this.setLocalValue(e1, "Text", ((this.data) ? this.data.name : undefined)) );
 
+
+            const e2 = this.find("e2");
+            
             this.runAfterInit( () =>
-            this.setLocalValue(e1, "eventTapGesture", () => (this.viewModel).openUrl((this.data))) );
+            this.setLocalValue(e2, "Text", ((this.data) ? this.data.dir : undefined)) );
+
+
+            const e3 = this.find("e3");
+            
+            this.runAfterInit( () =>
+            this.setLocalValue(e3, "eventTapGesture", () => (this.viewModel).openUrl((this.data))) );
 
                 }
             }
