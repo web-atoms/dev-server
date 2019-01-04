@@ -16,8 +16,7 @@ function listen(port) {
             target: process.argv[2],
             changeOrigin: true,
             ws: true,
-            cookieDomainRewrite: true,
-            cookiePathRewrite: true
+            cookieDomainRewrite: ""
         });
 
     app.default.use(apiProxy);
