@@ -14,7 +14,7 @@ function listen(port) {
 
     var apiProxy = proxy(
         {
-            target: process.argv[1],
+            target: process.argv[2],
             changeOrigin: true,
             ws: true,
             cookieDomainRewrite: true,
