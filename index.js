@@ -12,6 +12,7 @@ var ifaces = os.networkInterfaces();
 function listen(port) {
 
     var apiProxy = proxy(
+        (pathName) => pathName !== "/listen",
         {
             target: process.argv[2],
             changeOrigin: true,

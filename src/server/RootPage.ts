@@ -13,6 +13,10 @@ function prepareHtml(req: Request, res: Response, viewPath: string, autoRefresh:
         viewPath = viewPath.substr(1);
     }
 
+    const designMode =
+        req.query.designMode ||
+        process.argv[2] ? false : true;
+
     const devServer = "/_dev";
 
     const text: string = readFileSync("./package.json", { encoding: "utf-8", flag: "r" });
@@ -43,7 +47,7 @@ function prepareHtml(req: Request, res: Response, viewPath: string, autoRefresh:
             UMD.map("${current}","/_files/");
             UMD.map("web-atoms-dev-server", "${devServer}");
             UMD.lang = "en-US";
-            UMD.loadView("${viewPath}", ${ process.argv[2] ? false : true });
+            UMD.loadView("${viewPath}", ${ designMode });
 `;
 
     if (req.query.platform === "xf") {
