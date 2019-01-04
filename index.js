@@ -16,7 +16,14 @@ function listen(port) {
             target: process.argv[2],
             changeOrigin: true,
             ws: true,
-            cookieDomainRewrite: ""
+            cookieDomainRewrite: "",
+            onProxyRes: (proxyReq, req, res) => {
+                var cookie = proxyReq.headers["set-cookie"];
+                if (cookie) {
+                    cookie = cookie.map((s) => s.replace("secure;", "") );
+                    proxyReq.headers["set-cookie"] = cookie;
+                }
+            }
         });
 
     app.default.use(apiProxy);
