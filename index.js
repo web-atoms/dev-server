@@ -1,20 +1,33 @@
 var app = require("./dist/server/WebServer");
 var process = require("process");
 var portfinder = require("portfinder");
+var connect = require("connect");
 var os = require("os");
 var colors = require("colors/safe");
 var http = require("http");
 var WSServer = require("./dist/server/WSServer").default;
 var WebSocketServer = require("ws").Server;
-
+var proxy = require('http-proxy-middleware');
 var ifaces = os.networkInterfaces();
 
 function listen(port) {
+
+    var apiProxy = proxy(
+        {
+            target: process.argv[1],
+            changeOrigin: true,
+            ws: true,
+            cookieDomainRewrite: true,
+            cookiePathRewrite: true
+        });
+
+    app.default.use(apiProxy);
+
     var server = http.createServer(app.default);
 
     var wss = new WebSocketServer({ server: server, path: "/listen" });
 
-    WSServer.configure(wss);
+    WSServer.configure(wss);    
 
     server.listen(port,(err) => {
         if(err) {
