@@ -1,7 +1,6 @@
 var app = require("./dist/server/WebServer");
 var process = require("process");
 var portfinder = require("portfinder");
-var connect = require("connect");
 var os = require("os");
 var colors = require("colors/safe");
 var http = require("http");
