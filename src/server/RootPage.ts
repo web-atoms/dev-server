@@ -43,7 +43,7 @@ function prepareHtml(req: Request, res: Response, viewPath: string, autoRefresh:
             UMD.map("${current}","/_files/");
             UMD.map("web-atoms-dev-server", "${devServer}");
             UMD.lang = "en-US";
-            UMD.loadView("${viewPath}", true);
+            UMD.loadView("${viewPath}", ${ process.argv[2] ? false : true });
 `;
 
     if (req.query.platform === "xf") {
