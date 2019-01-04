@@ -15,7 +15,7 @@ function prepareHtml(req: Request, res: Response, viewPath: string, autoRefresh:
 
     const designMode =
         req.query.designMode ||
-        process.argv[2] ? false : true;
+        (process.argv[2] ? false : true);
 
     const devServer = "/_dev";
 
