@@ -56,20 +56,20 @@ export default class WSServer {
         }
     }
 
-    private logMessage(paylad: ILogPayload): void {
-        switch (paylad.type) {
+    private logMessage(payLoad: ILogPayload): void {
+        switch (payLoad.type) {
             case "error":
                 // tslint:disable-next-line:no-console
-                console.log(colors.red(paylad.message));
+                console.log(colors.red(payLoad.message));
                 break;
             case "warn":
             case "warning":
                 // tslint:disable-next-line:no-console
-                console.log(colors.yellow(paylad.message));
+                console.log(colors.yellow(payLoad.message));
                 break;
             case "log":
                 // tslint:disable-next-line:no-console
-                console.log(colors.gray(paylad.message));
+                console.log(colors.gray(payLoad.message));
                 break;
         }
     }

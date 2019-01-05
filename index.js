@@ -11,24 +11,27 @@ var ifaces = os.networkInterfaces();
 
 function listen(port) {
 
-    var apiProxy = proxy(
-        (pathName) => pathName !== "/listen",
-        {
-            target: process.argv[2],
-            changeOrigin: true,
-            ws: true,
-            cookieDomainRewrite: "",
-            onProxyRes: (proxyReq, req, res) => {
-                var cookie = proxyReq.headers["set-cookie"];
-                if (cookie) {
-                    cookie = cookie.map((s) => s.replace("secure;", "") );
-                    proxyReq.headers["set-cookie"] = cookie;
+    var proxyHost = process.argv[2];
+
+    if (proxyHost) {
+        var apiProxy = proxy(
+            (pathName) => pathName !== "/listen",
+            {
+                target: proxyHost,
+                changeOrigin: true,
+                ws: true,
+                cookieDomainRewrite: "",
+                onProxyRes: (proxyReq, req, res) => {
+                    var cookie = proxyReq.headers["set-cookie"];
+                    if (cookie) {
+                        cookie = cookie.map((s) => s.replace("secure;", "") );
+                        proxyReq.headers["set-cookie"] = cookie;
+                    }
                 }
-            }
-        });
+            });
 
-    app.default.use(apiProxy);
-
+        app.default.use(apiProxy);
+    }
     var server = http.createServer(app.default);
 
     var wss = new WebSocketServer({ server: server, path: "/listen" });
