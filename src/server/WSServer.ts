@@ -46,13 +46,18 @@ export default class WSServer {
     }
 
     private processMessage(msg: IWSMessage): void {
-        switch (msg.type) {
-            case "watch":
-                this.watchPath(msg.path);
-                break;
-            case "console":
-                this.logMessage(msg.payload);
-                break;
+        try {
+            switch (msg.type) {
+                case "watch":
+                    this.watchPath(msg.path);
+                    break;
+                case "console":
+                    this.logMessage(msg.payload);
+                    break;
+            }
+        } catch (e) {
+            // tslint:disable-next-line:no-console
+            console.log(e);
         }
     }
 
