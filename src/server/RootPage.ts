@@ -50,7 +50,9 @@ function prepareHtml(req: Request, res: Response, viewPath: string, autoRefresh:
             UMD.loadView("${viewPath}", ${ designMode });
 `;
 
-    if (req.query.platform === "xf") {
+    const debug = req.query.debug === undefined ? true : req.query.debug;
+
+    if (req.query.platform === "xf" && debug) {
         return `${body}
         bridge.connectDebugger("/listen");`;
     }
