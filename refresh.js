@@ -7,3 +7,18 @@ w.onmessage = (evt) => {
     }
 };
 
+function invokeReady(f) {
+    if (document.readyState === "complete") {
+        f();
+        return;
+    }
+    document.addEventListener("readystatechange", function() {
+        invokeReady(f);
+    });
+}
+
+invokeReady(function() {
+    w.send(JSON.stringify({
+        type: "watch"
+    }))
+});

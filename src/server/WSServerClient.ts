@@ -17,18 +17,18 @@ type IWSMessage = {
     payload: ILogPayload
 };
 
-export default class WSServer {
+export default class WSServerClient {
 
     public static configure(ws: W.Server): void {
         ws.on("connection", (w, req) => {
-            const wx = new WSServer(w);
+            const wx = new WSServerClient(w);
             w.on("close", (code, reason) => {
                 wx.dispose();
             });
         });
     }
 
-    private watcher: fs.FSWatcher;
+    private watcher: { [key: string]: fs.FSWatcher };
     private lastTimeout: NodeJS.Timer;
     private pingTimer: NodeJS.Timer;
 
@@ -38,7 +38,6 @@ export default class WSServer {
             this.client.ping();
         }, 15000);
 
-        this.watchPath("./dist");
         client.on("message", (d) => {
             const msg = JSON.parse(d.toString()) as IWSMessage;
             this.processMessage(msg as IWSMessage);
@@ -49,7 +48,8 @@ export default class WSServer {
         try {
             switch (msg.type) {
                 case "watch":
-                    this.watchPath(msg.path);
+                    this.watchPath("./dist");
+                    this.watchPath("./node_modules");
                     break;
                 case "console":
                     this.logMessage(msg.payload);
@@ -83,8 +83,11 @@ export default class WSServer {
         if (this.pingTimer) {
             clearInterval(this.pingTimer);
         }
-        if (this.watcher) {
-            this.watcher.close();
+        for (const key in this.watcher) {
+            if (this.watcher.hasOwnProperty(key)) {
+                const element = this.watcher[key];
+                element.close();
+            }
         }
         if (this.lastTimeout) {
             clearTimeout(this.lastTimeout);
@@ -92,11 +95,12 @@ export default class WSServer {
         }
     }
 
-    private watchPath(d: any): void {
-        if (this.watcher) {
-            this.watcher.close();
+    private watchPath(d: string): void {
+        const watcher = this.watcher[d];
+        if (watcher) {
+            watcher.close();
         }
-        this.watcher = fs.watch(d, { recursive: true }, (e, f) => {
+        this.watcher[d] = fs.watch(d, { recursive: true }, (e, f) => {
             this.postUpdate();
         });
     }
