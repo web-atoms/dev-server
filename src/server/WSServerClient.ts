@@ -2,6 +2,27 @@ import * as colors from "colors/safe";
 import * as fs from "fs";
 import * as W from "ws";
 
+function once(
+    f,
+    n: number = 1000,
+    onError: ((e) => void) = null): void {
+    if (f.timeout) {
+        clearTimeout(f.timeout);
+    }
+    f.timeout = setTimeout(() => {
+        try {
+            f();
+        } catch (e) {
+            if (onError) {
+                onError(e);
+            } else {
+                // tslint:disable-next-line:no-console
+                console.error(e);
+            }
+        }
+    }, n);
+}
+
 interface ILogPayload {
 
     type: "error" | "warning" | "warn" | "log";
@@ -29,8 +50,10 @@ export default class WSServerClient {
     }
 
     private watcher: { [key: string]: fs.FSWatcher } = {};
-    private lastTimeout: NodeJS.Timer;
     private pingTimer: NodeJS.Timer;
+
+    // tslint:disable-next-line:ban-types
+    private refreshClient: Function;
 
     constructor(private client: W) {
 
@@ -42,6 +65,8 @@ export default class WSServerClient {
             const msg = JSON.parse(d.toString()) as IWSMessage;
             this.processMessage(msg as IWSMessage);
         });
+
+        this.refreshClient = () => this.postUpdate();
     }
 
     private processMessage(msg: IWSMessage): void {
@@ -89,10 +114,6 @@ export default class WSServerClient {
                 element.close();
             }
         }
-        if (this.lastTimeout) {
-            clearTimeout(this.lastTimeout);
-            this.lastTimeout = null;
-        }
     }
 
     private watchPath(d: string): void {
@@ -101,23 +122,17 @@ export default class WSServerClient {
             watcher.close();
         }
         this.watcher[d] = fs.watch(d, { recursive: true }, (e, f) => {
-            this.postUpdate();
+            once(this.refreshClient);
         });
     }
 
     private postUpdate(): void {
-        if (this.lastTimeout) {
-            clearTimeout(this.lastTimeout);
-            this.lastTimeout = null;
-        }
-        this.lastTimeout = setTimeout(() => {
-            const json = JSON.stringify({ type: "refresh" });
-            this.client.send(json, (e) => {
-                if (e) {
-                    // tslint:disable-next-line:no-console
-                    console.error(e);
-                }
-            });
-        }, 500);
+        const json = JSON.stringify({ type: "refresh" });
+        this.client.send(json, (e) => {
+            if (e) {
+                // tslint:disable-next-line:no-console
+                console.error(e);
+            }
+        });
     }
 }
