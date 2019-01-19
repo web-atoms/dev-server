@@ -28,7 +28,7 @@ export default class WSServerClient {
         });
     }
 
-    private watcher: { [key: string]: fs.FSWatcher };
+    private watcher: { [key: string]: fs.FSWatcher } = {};
     private lastTimeout: NodeJS.Timer;
     private pingTimer: NodeJS.Timer;
 

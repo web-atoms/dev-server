@@ -9,7 +9,10 @@ w.onmessage = (evt) => {
 
 function invokeReady(f) {
     if (document.readyState === "complete") {
-        f();
+        if (f.timeout) {
+            clearTimeout(f.timeout);
+        }
+        f.timeout = setTimeout(f, 500);
         return;
     }
     document.addEventListener("readystatechange", function() {
