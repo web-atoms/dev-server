@@ -9,6 +9,7 @@ var WebSocketServer = require("ws").Server;
 var proxy = require('http-proxy-middleware');
 var fs = require("fs");
 var ifaces = os.networkInterfaces();
+var crypto = require("crypto");
 
 function createCert() {
 
