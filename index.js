@@ -4,6 +4,7 @@ var portfinder = require("portfinder");
 var os = require("os");
 var colors = require("colors/safe");
 var http = require("http");
+var https = require("https");
 var WSServer = require("./dist/server/WSServerClient").default;
 var WebSocketServer = require("ws").Server;
 var proxy = require('http-proxy-middleware');
@@ -95,12 +96,7 @@ function listen(port, ssl) {
 
         app.default.use(apiProxy);
     }
-    var server = http.createServer(app.default);
-
-    if (ssl) {
-        var cc = crypto.createCredentials(createCert());
-        server.setSecure(cc);
-    }
+    var server = ssl ? https.createServer(cc, app.default) : http.createServer(app.default);
 
     var wss = new WebSocketServer({ server: server, path: "/listen" });
 
