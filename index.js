@@ -96,7 +96,7 @@ function listen(port, ssl) {
 
         app.default.use(apiProxy);
     }
-    var server = ssl ? https.createServer(cc, app.default) : http.createServer(app.default);
+    var server = ssl ? https.createServer(createCert(), app.default) : http.createServer(app.default);
 
     var wss = new WebSocketServer({ server: server, path: "/listen" });
 
