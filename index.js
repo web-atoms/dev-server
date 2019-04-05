@@ -65,8 +65,8 @@ function createCert() {
 
     // now convert the Forge certificate to PEM format
     var pem = pki.certificateToPem(cert);
-
-    var c = { key: keys.privateKey, cert: pem };
+    var pkey = pki.privateKeyToPem(keys.privateKey)
+    var c = { key: pkey, cert: pem };
 
     fs.writeFileSync( certPath, JSON.stringify(c), "utf8");
     return c;
