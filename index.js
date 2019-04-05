@@ -13,7 +13,7 @@ var crypto = require("crypto");
 
 function createCert() {
 
-    var certPath = "./generated-cert";
+    var certPath = "./generated-cert-1";
 
     if(fs.existsSync(certPath)) {
         return JSON.parse(fs.readFileSync(certPath, { encoding: "utf8", flag: "r" }));
