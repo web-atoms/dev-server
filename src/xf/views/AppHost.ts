@@ -6,6 +6,10 @@
 
         export default class Root extends AtomXFControl {
 
+                
+
+                
+
                 protected create(): void {
                     super.create();
 
@@ -25,8 +29,8 @@
                     
             const e1 = this.find("e1");
             
-            this.setTemplate(e1, "ItemTemplate", () => new (Root_e1_Creator(this))(this.app));
-            
+        this.setLocalValue(e1, "ItemTemplate", () => new (Root_e1_Creator(this))(this.app));
+        
 
             this.bind(e1, "ItemsSource",  [["viewModel","files"]], false , (v1) => (v1) );
 
@@ -42,6 +46,10 @@
 // template
 function Root_e1_Creator(__creator: any): any {
     return class Root_e1 extends AtomXFControl {
+
+                
+
+                
 
                 protected create(): void {
                     super.create();
@@ -74,7 +82,7 @@ function Root_e1_Creator(__creator: any): any {
             const e3 = this.find("e3");
             
             this.runAfterInit( () =>
-            this.setLocalValue(e3, "eventTapGesture", () => (this.viewModel).openUrl((this.data))) );
+            this.setLocalValue(e3, "eventTapGesture",  () => (this.viewModel).openUrl((this.data)) ) );
 
                 }
             }

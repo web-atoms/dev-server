@@ -27,20 +27,16 @@ export default  class DomTree extends AtomItemsControl {
 
                 this.viewModel =  this.resolve(DomTreeViewModel) ;
 
-                this.setPrimitiveValue(this.element, "styleClass",  this.controlStyle.root );
+                    this.runAfterInit(() => {
+                        this.setPrimitiveValue(this.element, "styleClass",  this.controlStyle.root );
+                    });
+                    
 
             this.bind(this.element, "items",  [["viewModel","body","children"]], false , (v1) => (v1) );
 
         this.itemTemplate = DomTree_itemTemplate_1_2Creator(this);
             
                     
-        const e1 = document.createTextNode("\r\n\r\n    ");
-        
-        this.element.appendChild(e1);
-
-        const e2 = document.createTextNode("\r\n\r\n");
-        
-        this.element.appendChild(e2);
                 }
             }
 
@@ -61,58 +57,45 @@ export default  class DomTree extends AtomItemsControl {
                     
             this.bind(this.element, "class",  [["data","className"]], false , (v1) => (v1) );
                     
-        const e1 = document.createTextNode("\r\n        ");
-        
-        this.element.appendChild(e1);
-
-        const e2 = document.createElement("img");
-        
-        this.append(e2);
-        
-            this.bind(e2, "src",  [["data","expanded"]], false , (v1) => (v1) ? DownArrowDataUrl : RightArrowDataUrl );
+            const e1 = document.createElement("img");
+            
+            this.append(e1);
+            
+            this.bind(e1, "src",  [["data","expanded"]], false , (v1) =>  (v1) ? DownArrowDataUrl : RightArrowDataUrl  );
 
             this.runAfterInit( () =>
-            this.setLocalValue(e2, "eventClick", () => (this.viewModel).toggleChildren((this.data))) );
-        
+            this.setLocalValue(e1, "eventClick",  () => (this.viewModel).toggleChildren((this.data)) ) );
+            
 
-        const e3 = document.createTextNode("\r\n        ");
-        
-        this.element.appendChild(e3);
-
-        const e4 = document.createElement("span");
-        
-        this.append(e4);
-        
+            const e2 = document.createElement("span");
+            
+            this.append(e2);
+            
             this.runAfterInit( () =>
-            this.setLocalValue(e4, "eventClick", () => (this.viewModel).selectNode((this.data))) );
+            this.setLocalValue(e2, "eventClick",  () => (this.viewModel).selectNode((this.data)) ) );
 
-            this.bind(e4, "class",  [["viewModel","node"],["data"]], false , (v1,v2) => (v1) == (v2) ? 'selected' : 'unselected' );
+            this.bind(e2, "class",  [["viewModel","node"],["data"]], false , (v1,v2) =>  (v1) == (v2) ? 'selected' : 'unselected'  );
 
             this.runAfterInit( () =>
-            this.setLocalValue(e4, "text", ((this.data) ? this.data.label : undefined)) );
-        
+            this.setLocalValue(e2, "text",  ((this.data) ? this.data.label : undefined) ) );
+            
 
-        const e5 = document.createTextNode("\r\n        ");
-        
-        this.element.appendChild(e5);
-
-            const e6 = new AtomItemsControl(this.app);
+            const e3 = new AtomItemsControl(this.app);
             
             
             
-            e6.bind(e6.element, "items",  [["data","expanded"],["data","children"]], false , (v1,v2) => (v1) ? (v2) : [] );
+            e3.bind(e3.element, "items",  [["data","expanded"],["data","children"]], false , (v1,v2) =>  (v1) ? (v2) : []  );
 
-                e6.setPrimitiveValue(e6.element, "styleClass",  __creator.controlStyle.root );
+                    this.runAfterInit(() => {
+                        e3.setPrimitiveValue(e3.element, "styleClass",  __creator.controlStyle.root );
+                    });
+                    
 
-            e6.bind(e6.element, "styleDisplay",  [["data","expanded"]], false , (v1) => (v1) ? '' : 'none' );
+            e3.bind(e3.element, "styleDisplay",  [["data","expanded"]], false , (v1) =>  (v1) ? '' : 'none'  );
 
-                e6.setPrimitiveValue(e6.element, "itemTemplate",  __creator.itemTemplate );
-            this.append(e6);
+                e3.setPrimitiveValue(e3.element, "itemTemplate",  __creator.itemTemplate );
+            this.append(e3);
 
-
-        const e7 = document.createTextNode("\r\n    ");
-        
-        this.element.appendChild(e7);
                 }
             }
 

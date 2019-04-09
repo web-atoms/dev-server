@@ -6,6 +6,7 @@ export default interface IFilePath {
     ext: string;
     root: string;
     url: string;
+    urlDesignMode: string;
     visible: boolean;
 
 }

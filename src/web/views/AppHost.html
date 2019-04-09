@@ -6,14 +6,13 @@
     default-style="{ AppHostStyle }"
     style-class="{ this.controlStyle.root }"
     view-model="{ this.resolve(AppHostViewModel) }"
-    columns="200, *"
     rows="50, *">
 
-    <header row="0" column="0:2" class="header">
+    <header row="0" class="header">
         <input type="search" value="^[$viewModel.search]" placeholder="Search..."/>
         <div class="topnav-right">
-            <a href="[$viewModel.url]" target="_tab">Open New Tab</a>
-            <a href="[$viewModel.inspect($viewModel.url)]">Inspect</a>
+            <!-- <a href="[$viewModel.url]" target="_tab">Open New Tab</a>
+            <a href="[$viewModel.inspect($viewModel.url)]">Inspect</a> -->
             <a event-click="{ () => $viewModel.refreshUrl() }">Refresh</a>
         </div>
         <!-- <button event-click="{ () => $viewModel.refreshUrl() }">Refresh</button>
@@ -23,24 +22,31 @@
     <div
         style="overflow: auto; width: 100%; height: 100%"
         row="1">
-        <AtomListBox 
+        <AtomItemsControl.table 
+            class="grid"
             items="[$viewModel.files]"
             value-path="url"
             value="$[viewModel.url]">
-            <div 
+            <tr 
                 style-display="[$data.visible ? '' : 'none']"
                 template="itemTemplate">
-                <div text="{$data.name}" title="{$data.dir}" style="font-weight: 500;"></div>
-                <div style="font-size: small;" text="{$data.dir}">
-                </div>
-            </div>
-        </AtomListBox>
+                <td>
+                    <div text="{$data.name}" title="{$data.dir}" style="font-weight: 500;"></div>
+                    <div style="font-size: small;" text="{$data.dir}"></div>
+                </td>
+                <td>
+                    <a class="button" href="{$data.url}" target="_tab">Open </a>
+                </td>
+                <td>
+                    <a  class="button" href="{$viewModel.inspect($data.url)}" target="_tab">Inspect </a>
+                </td>
+                <td>
+                    <a  class="button" href="{$data.urlDesignMode}" target="_tab">Open (Design Mode)</a>
+                </td>
+                <td>
+                    <a  class="button" href="{$viewModel.inspect($data.urlDesignMode)}" target="_tab">Inspect (Design Mode) </a>
+                </td>
+            </tr>
+        </AtomItemsControl.table>
     </div>
-
-    <iframe
-        row="1"
-        column="1"
-        src="[$viewModel.url]"
-        style="border: none; padding:5px; width:100%; height:100%;"></iframe>
-
 </AtomGridView>

@@ -16,9 +16,6 @@ export default  class Start extends AtomControl {
                     
                     
                     
-        const e1 = document.createTextNode("\r\n    \r\n");
-        
-        this.element.appendChild(e1);
                 }
             }
 

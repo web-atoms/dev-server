@@ -1,5 +1,6 @@
 import { AtomStyle } from "web-atoms-core/dist/web/styles/AtomStyle";
 import { IStyleDeclaration } from "web-atoms-core/dist/web/styles/IStyleDeclaration";
+import Colors from "web-atoms-core/dist/core/Colors";
 
 export default class AppHostStyle extends AtomStyle {
 
@@ -10,6 +11,29 @@ export default class AppHostStyle extends AtomStyle {
             fontSize: "14px",
             color: "#3c4144",
             subclasses: {
+                " table.grid": {
+                    width: "100%",
+                    subclasses: {
+                        " tr": {
+                            subclasses: {
+                                " td": {
+                                    borderSpacing: "0"
+                                },
+                                ":hover": {
+                                    backgroundColor: Colors.lightGreen
+                                }
+                            }
+                        }
+                    }
+                },
+                " a.button": {
+                    backgroundColor: "#168eea",
+                    borderRadius: "3px",
+                    padding: "5px 10px",
+                    color: "white",
+                    textDecoration: "none",
+                    cursor: "pointer"
+                },
                 " .header": {
                     padding: "10px",
                     background: "#f5f5f5",

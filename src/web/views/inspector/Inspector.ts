@@ -37,82 +37,58 @@ export default  class Inspector extends AtomGridView {
 
                 this.viewModel =  this.resolve(InspectorViewModel, 'owner') ;
                     
-        const e1 = document.createTextNode("\r\n\r\n    ");
+            const e1 = new DomTree(this.app);
+            
+            
+            
+        e1.setPrimitiveValue(e1.element, "style", "overflow: auto; width: 100%; height: 100%" );
         
-        this.element.appendChild(e1);
+            this.append(e1);
 
-            const e2 = new DomTree(this.app);
+
+            const e2 = new AtomGridSplitter(this.app);
             
             
             
-        e2.setPrimitiveValue(e2.element, "style", "overflow: auto; width: 100%; height: 100%" );
+        e2.setPrimitiveValue(e2.element, "column", "1" );
         
             this.append(e2);
 
 
-        const e3 = document.createTextNode("\r\n\r\n    ");
+            const e3 = document.createElement("iframe");
+            
+        this.frame = e3;
+            this.append(e3);
+            
+        this.setPrimitiveValue(e3, "column", "2" );
         
-        this.element.appendChild(e3);
+
+            this.bind(e3, "src",  [["viewModel","url"]], false , (v1) => (v1) );
+
+        this.setPrimitiveValue(e3, "style", "border: none; padding:5px; width:100%; height:100%;" );
+        
+            
 
             const e4 = new AtomGridSplitter(this.app);
             
             
             
-        e4.setPrimitiveValue(e4.element, "column", "1" );
+        e4.setPrimitiveValue(e4.element, "column", "3" );
         
             this.append(e4);
 
 
-        const e5 = document.createTextNode("\r\n\r\n    ");
-        
-        this.element.appendChild(e5);
-
-        const e6 = document.createElement("iframe");
-        
-        this.frame = e6;
-        this.append(e6);
-        
-        this.setPrimitiveValue(e6, "column", "2" );
-        
-
-            this.bind(e6, "src",  [["viewModel","url"]], false , (v1) => (v1) );
-
-        this.setPrimitiveValue(e6, "style", "border: none; padding:5px; width:100%; height:100%;" );
-        
-        
-
-        const e7 = document.createTextNode("\r\n\r\n    ");
-        
-        this.element.appendChild(e7);
-
-            const e8 = new AtomGridSplitter(this.app);
+            const e5 = new PropertyBrowser(this.app);
             
             
             
-        e8.setPrimitiveValue(e8.element, "column", "3" );
-        
-            this.append(e8);
-
-
-        const e9 = document.createTextNode("\r\n\r\n    ");
-        
-        this.element.appendChild(e9);
-
-            const e10 = new PropertyBrowser(this.app);
-            
-            
-            
-        e10.setPrimitiveValue(e10.element, "column", "4" );
+        e5.setPrimitiveValue(e5.element, "column", "4" );
         
 
-        e10.setPrimitiveValue(e10.element, "style", "overflow: auto; width: 100%; height: 100%" );
+        e5.setPrimitiveValue(e5.element, "style", "overflow: auto; width: 100%; height: 100%" );
         
-            this.append(e10);
+            this.append(e5);
 
-
-        const e11 = document.createTextNode("\r\n    \r\n");
-        
-        this.element.appendChild(e11);
                 }
             }
 
