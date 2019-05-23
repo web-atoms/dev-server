@@ -7,6 +7,9 @@ export default interface IFilePath {
     root: string;
     url: string;
     urlDesignMode: string;
+    urlPacked: string;
+    urlDesignModePacked: string;
     visible: boolean;
+    packed?: boolean;
 
 }

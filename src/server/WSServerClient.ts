@@ -2,25 +2,15 @@ import * as colors from "colors/safe";
 import * as fs from "fs";
 import * as W from "ws";
 
-function once(
-    f,
-    n: number = 1000,
-    onError: ((e) => void) = null): void {
-    if (f.timeout) {
-        clearTimeout(f.timeout);
-    }
-    f.timeout = setTimeout(() => {
-        try {
-            f();
-        } catch (e) {
-            if (onError) {
-                onError(e);
-            } else {
-                // tslint:disable-next-line:no-console
-                console.error(e);
-            }
+class Once {
+    private timeout: any;
+
+    public run(fx: ((... p: any[]) => any)): void {
+        if (this.timeout) {
+            clearTimeout(this.timeout);
         }
-    }, n);
+        this.timeout = setTimeout(fx, 1000);
+    }
 }
 
 interface ILogPayload {
@@ -49,11 +39,10 @@ export default class WSServerClient {
         });
     }
 
+    private once: Once = new Once();
     private watcher: { [key: string]: fs.FSWatcher } = {};
     private pingTimer: NodeJS.Timer;
-
-    // tslint:disable-next-line:ban-types
-    private refreshClient: Function;
+    private refreshClient: ((... p: any[]) => any);
 
     constructor(private client: W) {
 
@@ -122,7 +111,7 @@ export default class WSServerClient {
             watcher.close();
         }
         this.watcher[d] = fs.watch(d, { recursive: true }, (e, f) => {
-            once(this.refreshClient);
+            this.once.run(this.refreshClient);
         });
     }
 

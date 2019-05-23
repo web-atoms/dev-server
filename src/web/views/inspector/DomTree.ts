@@ -83,7 +83,6 @@ export default  class DomTree extends AtomItemsControl {
             const e3 = new AtomItemsControl(this.app);
             
             
-            
             e3.bind(e3.element, "items",  [["data","expanded"],["data","children"]], false , (v1,v2) =>  (v1) ? (v2) : []  );
 
                     this.runAfterInit(() => {
@@ -94,6 +93,7 @@ export default  class DomTree extends AtomItemsControl {
             e3.bind(e3.element, "styleDisplay",  [["data","expanded"]], false , (v1) =>  (v1) ? '' : 'none'  );
 
                 e3.setPrimitiveValue(e3.element, "itemTemplate",  __creator.itemTemplate );
+            
             this.append(e3);
 
                 }

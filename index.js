@@ -9,7 +9,7 @@ var WSServer = require("./dist/server/WSServerClient").default;
 var WebSocketServer = require("ws").Server;
 var proxy = require('http-proxy-middleware');
 var fs = require("fs");
-var ifaces = os.networkInterfaces();
+var netFaces = os.networkInterfaces();
 var crypto = require("crypto");
 
 function createCert() {
@@ -23,7 +23,7 @@ function createCert() {
     var forge = require('node-forge');
     var pki = forge.pki;
 
-    // generate a keypair or use one you have already
+    // generate a key pair or use one you have already
     var keys = pki.rsa.generateKeyPair(2048);
 
     // create a new certificate
@@ -107,8 +107,8 @@ function listen(port, ssl) {
             return console.log(err);
         }
 
-        Object.keys(ifaces).forEach(function (dev) {
-            ifaces[dev].forEach(function (details) {
+        Object.keys(netFaces).forEach(function (dev) {
+            netFaces[dev].forEach(function (details) {
               if (details.family === 'IPv4') {
                   if (ssl) {
                     console.log(('  https://' + details.address + ':' + colors.green(port.toString())));

@@ -38,10 +38,16 @@
                     <a class="button" href="{$data.url}" target="_tab">Open </a>
                 </td>
                 <td>
+                    <a class="button" style-display="{ $data.urlPacked ? '' : 'none' }" href="{$data.urlPacked}" target="_tab">Open Packed</a>
+                </td>
+                <td>
                     <a  class="button" href="{$viewModel.inspect($data.url)}" target="_tab">Inspect </a>
                 </td>
                 <td>
                     <a  class="button" href="{$data.urlDesignMode}" target="_tab">Open (Design Mode)</a>
+                </td>
+                <td>
+                    <a  class="button" style-display="{ $data.urlPacked ? '' : 'none' }" href="{$data.urlDesignModePacked}" target="_tab">Open Packed (Design Mode)</a>
                 </td>
                 <td>
                     <a  class="button" href="{$viewModel.inspect($data.urlDesignMode)}" target="_tab">Inspect (Design Mode) </a>

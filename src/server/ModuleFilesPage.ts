@@ -1,10 +1,14 @@
 import { Request, Response, Router } from "express";
-import { fstatSync, ftruncateSync, readdirSync, readFileSync, statSync } from "fs";
+import { existsSync, fstatSync, ftruncateSync, readdirSync, readFileSync, statSync } from "fs";
 import { parse, ParsedPath } from "path";
 import * as path from "path";
 
 // Assign router to the express.Router() instance
 const router: Router = Router();
+
+export interface IPackedFile extends ParsedPath {
+    packed?: boolean;
+}
 
 router.get("/flat-modules", (req: Request, res: Response) => {
 
@@ -22,8 +26,10 @@ function populate(dir: string, files: ParsedPath[]): void {
             continue;
         }
         const filePath = path.join(dir, iterator);
-        const p = parse(filePath);
+        const p = parse(filePath) as IPackedFile;
         if (/\.(html|xaml)/i.test(p.ext)) {
+            const packedFile = path.join(dir, `${p.name}.pack.js`);
+            p.packed = existsSync(packedFile);
             files.push(p);
             continue;
         }

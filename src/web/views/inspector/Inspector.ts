@@ -40,18 +40,18 @@ export default  class Inspector extends AtomGridView {
             const e1 = new DomTree(this.app);
             
             
-            
         e1.setPrimitiveValue(e1.element, "style", "overflow: auto; width: 100%; height: 100%" );
         
+            
             this.append(e1);
 
 
             const e2 = new AtomGridSplitter(this.app);
             
             
-            
         e2.setPrimitiveValue(e2.element, "column", "1" );
         
+            
             this.append(e2);
 
 
@@ -72,14 +72,13 @@ export default  class Inspector extends AtomGridView {
             const e4 = new AtomGridSplitter(this.app);
             
             
-            
         e4.setPrimitiveValue(e4.element, "column", "3" );
         
+            
             this.append(e4);
 
 
             const e5 = new PropertyBrowser(this.app);
-            
             
             
         e5.setPrimitiveValue(e5.element, "column", "4" );
@@ -87,6 +86,7 @@ export default  class Inspector extends AtomGridView {
 
         e5.setPrimitiveValue(e5.element, "style", "overflow: auto; width: 100%; height: 100%" );
         
+            
             this.append(e5);
 
                 }

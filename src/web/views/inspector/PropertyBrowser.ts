@@ -127,7 +127,6 @@ export default  class PropertyBrowser extends AtomItemsControl {
             const e4 = new AtomItemsControl(this.app);
             
             
-            
         e4.setPrimitiveValue(e4.element, "class", "items" );
         
 
@@ -136,6 +135,7 @@ export default  class PropertyBrowser extends AtomItemsControl {
             e4.bind(e4.element, "styleDisplay",  [["data","expanded"]], false , (v1) =>  (v1) ? '' : 'none'  );
 
                 e4.setPrimitiveValue(e4.element, "itemTemplate",  __creator.itemTemplate );
+            
             this.append(e4);
 
                 }

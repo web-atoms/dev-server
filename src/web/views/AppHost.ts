@@ -1,9 +1,8 @@
 // tslint:disable
 import {BindableProperty} from "web-atoms-core/dist/core/BindableProperty";
-import {AtomListBox} from "web-atoms-core/dist/web/controls/AtomListBox";
+import {AtomItemsControl} from "web-atoms-core/dist/web/controls/AtomItemsControl";
 import {AtomGridView} from "web-atoms-core/dist/web/controls/AtomGridView";
 import {AtomControl} from "web-atoms-core/dist/web/controls/AtomControl";
-import {AtomItemsControl} from "web-atoms-core/dist/web/controls/AtomItemsControl";
 
     import AppHostViewModel from "../../view-models/AppHostViewModel";
     import AppHostStyle from "../styles/AppHostStyle";
@@ -95,7 +94,6 @@ export default  class AppHost extends AtomGridView {
             const e9 = new AtomItemsControl(this.app, document.createElement("table"));
             
             
-            
         e9.setPrimitiveValue(e9.element, "class", "grid" );
         
 
@@ -106,15 +104,16 @@ export default  class AppHost extends AtomGridView {
 
             e9.bind(e9.element, "value",  [["viewModel","url"]], true  );
 
-        e9.itemTemplate = AppHost_itemTemplate_1_8Creator(this);
+        e9.itemTemplate = AppHost_itemTemplate_1_7Creator(this);
+            
             
             e8.appendChild(e9.element);
 
                 }
             }
 
-            function AppHost_itemTemplate_1_8Creator(__creator){
-                return  class AppHost_itemTemplate_1_8 extends AtomControl {
+            function AppHost_itemTemplate_1_7Creator(__creator){
+                return  class AppHost_itemTemplate_1_7 extends AtomControl {
 
                 
 
@@ -195,12 +194,15 @@ export default  class AppHost extends AtomGridView {
         
 
             this.runAfterInit( () =>
-            this.setLocalValue(e8, "href", (this.viewModel).inspect(((this.data) ? this.data.url : undefined))) );
+            this.setLocalValue(e8, "styleDisplay",  ((this.data) ? this.data.urlPacked : undefined) ? '' : 'none' ) );
+
+            this.runAfterInit( () =>
+            this.setLocalValue(e8, "href", ((this.data) ? this.data.urlPacked : undefined)) );
 
         this.setPrimitiveValue(e8, "target", "_tab" );
         
             
-        const e9 = document.createTextNode("Inspect ");
+        const e9 = document.createTextNode("Open Packed");
         
         e8.appendChild(e9);
 
@@ -217,12 +219,12 @@ export default  class AppHost extends AtomGridView {
         
 
             this.runAfterInit( () =>
-            this.setLocalValue(e11, "href", ((this.data) ? this.data.urlDesignMode : undefined)) );
+            this.setLocalValue(e11, "href", (this.viewModel).inspect(((this.data) ? this.data.url : undefined))) );
 
         this.setPrimitiveValue(e11, "target", "_tab" );
         
             
-        const e12 = document.createTextNode("Open (Design Mode)");
+        const e12 = document.createTextNode("Inspect ");
         
         e11.appendChild(e12);
 
@@ -239,14 +241,61 @@ export default  class AppHost extends AtomGridView {
         
 
             this.runAfterInit( () =>
-            this.setLocalValue(e14, "href", (this.viewModel).inspect(((this.data) ? this.data.urlDesignMode : undefined))) );
+            this.setLocalValue(e14, "href", ((this.data) ? this.data.urlDesignMode : undefined)) );
 
         this.setPrimitiveValue(e14, "target", "_tab" );
         
             
-        const e15 = document.createTextNode("Inspect (Design Mode) ");
+        const e15 = document.createTextNode("Open (Design Mode)");
         
         e14.appendChild(e15);
+
+            const e16 = document.createElement("td");
+            
+            this.append(e16);
+            
+            
+            const e17 = document.createElement("a");
+            
+            e16.appendChild(e17);
+            
+        this.setPrimitiveValue(e17, "class", "button" );
+        
+
+            this.runAfterInit( () =>
+            this.setLocalValue(e17, "styleDisplay",  ((this.data) ? this.data.urlPacked : undefined) ? '' : 'none' ) );
+
+            this.runAfterInit( () =>
+            this.setLocalValue(e17, "href", ((this.data) ? this.data.urlDesignModePacked : undefined)) );
+
+        this.setPrimitiveValue(e17, "target", "_tab" );
+        
+            
+        const e18 = document.createTextNode("Open Packed (Design Mode)");
+        
+        e17.appendChild(e18);
+
+            const e19 = document.createElement("td");
+            
+            this.append(e19);
+            
+            
+            const e20 = document.createElement("a");
+            
+            e19.appendChild(e20);
+            
+        this.setPrimitiveValue(e20, "class", "button" );
+        
+
+            this.runAfterInit( () =>
+            this.setLocalValue(e20, "href", (this.viewModel).inspect(((this.data) ? this.data.urlDesignMode : undefined))) );
+
+        this.setPrimitiveValue(e20, "target", "_tab" );
+        
+            
+        const e21 = document.createTextNode("Inspect (Design Mode) ");
+        
+        e20.appendChild(e21);
                 }
             }
 
