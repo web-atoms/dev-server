@@ -43,6 +43,8 @@ export default class WSServerClient {
     private watcher: { [key: string]: fs.FSWatcher } = {};
     private pingTimer: NodeJS.Timer;
 
+    private start: any;
+
     constructor(private client: W) {
 
         this.pingTimer = setInterval(() => {
@@ -62,6 +64,7 @@ export default class WSServerClient {
                 case "watch":
                     this.watchPath("./dist");
                     this.watchPath("./node_modules");
+                    this.start = (new Date()).getTime();
                     break;
                 case "console":
                     this.logMessage(msg.payload);
@@ -114,7 +117,15 @@ export default class WSServerClient {
     }
 
     private postUpdate(): void {
+
+        const n = (new Date()).getTime();
+        if (n - this.start < 5000) {
+            return;
+        }
+
         const json = JSON.stringify({ type: "refresh" });
+        // tslint:disable-next-line:no-console
+        console.log(`Requesting client refresh ... `);
         this.client.send(json, (e) => {
             if (e) {
                 // tslint:disable-next-line:no-console
