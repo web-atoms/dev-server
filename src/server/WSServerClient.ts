@@ -1,6 +1,7 @@
 import * as colors from "colors/safe";
 import * as fs from "fs";
 import * as W from "ws";
+import FolderWatcher from "./FolderWatcher";
 
 class Once {
     private timeout: any;
@@ -40,7 +41,7 @@ export default class WSServerClient {
     }
 
     private once: Once = new Once();
-    private watcher: { [key: string]: fs.FSWatcher } = {};
+    private watcher: { [key: string]: FolderWatcher } = {};
     private pingTimer: NodeJS.Timer;
 
     private start: any;
@@ -63,7 +64,7 @@ export default class WSServerClient {
             switch (msg.type) {
                 case "watch":
                     this.watchPath("./dist");
-                    this.watchPath("./node_modules");
+                    // this.watchPath("./node_modules");
                     this.start = (new Date()).getTime();
                     break;
                 case "console":
@@ -111,7 +112,7 @@ export default class WSServerClient {
         if (watcher) {
             watcher.close();
         }
-        this.watcher[d] = fs.watch(d, { recursive: true }, (e, f) => {
+        this.watcher[d] = new FolderWatcher(d, () => {
             this.once.run(() => this.postUpdate());
         });
     }
