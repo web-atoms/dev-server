@@ -1,5 +1,5 @@
 import { readdirSync, statSync, readFileSync, watch } from "fs";
-import md5 from "md5";
+import * as md5 from "md5";
 
 export default class FolderWatcher {
 
