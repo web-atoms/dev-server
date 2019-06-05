@@ -1,6 +1,6 @@
 {
   "name": "web-atoms-dev-server",
-  "version": "1.0.72",
+  "version": "1.0.73",
   "description": "Web Atoms Development server",
   "main": "index.js",
   "scripts": {
