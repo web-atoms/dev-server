@@ -45,11 +45,12 @@ export default class FolderWatcher {
     private readFiles(path: string): void {
         const files = readdirSync(path);
         for (const iterator of files) {
-            const s = statSync(iterator);
+            const filePath = `${path}/${iterator}`;
+            const s = statSync(filePath);
             if (s.isDirectory()) {
-                this.readFiles(iterator);
+                this.readFiles(filePath);
             } else {
-                this.files[iterator] = md5(readFileSync(iterator));
+                this.files[filePath] = md5(readFileSync(filePath));
             }
         }
     }
