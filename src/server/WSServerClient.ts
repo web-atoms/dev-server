@@ -42,7 +42,6 @@ export default class WSServerClient {
     private once: Once = new Once();
     private watcher: { [key: string]: fs.FSWatcher } = {};
     private pingTimer: NodeJS.Timer;
-    private refreshClient: ((... p: any[]) => any);
 
     constructor(private client: W) {
 
@@ -55,7 +54,6 @@ export default class WSServerClient {
             this.processMessage(msg as IWSMessage);
         });
 
-        this.refreshClient = () => this.postUpdate();
     }
 
     private processMessage(msg: IWSMessage): void {
@@ -111,7 +109,7 @@ export default class WSServerClient {
             watcher.close();
         }
         this.watcher[d] = fs.watch(d, { recursive: true }, (e, f) => {
-            this.once.run(this.refreshClient);
+            this.once.run(() => this.postUpdate());
         });
     }
 
