@@ -34,12 +34,16 @@ export default class FolderWatcher {
     private onFileChange(filename: string): void {
         const old = this.files[filename];
         if (!existsSync(filename)) {
+            // tslint:disable-next-line: no-console
+            console.log(`File ${filename} deleted`);
             delete this.files[filename];
             return;
         }
         const n = md5(readFileSync(filename));
         if (old) {
             if (n === old) {
+                // tslint:disable-next-line: no-console
+                console.log(`Md5 for ${filename} is same ${old} = ${n}`);
                 return;
             }
         }
