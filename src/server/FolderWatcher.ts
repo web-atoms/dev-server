@@ -33,12 +33,13 @@ export default class FolderWatcher {
 
     private onFileChange(filename: string): void {
         const old = this.files[filename];
+        const n = md5(readFileSync(filename));
         if (old) {
-            const n = md5(readFileSync(filename));
             if (n === old) {
                 return;
             }
         }
+        this.files[filename] = n;
         this.callback();
     }
 
