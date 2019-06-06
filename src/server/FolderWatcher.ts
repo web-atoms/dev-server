@@ -1,4 +1,4 @@
-import { readdirSync, statSync, readFileSync, watch } from "fs";
+import { readdirSync, statSync, readFileSync, watch, existsSync } from "fs";
 import * as md5 from "md5";
 
 export default class FolderWatcher {
@@ -33,6 +33,10 @@ export default class FolderWatcher {
 
     private onFileChange(filename: string): void {
         const old = this.files[filename];
+        if (!existsSync(filename)) {
+            delete this.files[filename];
+            return;
+        }
         const n = md5(readFileSync(filename));
         if (old) {
             if (n === old) {
