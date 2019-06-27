@@ -1,4 +1,4 @@
-import { readdirSync, statSync, readFileSync, watch, existsSync } from "fs";
+import { existsSync, readdirSync, readFileSync, statSync, watch } from "fs";
 import * as md5 from "md5";
 
 export default class FolderWatcher {
@@ -38,6 +38,12 @@ export default class FolderWatcher {
             // tslint:disable-next-line: no-console
             console.log(`File ${filename} deleted`);
             delete this.files[filename];
+            return;
+        }
+
+        // check if it is a folder...
+        const s = statSync(filename);
+        if (s.isDirectory()) {
             return;
         }
         const n = md5(readFileSync(filename));
