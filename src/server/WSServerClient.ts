@@ -49,7 +49,15 @@ export default class WSServerClient {
     constructor(private client: W) {
 
         this.pingTimer = setInterval(() => {
-            this.client.ping();
+            try {
+                this.client.ping();
+            } catch (e) {
+                // tslint:disable-next-line: no-console
+                console.error(e);
+
+                // this client has been closed...
+                this.dispose();
+            }
         }, 15000);
 
         client.on("message", (d) => {
