@@ -8,7 +8,10 @@ import {AtomGridView} from "web-atoms-core/dist/web/controls/AtomGridView";
 	    import DomTree from "./DomTree";
 	
 	
+	declare var UMD: any;
+	const __moduleName = this.filename;
 	export default class Inspector extends AtomGridView {
+		public static readonly _$_url = __moduleName ;
 		
 		@BindableProperty
 		public  frame: any ;
