@@ -10,6 +10,7 @@ import { IWSMessage } from "../models/IWSMessage";
 import { ModuleFiles } from "../ModuleFiles";
 import ClipboardService from "../services/ClipboardService";
 import FileService from "../services/FileService";
+import Markdown from "@web-atoms/core/dist/core/Markdown";
 
 declare var bridge: any;
 
@@ -83,8 +84,13 @@ export default class AppHostViewModel extends AtomViewModel {
     }
 
     public async copyUrl(url: string) {
+        url = this.toAbsoluteUrl(url);
         await this.clipboardService.copy(url);
-        this.navigationService.notify("Url copied to clipboard successfully");
+        this.navigationService.notify(Markdown.from(`Url "${url}"\ncopied to clipboard successfully`));
+    }
+
+    public toAbsoluteUrl(url: string): string {
+        return `${location.protocol}//${location.host}${url}`;
     }
 
     public refreshUrl(): void {

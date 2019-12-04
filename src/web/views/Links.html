@@ -18,7 +18,7 @@
         class="fas fa-qrcode"
         title="QR Code">
         <div template="page">
-            <QRCodeView code="{$data.url}"></QRCodeView>
+            <QRCodeView code="{ $viewModel.parent.toAbsoluteUrl($data.url) }"></QRCodeView>
         </div>
     </AtomPageLink.i>
 </td>
