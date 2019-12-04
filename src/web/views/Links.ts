@@ -1,7 +1,7 @@
 // tslint:disable
 import {BindableProperty} from "@web-atoms/core/dist/core/BindableProperty";
-import {AtomControl} from "@web-atoms/core/dist/web/controls/AtomControl";
 import {AtomPageLink} from "@web-atoms/core/dist/web/controls/AtomPageLink";
+import {AtomControl} from "@web-atoms/core/dist/web/controls/AtomControl";
 	
 	    import QRCodeView from "./qr/QRCodeView";
 	
@@ -67,14 +67,14 @@ import {AtomPageLink} from "@web-atoms/core/dist/web/controls/AtomPageLink";
 			
 			e3.setPrimitiveValue(e3.element, "title", "QR Code" );
 			
-			e3.page = Links_page_1_14Creator(this);
+			e3.page = Links_page_1_4Creator(this);
 			
 			this.append(e3);
 		}
 	}
 	
-	function Links_page_1_14Creator(__creator) {
-		return class Links_page_1_14 extends AtomControl {
+	function Links_page_1_4Creator(__creator) {
+		return class Links_page_1_4 extends AtomControl {
 			
 			constructor(app: any, e?: any) {
 				super(app, e || document.createElement("div"));

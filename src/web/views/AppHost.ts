@@ -98,14 +98,14 @@ import {AtomControl} from "@web-atoms/core/dist/web/controls/AtomControl";
 			
 			e10.bind(e10.element, "value",  [["viewModel","url"]], true  );
 			
-			e10.itemTemplate = AppHost_itemTemplate_1_13Creator(this);
+			e10.itemTemplate = AppHost_itemTemplate_1_1Creator(this);
 			
 			e9.appendChild(e10.element);
 		}
 	}
 	
-	function AppHost_itemTemplate_1_13Creator(__creator) {
-		return class AppHost_itemTemplate_1_13 extends AtomControl {
+	function AppHost_itemTemplate_1_1Creator(__creator) {
+		return class AppHost_itemTemplate_1_1 extends AtomControl {
 			
 			constructor(app: any, e?: any) {
 				super(app, e || document.createElement("tr"));

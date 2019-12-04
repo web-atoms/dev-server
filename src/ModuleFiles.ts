@@ -17,8 +17,8 @@
       "Inspector": "@web-atoms/dev-server/dist/{platform}/views/inspector/Inspector",
       "PropertyBrowser": "@web-atoms/dev-server/dist/{platform}/views/inspector/PropertyBrowser"
     },
+    "Links": "@web-atoms/dev-server/dist/{platform}/views/Links",
     "Start": "@web-atoms/dev-server/dist/{platform}/views/Start",
-    "AppHost": "@web-atoms/dev-server/dist/{platform}/views/AppHost",
-    "Links": "@web-atoms/dev-server/dist/{platform}/views/Links"
+    "AppHost": "@web-atoms/dev-server/dist/{platform}/views/AppHost"
   }
 }
