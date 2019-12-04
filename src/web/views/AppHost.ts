@@ -1,11 +1,13 @@
 // tslint:disable
 import {BindableProperty} from "@web-atoms/core/dist/core/BindableProperty";
+import {AtomToggleButtonBar} from "@web-atoms/core/dist/web/controls/AtomToggleButtonBar";
 import {AtomItemsControl} from "@web-atoms/core/dist/web/controls/AtomItemsControl";
 import {AtomGridView} from "@web-atoms/core/dist/web/controls/AtomGridView";
 import {AtomControl} from "@web-atoms/core/dist/web/controls/AtomControl";
 	
 	    import AppHostViewModel from "../../view-models/AppHostViewModel";
 	    import AppHostStyle from "../styles/AppHostStyle";
+	    import Links from "./Links";
 	
 	
 	declare var UMD: any;
@@ -35,63 +37,75 @@ import {AtomControl} from "@web-atoms/core/dist/web/controls/AtomControl";
 			
 			this.setPrimitiveValue(e1, "class", "header" );
 			
-			const e2 = document.createElement("input");
+			const e2 = new AtomToggleButtonBar(this.app);
 			
-			e1.appendChild(e2);
+			e2.setPrimitiveValue(e2.element, "labelPath", "label" );
 			
-			this.setPrimitiveValue(e2, "type", "search" );
+			e2.setPrimitiveValue(e2.element, "valuePath", "value" );
 			
-			this.bind(e2, "value",  [["viewModel","search"]], ["change", "keyup", "keydown", "blur"]  );
+			e2.setPrimitiveValue(e2.element, "items", this.viewModel.platforms);
 			
-			this.setPrimitiveValue(e2, "placeholder", "Search..." );
+			e2.bind(e2.element, "value",  [["viewModel","platform"]], true  );
 			
-			const e3 = document.createElement("div");
+			e1.appendChild(e2.element);
+			
+			const e3 = document.createElement("input");
 			
 			e1.appendChild(e3);
 			
-			this.setPrimitiveValue(e3, "class", "topnav-right" );
-			// e4
+			this.setPrimitiveValue(e3, "type", "search" );
+			
+			this.bind(e3, "value",  [["viewModel","search"]], ["change", "keyup", "keydown", "blur"]  );
+			
+			this.setPrimitiveValue(e3, "placeholder", "Search..." );
+			
+			const e4 = document.createElement("div");
+			
+			e1.appendChild(e4);
+			
+			this.setPrimitiveValue(e4, "class", "topnav-right" );
+			// e5
 			//  <a href="[$viewModel.url]" target="_tab">Open New Tab</a>
 			//             <a href="[$viewModel.inspect($viewModel.url)]">Inspect</a> 
 			
-			const e5 = document.createElement("a");
+			const e6 = document.createElement("a");
 			
-			e3.appendChild(e5);
+			e4.appendChild(e6);
 			
-			this.runAfterInit( () => this.setLocalValue(e5, "eventClick",  () => (this.viewModel).refreshUrl() ) );
+			this.runAfterInit( () => this.setLocalValue(e6, "eventClick",  () => (this.viewModel).refreshUrl() ) );
 			
-			const e6 = document.createTextNode("Refresh");
-			e5.appendChild(e6);
-			// e7
+			const e7 = document.createTextNode("Refresh");
+			e6.appendChild(e7);
+			// e8
 			//  <button event-click="{ () => $viewModel.refreshUrl() }">Refresh</button>
 			//         <a href="[$viewModel.inspect($viewModel.url)]" target="_tab">Inspect</a> 
 			
-			const e8 = document.createElement("div");
+			const e9 = document.createElement("div");
 			
-			this.append(e8);
+			this.append(e9);
 			
-			this.setPrimitiveValue(e8, "style", "overflow: auto; width: 100%; height: 100%" );
+			this.setPrimitiveValue(e9, "style", "overflow: auto; width: 100%; height: 100%" );
 			
-			this.setPrimitiveValue(e8, "row", "1" );
+			this.setPrimitiveValue(e9, "row", "1" );
 			
-			const e9 = new AtomItemsControl(this.app, document.createElement("table"));
+			const e10 = new AtomItemsControl(this.app, document.createElement("table"));
 			
-			e9.setPrimitiveValue(e9.element, "class", "grid" );
+			e10.setPrimitiveValue(e10.element, "class", "grid" );
 			
-			e9.bind(e9.element, "items",  [["viewModel","files"]], false , null );
+			e10.bind(e10.element, "items",  [["viewModel","files"]], false , null );
 			
-			e9.setPrimitiveValue(e9.element, "valuePath", "url" );
+			e10.setPrimitiveValue(e10.element, "valuePath", "url" );
 			
-			e9.bind(e9.element, "value",  [["viewModel","url"]], true  );
+			e10.bind(e10.element, "value",  [["viewModel","url"]], true  );
 			
-			e9.itemTemplate = AppHost_itemTemplate_1_1Creator(this);
+			e10.itemTemplate = AppHost_itemTemplate_1_13Creator(this);
 			
-			e8.appendChild(e9.element);
+			e9.appendChild(e10.element);
 		}
 	}
 	
-	function AppHost_itemTemplate_1_1Creator(__creator) {
-		return class AppHost_itemTemplate_1_1 extends AtomControl {
+	function AppHost_itemTemplate_1_13Creator(__creator) {
+		return class AppHost_itemTemplate_1_13 extends AtomControl {
 			
 			constructor(app: any, e?: any) {
 				super(app, e || document.createElement("tr"));
@@ -125,111 +139,71 @@ import {AtomControl} from "@web-atoms/core/dist/web/controls/AtomControl";
 				
 				this.runAfterInit( () => this.setLocalValue(e3, "text", ((this.data) ? this.data.dir : undefined)) );
 				
-				const e4 = document.createElement("td");
+				const e4 = new Links(this.app);
+				
+				e4.setPrimitiveValue(e4.element, "label", "Open" );
+				
+				e4.runAfterInit( () => e4.setLocalValue(e4.element, "url", ((e4.data) ? e4.data.url : undefined)) );
 				
 				this.append(e4);
 				
-				const e5 = document.createElement("a");
+				const e5 = new Links(this.app);
 				
-				e4.appendChild(e5);
+				e5.setPrimitiveValue(e5.element, "label", "Open (Design)" );
 				
-				this.setPrimitiveValue(e5, "class", "button" );
+				e5.runAfterInit( () => e5.setLocalValue(e5.element, "url", ((e5.data) ? e5.data.urlDesignMode : undefined)) );
 				
-				this.runAfterInit( () => this.setLocalValue(e5, "href", ((this.data) ? this.data.url : undefined)) );
+				this.append(e5);
 				
-				this.setPrimitiveValue(e5, "target", "_tab" );
+				const e6 = new Links(this.app);
 				
-				const e6 = document.createTextNode("Open ");
-				e5.appendChild(e6);
+				e6.setPrimitiveValue(e6.element, "label", "Open Packed" );
 				
-				const e7 = document.createElement("td");
+				e6.runAfterInit( () => e6.setLocalValue(e6.element, "url", ((e6.data) ? e6.data.urlPacked : undefined)) );
+				
+				this.append(e6);
+				
+				const e7 = new Links(this.app);
+				
+				e7.setPrimitiveValue(e7.element, "label", "Open Packed (Design)" );
+				
+				e7.runAfterInit( () => e7.setLocalValue(e7.element, "url", ((e7.data) ? e7.data.urlDesignModePacked : undefined)) );
 				
 				this.append(e7);
 				
-				const e8 = document.createElement("a");
+				const e8 = document.createElement("td");
 				
-				e7.appendChild(e8);
+				this.append(e8);
 				
-				this.setPrimitiveValue(e8, "class", "button" );
+				const e9 = document.createElement("a");
 				
-				this.runAfterInit( () => this.setLocalValue(e8, "styleDisplay",  ((this.data) ? this.data.urlPacked : undefined) ? '' : 'none' ) );
-				
-				this.runAfterInit( () => this.setLocalValue(e8, "href", ((this.data) ? this.data.urlPacked : undefined)) );
-				
-				this.setPrimitiveValue(e8, "target", "_tab" );
-				
-				const e9 = document.createTextNode("Open Packed");
 				e8.appendChild(e9);
 				
-				const e10 = document.createElement("td");
+				this.setPrimitiveValue(e9, "class", "button" );
 				
-				this.append(e10);
+				this.runAfterInit( () => this.setLocalValue(e9, "href", (this.viewModel).inspect(((this.data) ? this.data.url : undefined))) );
 				
-				const e11 = document.createElement("a");
+				this.setPrimitiveValue(e9, "target", "_tab" );
 				
-				e10.appendChild(e11);
+				const e10 = document.createTextNode("Inspect ");
+				e9.appendChild(e10);
 				
-				this.setPrimitiveValue(e11, "class", "button" );
+				const e11 = document.createElement("td");
 				
-				this.runAfterInit( () => this.setLocalValue(e11, "href", (this.viewModel).inspect(((this.data) ? this.data.url : undefined))) );
+				this.append(e11);
 				
-				this.setPrimitiveValue(e11, "target", "_tab" );
+				const e12 = document.createElement("a");
 				
-				const e12 = document.createTextNode("Inspect ");
 				e11.appendChild(e12);
 				
-				const e13 = document.createElement("td");
+				this.setPrimitiveValue(e12, "class", "button" );
 				
-				this.append(e13);
+				this.runAfterInit( () => this.setLocalValue(e12, "href", (this.viewModel).inspect(((this.data) ? this.data.urlDesignMode : undefined))) );
 				
-				const e14 = document.createElement("a");
+				this.setPrimitiveValue(e12, "target", "_tab" );
 				
-				e13.appendChild(e14);
-				
-				this.setPrimitiveValue(e14, "class", "button" );
-				
-				this.runAfterInit( () => this.setLocalValue(e14, "href", ((this.data) ? this.data.urlDesignMode : undefined)) );
-				
-				this.setPrimitiveValue(e14, "target", "_tab" );
-				
-				const e15 = document.createTextNode("Open (Design Mode)");
-				e14.appendChild(e15);
-				
-				const e16 = document.createElement("td");
-				
-				this.append(e16);
-				
-				const e17 = document.createElement("a");
-				
-				e16.appendChild(e17);
-				
-				this.setPrimitiveValue(e17, "class", "button" );
-				
-				this.runAfterInit( () => this.setLocalValue(e17, "styleDisplay",  ((this.data) ? this.data.urlPacked : undefined) ? '' : 'none' ) );
-				
-				this.runAfterInit( () => this.setLocalValue(e17, "href", ((this.data) ? this.data.urlDesignModePacked : undefined)) );
-				
-				this.setPrimitiveValue(e17, "target", "_tab" );
-				
-				const e18 = document.createTextNode("Open Packed (Design Mode)");
-				e17.appendChild(e18);
-				
-				const e19 = document.createElement("td");
-				
-				this.append(e19);
-				
-				const e20 = document.createElement("a");
-				
-				e19.appendChild(e20);
-				
-				this.setPrimitiveValue(e20, "class", "button" );
-				
-				this.runAfterInit( () => this.setLocalValue(e20, "href", (this.viewModel).inspect(((this.data) ? this.data.urlDesignMode : undefined))) );
-				
-				this.setPrimitiveValue(e20, "target", "_tab" );
-				
-				const e21 = document.createTextNode("Inspect (Design Mode) ");
-				e20.appendChild(e21);
+				const e13 = document.createTextNode("Inspect (Design Mode) ");
+				e12.appendChild(e13);
 			}
 		}
 	}

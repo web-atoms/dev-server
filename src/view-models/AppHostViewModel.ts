@@ -4,9 +4,11 @@ import { Inject } from "@web-atoms/core/dist/di/Inject";
 import { NavigationService } from "@web-atoms/core/dist/services/NavigationService";
 import { AtomViewModel, Watch } from "@web-atoms/core/dist/view-model/AtomViewModel";
 import BindableUrlParameter from "@web-atoms/core/dist/view-model/BindableUrlParameter";
+import Load from "@web-atoms/core/dist/view-model/Load";
 import IFilePath from "../models/IFilePath";
 import { IWSMessage } from "../models/IWSMessage";
 import { ModuleFiles } from "../ModuleFiles";
+import ClipboardService from "../services/ClipboardService";
 import FileService from "../services/FileService";
 
 declare var bridge: any;
@@ -29,15 +31,18 @@ export default class AppHostViewModel extends AtomViewModel {
     @BindableUrlParameter("url")
     public url: string;
 
-    public search: string;
+    public search: string = "";
 
-    constructor(
-        @Inject app: App,
-        @Inject public readonly navigationService: NavigationService,
-        @Inject public readonly fileService: FileService
-    ) {
-        super(app);
-    }
+    public platforms = [
+        { label: "Web", value: "web" },
+        { label: "XF", value: "xf" }
+    ];
+
+    public platform = "web";
+
+    @Inject public readonly navigationService: NavigationService;
+    @Inject public readonly fileService: FileService;
+    @Inject public readonly clipboardService: ClipboardService;
 
     public onMessage(m: IWSMessage): void {
         if (m.type === "refresh") {
@@ -45,22 +50,14 @@ export default class AppHostViewModel extends AtomViewModel {
         }
     }
 
-    @Watch
-    public onSearch(): void {
+    @Load({ init: true, watch: true })
+    public async loadFiles(): Promise<any> {
+
+        const cl = this.navigationService.location;
         let s = this.search;
         if (s) {
             s = s.toLowerCase();
         }
-        for (const iterator of this.files) {
-            iterator.visible = s ? ( iterator.name.toLowerCase().indexOf(s) !== -1 ) : true;
-        }
-    }
-
-    public async init(): Promise<any> {
-
-        const cl = this.navigationService.location;
-
-        const platform: string = (cl.query.platform || "web").toString();
 
         const urls = (await this.fileService.getModules()).files;
         for (const iterator of urls) {
@@ -71,14 +68,23 @@ export default class AppHostViewModel extends AtomViewModel {
                 iterator.urlPacked = `/`;
             }
         }
-        const fm: RegExp = fileMatcher[platform];
+        const fm: RegExp = fileMatcher[this.platform];
         this.files = urls.filter( (f) => {
             fm.lastIndex = 0;
+            f.visible = true;
+            if (s) {
+                f.visible = f.name.toLowerCase().indexOf(s) !== -1;
+            }
             if (fm) {
                 return fm.test(f.ext);
             }
             return true;
         } );
+    }
+
+    public async copyUrl(url: string) {
+        await this.clipboardService.copy(url);
+        this.navigationService.notify("Url copied to clipboard successfully");
     }
 
     public refreshUrl(): void {

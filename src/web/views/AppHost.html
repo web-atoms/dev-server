@@ -1,6 +1,7 @@
 <script>
     import AppHostViewModel from "~/src/view-models/AppHostViewModel";
     import AppHostStyle from "~/src/web/styles/AppHostStyle";
+    import Links from "./Links";
 </script>
 <AtomGridView
     default-style="{ AppHostStyle }"
@@ -9,6 +10,11 @@
     rows="50, *">
 
     <header row="0" class="header">
+        <AtomToggleButtonBar
+            label-path="label"
+            value-path="value"
+            items="{this.viewModel.platforms}"
+            value="$[viewModel.platform]"></AtomToggleButtonBar>
         <input type="search" value="^[$viewModel.search]" placeholder="Search..."/>
         <div class="topnav-right">
             <!-- <a href="[$viewModel.url]" target="_tab">Open New Tab</a>
@@ -34,20 +40,15 @@
                     <div text="{$data.name}" title="{$data.dir}" style="font-weight: 500;"></div>
                     <div style="font-size: small;" text="{$data.dir}"></div>
                 </td>
-                <td>
-                    <a class="button" href="{$data.url}" target="_tab">Open </a>
-                </td>
-                <td>
-                    <a class="button" style-display="{ $data.urlPacked ? '' : 'none' }" href="{$data.urlPacked}" target="_tab">Open Packed</a>
-                </td>
+
+                <Links label="Open" url="{$data.url}"></Links>
+                <Links label="Open (Design)" url="{$data.urlDesignMode}"></Links>
+
+                <Links label="Open Packed" url="{$data.urlPacked}"></Links>
+                <Links label="Open Packed (Design)" url="{$data.urlDesignModePacked}"></Links>
+
                 <td>
                     <a  class="button" href="{$viewModel.inspect($data.url)}" target="_tab">Inspect </a>
-                </td>
-                <td>
-                    <a  class="button" href="{$data.urlDesignMode}" target="_tab">Open (Design Mode)</a>
-                </td>
-                <td>
-                    <a  class="button" style-display="{ $data.urlPacked ? '' : 'none' }" href="{$data.urlDesignModePacked}" target="_tab">Open Packed (Design Mode)</a>
                 </td>
                 <td>
                     <a  class="button" href="{$viewModel.inspect($data.urlDesignMode)}" target="_tab">Inspect (Design Mode) </a>

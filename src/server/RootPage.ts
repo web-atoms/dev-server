@@ -45,7 +45,7 @@ function prepareHtml(req: Request, res: Response, viewPath: string, autoRefresh:
     const body = `
             ${da.join("\r\n")}
             UMD.map("${current}","/_files/");
-            UMD.map("web-atoms-dev-server", "${devServer}");
+            UMD.map("@web-atoms/dev-server", "${devServer}");
             UMD.lang = "en-US";
             UMD.loadView("${viewPath}", ${ designMode });
 `;
@@ -64,7 +64,7 @@ function prepareHtml(req: Request, res: Response, viewPath: string, autoRefresh:
 
         <meta name="viewport"   content="width=device-width"/>
         <title>Web Atoms - </title>
-        <script src="/_files/node_modules/web-atoms-amd-loader/umd.js"></script>
+        <script src="/_files/node_modules/@web-atoms/module-loader/umd.js"></script>
         <style>
         html, body {
             margin: 0;
@@ -96,13 +96,13 @@ router.get("/", (req: Request, res: Response) => {
 
     const pf = req.query.platform || "web";
 
-    const html = prepareHtml(req, res, `web-atoms-dev-server/dist/${pf}/views/AppHost`, false);
+    const html = prepareHtml(req, res, `@web-atoms/dev-server/dist/${pf}/views/AppHost`, false);
     res.setHeader("cache-control", "no-cache");
     return res.send(html);
 });
 
 router.get("/_inspect", (req, res) => {
-    const html = prepareHtml(req, res, "web-atoms-dev-server/dist/web/views/inspector/Inspector", false);
+    const html = prepareHtml(req, res, "@web-atoms/dev-server/dist/web/views/inspector/Inspector", false);
     res.setHeader("cache-control", "no-cache");
     return res.send(html);
 });

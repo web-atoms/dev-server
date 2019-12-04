@@ -8,6 +8,7 @@ const router: Router = Router();
 
 export interface IPackedFile extends ParsedPath {
     packed?: boolean;
+    xf?: boolean;
 }
 
 router.get("/flat-modules", (req: Request, res: Response) => {
@@ -30,6 +31,7 @@ function populate(dir: string, files: ParsedPath[]): void {
         if (/\.(html|xaml)/i.test(p.ext)) {
             const packedFile = path.join(dir, `${p.name}.pack.js`);
             p.packed = existsSync(packedFile);
+            p.xf = /xaml/i.test(p.ext);
             files.push(p);
             continue;
         }

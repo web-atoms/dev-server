@@ -30,7 +30,7 @@
                 "panel": "dedicated"
             },
             "args": [
-                "${env:APPDATA}/npm/node_modules/web-atoms-generator/bin/component-generator.js",
+                "${env:APPDATA}/npm/node_modules/@web-atoms/generator/bin/component-generator.js",
                 "."
             ],
             "problemMatcher": {
