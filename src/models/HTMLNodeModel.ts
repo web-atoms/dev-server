@@ -1,7 +1,7 @@
-import { AtomBinder } from "web-atoms-core/dist/core/AtomBinder";
-import { IDisposable } from "web-atoms-core/dist/core/types";
-import { AtomControl } from "web-atoms-core/dist/web/controls/AtomControl";
-import { ChildEnumerator } from "web-atoms-core/dist/web/core/AtomUI";
+import { AtomBinder } from "@web-atoms/core/dist/core/AtomBinder";
+import { IDisposable } from "@web-atoms/core/dist/core/types";
+import { AtomControl } from "@web-atoms/core/dist/web/controls/AtomControl";
+import { ChildEnumerator } from "@web-atoms/core/dist/web/core/AtomUI";
 
 export default class HTMLNodeModel implements IDisposable {
 

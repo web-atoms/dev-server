@@ -1,5 +1,5 @@
 // tslint:disable
-import WebImage from "web-atoms-core/dist/core/WebImage";
+import WebImage from "@web-atoms/core/dist/core/WebImage";
 
 const base64 = ["iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAL",
 		"EwAACxMBAJqcGAAAB0FJREFUeJzt3XnIvekcx/H3b8xmH3v2yDDZapDESEaWaGQmWf4gkhoppSiSJCKk",

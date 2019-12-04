@@ -1,4 +1,5 @@
-import { AtomViewModel, BindableBroadcast, BindableReceive, Watch } from "web-atoms-core/dist/view-model/AtomViewModel";
+// tslint:disable-next-line: max-line-length
+import { AtomViewModel, BindableBroadcast, BindableReceive, Watch } from "@web-atoms/core/dist/view-model/AtomViewModel";
 import HTMLNodeModel from "../../models/HTMLNodeModel";
 
 export default class DomTreeViewModel extends AtomViewModel {

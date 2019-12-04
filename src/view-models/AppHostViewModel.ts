@@ -1,9 +1,9 @@
-import { App } from "web-atoms-core/dist/App";
-import { Atom } from "web-atoms-core/dist/Atom";
-import { Inject } from "web-atoms-core/dist/di/Inject";
-import { NavigationService } from "web-atoms-core/dist/services/NavigationService";
-import { AtomViewModel, Watch } from "web-atoms-core/dist/view-model/AtomViewModel";
-import BindableUrlParameter from "web-atoms-core/dist/view-model/BindableUrlParameter";
+import { App } from "@web-atoms/core/dist/App";
+import { Atom } from "@web-atoms/core/dist/Atom";
+import { Inject } from "@web-atoms/core/dist/di/Inject";
+import { NavigationService } from "@web-atoms/core/dist/services/NavigationService";
+import { AtomViewModel, Watch } from "@web-atoms/core/dist/view-model/AtomViewModel";
+import BindableUrlParameter from "@web-atoms/core/dist/view-model/BindableUrlParameter";
 import IFilePath from "../models/IFilePath";
 import { IWSMessage } from "../models/IWSMessage";
 import { ModuleFiles } from "../ModuleFiles";

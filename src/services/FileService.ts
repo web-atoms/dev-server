@@ -1,5 +1,5 @@
-import { RegisterSingleton } from "web-atoms-core/dist/di/RegisterSingleton";
-import { BaseService, Get } from "web-atoms-core/dist/services/http/RestService";
+import { RegisterSingleton } from "@web-atoms/core/dist/di/RegisterSingleton";
+import { BaseService, Get } from "@web-atoms/core/dist/services/http/RestService";
 import IFilePath from "../models/IFilePath";
 import IFilePathResult from "../models/IFilePathResult";
 

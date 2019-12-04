@@ -1,4 +1,4 @@
-import { PropertyMap } from "web-atoms-core/dist/core/PropertyMap";
+import { PropertyMap } from "@web-atoms/core/dist/core/PropertyMap";
 export default class PropertyModel {
 
     public static isArray(t: any): boolean {

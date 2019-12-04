@@ -1,5 +1,5 @@
-import { AtomViewModel, BindableReceive, Watch } from "web-atoms-core/dist/view-model/AtomViewModel";
-import { AtomControl } from "web-atoms-core/dist/web/controls/AtomControl";
+import { AtomViewModel, BindableReceive, Watch } from "@web-atoms/core/dist/view-model/AtomViewModel";
+import { AtomControl } from "@web-atoms/core/dist/web/controls/AtomControl";
 import HTMLNodeModel from "../../models/HTMLNodeModel";
 import PropertyModel from "../../models/PropertyModel";
 

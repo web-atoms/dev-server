@@ -9,20 +9,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/neurospeech/web-atoms-dev-server.git"
+    "url": "git+https://github.com/web-atoms/dev-server.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/neurospeech/web-atoms-dev-server/issues"
+    "url": "https://github.com/web-atoms/dev-server/issues"
   },
-  "homepage": "https://github.com/neurospeech/web-atoms-dev-server#readme",
+  "homepage": "https://github.com/web-atoms/dev-server#readme",
   "dependencies": {
     "@types/express": "^4.17.2",
-    "@types/node": "^10.17.3",
-    "@types/ws": "^6.0.3",
-    "@web-atoms/module-loader": "^1.0.373",
+    "@types/node": "^10.17.6",
+    "@types/ws": "^6.0.4",
+    "@web-atoms/core": "^1.0.909",
     "@web-atoms/date-time": "^1.0.21",
+    "@web-atoms/module-loader": "^1.0.376",
     "colors": "^1.4.0",
     "ecstatic": "^3.3.2",
     "express": "^4.17.1",
@@ -32,7 +33,6 @@
     "os": "^0.1.1",
     "portfinder": "^1.0.25",
     "reflect-metadata": "^0.1.13",
-    "web-atoms-core": "^1.0.883",
     "ws": "^6.2.1"
   }
 }

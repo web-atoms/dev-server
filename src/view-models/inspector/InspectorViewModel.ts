@@ -1,6 +1,6 @@
-import { AtomViewModel, BindableBroadcast } from "web-atoms-core/dist/view-model/AtomViewModel";
-import BindableUrlParameter from "web-atoms-core/dist/view-model/BindableUrlParameter";
-import { AtomControl } from "web-atoms-core/dist/web/controls/AtomControl";
+import { AtomViewModel, BindableBroadcast } from "@web-atoms/core/dist/view-model/AtomViewModel";
+import BindableUrlParameter from "@web-atoms/core/dist/view-model/BindableUrlParameter";
+import { AtomControl } from "@web-atoms/core/dist/web/controls/AtomControl";
 import HTMLNodeModel from "../../models/HTMLNodeModel";
 
 export default class InspectorViewModel extends AtomViewModel {

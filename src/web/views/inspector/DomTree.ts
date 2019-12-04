@@ -1,7 +1,7 @@
 // tslint:disable
-import {BindableProperty} from "web-atoms-core/dist/core/BindableProperty";
-import {AtomItemsControl} from "web-atoms-core/dist/web/controls/AtomItemsControl";
-import {AtomControl} from "web-atoms-core/dist/web/controls/AtomControl";
+import {BindableProperty} from "@web-atoms/core/dist/core/BindableProperty";
+import {AtomItemsControl} from "@web-atoms/core/dist/web/controls/AtomItemsControl";
+import {AtomControl} from "@web-atoms/core/dist/web/controls/AtomControl";
 	
 	    import DomTreeViewModel from "../../../view-models/inspector/DomTreeViewModel";
 	    import DomTreeStyle from "../../styles/DomTreeStyle";
