@@ -28,10 +28,10 @@ function populate(dir: string, files: ParsedPath[]): void {
         }
         const filePath = path.join(dir, iterator);
         const p = parse(filePath) as IPackedFile;
-        if (/\.(html|xaml)/i.test(p.ext)) {
+        if (/\.(html|xaml|tsx)/i.test(p.ext)) {
             const packedFile = path.join(dir, `${p.name}.pack.js`);
             p.packed = existsSync(packedFile);
-            p.xf = /xaml/i.test(p.ext);
+            p.xf = /xaml|tsx/i.test(p.ext);
             files.push(p);
             continue;
         }
