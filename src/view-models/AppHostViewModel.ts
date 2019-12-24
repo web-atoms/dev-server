@@ -76,9 +76,9 @@ export default class AppHostViewModel extends AtomViewModel {
             if (s) {
                 f.visible = f.name.toLowerCase().indexOf(s) !== -1;
             }
-            if (fm) {
-                return fm.test(f.ext);
-            }
+            // if (fm) {
+            //     return fm.test(f.ext);
+            // }
             return true;
         } );
     }
