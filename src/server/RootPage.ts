@@ -46,6 +46,7 @@ function prepareHtml(req: Request, res: Response, viewPath: string, autoRefresh:
             ${da.join("\r\n")}
             UMD.map("${current}","/_files/");
             UMD.map("@web-atoms/dev-server", "${devServer}");
+            UMD.map("qrcode", "${devServer}/node_modules/qrcode");
             UMD.lang = "en-US";
             UMD.loadView("${viewPath}", ${ designMode });
 `;

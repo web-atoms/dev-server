@@ -67,14 +67,14 @@ import {AtomControl} from "@web-atoms/core/dist/web/controls/AtomControl";
 			
 			e3.setPrimitiveValue(e3.element, "title", "QR Code" );
 			
-			e3.page = Links_page_1_8Creator(this);
+			e3.page = Links_page_1_4Creator(this);
 			
 			this.append(e3);
 		}
 	}
 	
-	function Links_page_1_8Creator(__creator) {
-		return class Links_page_1_8 extends AtomControl {
+	function Links_page_1_4Creator(__creator) {
+		return class Links_page_1_4 extends AtomControl {
 			
 			constructor(app: any, e?: any) {
 				super(app, e || document.createElement("div"));
