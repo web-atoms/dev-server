@@ -109,6 +109,6 @@ export default class AppHostViewModel extends AtomViewModel {
 }
 
 const fileMatcher = {
-    xf: /\.xaml/gi,
+    xf: /\.(xaml|tsx)/gi,
     web: /\.html/gi
 };
