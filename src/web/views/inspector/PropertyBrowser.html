@@ -38,7 +38,7 @@
             class="items"
             items="[ $data.expanded ? ( $data.isObject ? $data.value : []) : [] ]"
             style-display="[ $data.expanded ? '' : 'none' ]"
-            item-template="{ __creator.itemTemplate }">
+            item-template="{ this.itemTemplate }">
         </AtomItemsControl>
 
     </div>

@@ -2,13 +2,12 @@
     import QRCodeView from "./qr/QRCodeView";
 </script>
 <td
-    @properties=" label: string = 'Open', url: string = null"
+    @properties=" label: string = 'Open', url: string = null, showQrCode: boolean = false"
     style-display="[$this.url ? '' : 'none']">
     <a
         class="button"
         href="[$this.url]" target="_tab" text="[$this.label]"></a>
-    <i
-        class="fas fa-copy"
+    <i class="fas fa-copy"
         title="Copy Url"
         style="margin: 5px; cursor: pointer;"
         event-click="{ () => this.viewModel.copyUrl($data.url) }"></i>

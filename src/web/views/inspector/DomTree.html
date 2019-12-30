@@ -21,9 +21,9 @@
             text="{ $data.label }"></span>
         <AtomItemsControl
             items="[ $data.expanded ? $data.children : [] ]"
-            style-class="{ __creator.controlStyle.root }"
+            style-class="{ this.controlStyle.root }"
             style-display="[ $data.expanded ? '' : 'none' ]"
-            item-template="{ __creator.itemTemplate }"
+            item-template="{ this.itemTemplate }"
             ></AtomItemsControl>
     </div>
 
