@@ -8,6 +8,8 @@
         "outDir": "dist",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
+        "jsx": "react",
+        "jsxFactory": "XNode.create",
         "lib": [
             "es6",
             "dom"
