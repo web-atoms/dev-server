@@ -5,8 +5,7 @@ import {BindableProperty} from "@web-atoms/core/dist/core/BindableProperty";
 import {AtomPageLink} from "@web-atoms/core/dist/web/controls/AtomPageLink";
 import {AtomControl} from "@web-atoms/core/dist/web/controls/AtomControl";
 
-    import QRCodeView from "./qr/QRCodeView";
-
+    import QRCodeView from "./qr/QRCodeView";
 
 
 export default class Links extends AtomControl {
@@ -46,7 +45,8 @@ export default class Links extends AtomControl {
 				class="fas fa-qrcode"
 				title="QR Code"
 				for="i">
-				<div>
+				<div
+					template="page">
 					<QRCodeView
 						code={Bind.oneTime((x) => x.viewModel.parent.toAbsoluteUrl(x.data.url))}>
 					</QRCodeView>

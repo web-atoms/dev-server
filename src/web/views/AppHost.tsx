@@ -5,20 +5,24 @@ import {BindableProperty} from "@web-atoms/core/dist/core/BindableProperty";
 import {AtomItemsControl} from "@web-atoms/core/dist/web/controls/AtomItemsControl";
 import {AtomGridView} from "@web-atoms/core/dist/web/controls/AtomGridView";
 
-    import AppHostViewModel from "../../view-models/AppHostViewModel";
-    import AppHostStyle from "../styles/AppHostStyle";
-    import Links from "./Links";
+    import AppHostViewModel from "../../view-models/AppHostViewModel";
+
+    import AppHostStyle from "../styles/AppHostStyle";
+
+    import Links from "./Links";
+
 
 
 export default class AppHost extends AtomGridView {
 
 	public create(): void {
 	this.viewModel =  this.resolve(AppHostViewModel) ;
+		this.defaultControlStyle = AppHostStyle;
+		this.rows = "50, *";
 
 		this.render(
 		<div
-			styleClass={Bind.oneTime(() => this.controlStyle.root)}
-			rows="50, *">
+			styleClass={Bind.oneTime(() => this.controlStyle.root)}>
 			<header
 				row="0"
 				class="header">
@@ -29,16 +33,20 @@ export default class AppHost extends AtomGridView {
 				</input>
 				<div
 					class="topnav-right">
-					{/* e4
-					//  <a href="[$viewModel.url]" target="_tab">Open New Tab</a>
+					{/* e4
+
+					//  <a href="[$viewModel.url]" target="_tab">Open New Tab</a>
+
 					//             <a href="[$viewModel.inspect($viewModel.url)]">Inspect</a>  */}
 					<a
 						eventClick={Bind.event((x) => (x.viewModel).refreshUrl())}>
 						Refresh
 					</a>
 				</div>
-				{/* e7
-				//  <button event-click="{ () => $viewModel.refreshUrl() }">Refresh</button>
+				{/* e7
+
+				//  <button event-click="{ () => $viewModel.refreshUrl() }">Refresh</button>
+
 				//         <a href="[$viewModel.inspect($viewModel.url)]" target="_tab">Inspect</a>  */}
 			</header>
 			<div
@@ -51,7 +59,8 @@ export default class AppHost extends AtomGridView {
 					value={Bind.twoWays((x) => x.viewModel.url)}
 					for="table">
 					<tr
-						styleDisplay={Bind.oneWay((x) => x.data.visible ? '' : 'none')}>
+						styleDisplay={Bind.oneWay((x) => x.data.visible ? '' : 'none')}
+						template="itemTemplate">
 						<td>
 							<div
 								text={Bind.oneTime((x) => x.data.name)}

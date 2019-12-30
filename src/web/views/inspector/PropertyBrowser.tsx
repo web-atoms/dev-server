@@ -12,6 +12,7 @@ export default class PropertyBrowser extends AtomItemsControl {
 
 	public create(): void {
 	this.viewModel =  this.resolve(PropertyBrowserViewModel) ;
+		this.defaultControlStyle = PropertyBrowserStyle;
 
 		this.render(
 		<div
@@ -26,7 +27,8 @@ export default class PropertyBrowser extends AtomItemsControl {
 				class="presenter">
 			</div>
 			<div
-				class="item">
+				class="item"
+				template="itemTemplate">
 				<span
 					class="index"
 					text={Bind.oneTime((x) => x.data.index)}>

@@ -14,12 +14,14 @@ export default class DomTree extends AtomItemsControl {
 
 	public create(): void {
 	this.viewModel =  this.resolve(DomTreeViewModel) ;
+		this.defaultControlStyle = DomTreeStyle;
 
 		this.render(
 		<div
 			styleClass={Bind.oneTime(() => this.controlStyle.root)}
 			items={Bind.oneWay((x) => x.viewModel.body.children)}>
 			<div
+				template="itemTemplate"
 				class={Bind.oneWay((x) => x.data.className)}>
 				<img
 					src={Bind.oneWay((x) => x.data.expanded ? DownArrowDataUrl : RightArrowDataUrl)}
