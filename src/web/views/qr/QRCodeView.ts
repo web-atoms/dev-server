@@ -28,6 +28,9 @@ export default class QRCodeView extends AtomControl {
     }
 
     protected async prepareCode(v) {
+        if (!v) {
+            return;
+        }
         await QRCode.toCanvas(this.element, v);
     }
 

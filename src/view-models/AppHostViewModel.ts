@@ -69,16 +69,11 @@ export default class AppHostViewModel extends AtomViewModel {
                 iterator.urlPacked = `/`;
             }
         }
-        const fm: RegExp = fileMatcher[this.platform];
         this.files = urls.filter( (f) => {
-            fm.lastIndex = 0;
             f.visible = true;
             if (s) {
                 f.visible = f.name.toLowerCase().indexOf(s) !== -1;
             }
-            // if (fm) {
-            //     return fm.test(f.ext);
-            // }
             return true;
         } );
     }
@@ -107,8 +102,3 @@ export default class AppHostViewModel extends AtomViewModel {
         this.navigationService.location = url;
     }
 }
-
-const fileMatcher = {
-    xf: /\.(xaml|tsx)/gi,
-    web: /\.html/gi
-};
