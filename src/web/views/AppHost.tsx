@@ -74,18 +74,22 @@ export default class AppHost extends AtomGridView {
 						</td>
 						<Links
 							label="Open"
+							showQrCode={true}
 							url={Bind.oneTime((x) => x.data.url)}>
 						</Links>
 						<Links
 							label="Open (Design)"
+							showQrCode={true}
 							url={Bind.oneTime((x) => x.data.urlDesignMode)}>
 						</Links>
 						<Links
 							label="Open Packed"
+							showQrCode={true}
 							url={Bind.oneTime((x) => x.data.urlPacked)}>
 						</Links>
 						<Links
 							label="Open Packed (Design)"
+							showQrCode={true}
 							url={Bind.oneTime((x) => x.data.urlDesignModePacked)}>
 						</Links>
 						<td>
