@@ -43,10 +43,10 @@ function prepareHtml(req: Request, res: Response, viewPath: string, autoRefresh:
     const refresh = autoRefresh ? `<script src="${devServer}/refresh.js"></script>` : "";
 
     const body = `
-            UMD.setupRoot("${current}","/_files");
             UMD.map("@web-atoms/dev-server", "${devServer}");
             UMD.map("reflect-metadata","/_files/node_modules/reflect-metadata/Reflect.js");
             UMD.map("qrcode", "${devServer}/node_modules/qrcode");
+            UMD.setupRoot("${current}","/_files");
             UMD.lang = "en-US";
             UMD.loadView("${viewPath}", ${ designMode });
 `;
