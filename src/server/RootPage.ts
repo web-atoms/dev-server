@@ -26,27 +26,27 @@ function prepareHtml(req: Request, res: Response, viewPath: string, autoRefresh:
     const current = json.name;
     viewPath = viewPath.replace("$CURRENT$", current);
 
-    // const d = json.dependencies || {};
+    const d = json.dependencies || {};
 
-    // const da: string[] = [];
-    // for (const key in d) {
-    //     if (d.hasOwnProperty(key)) {
-    //         const element = key;
-    //         if (element === "reflect-metadata") {
-    //             da.push(`\t\t\t\tUMD.map("reflect-metadata","/_files/node_modules/reflect-metadata/Reflect.js");`);
-    //         } else {
-    //             da.push(`\t\t\t\tUMD.map("${element}","/_files/node_modules/${element}");`);
-    //         }
-    //     }
-    // }
+    const da: string[] = [];
+    for (const key in d) {
+        if (d.hasOwnProperty(key)) {
+            const element = key;
+            if (element === "reflect-metadata") {
+                da.push(`\t\t\t\tUMD.map("reflect-metadata","/_files/node_modules/reflect-metadata/Reflect.js");`);
+            } else {
+                da.push(`\t\t\t\tUMD.map("${element}","/_files/node_modules/${element}");`);
+            }
+        }
+    }
 
     const refresh = autoRefresh ? `<script src="${devServer}/refresh.js"></script>` : "";
 
     const body = `
+            ${da.join("\r\n")}
+            UMD.map("${current}","/_files/");
             UMD.map("@web-atoms/dev-server", "${devServer}");
-            UMD.map("reflect-metadata","/_files/node_modules/reflect-metadata/Reflect.js");
             UMD.map("qrcode", "${devServer}/node_modules/qrcode");
-            UMD.setupRoot("${current}","/_files");
             UMD.lang = "en-US";
             UMD.loadView("${viewPath}", ${ designMode });
 `;
