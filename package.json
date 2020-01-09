@@ -23,7 +23,7 @@
     "@types/ws": "^6.0.4",
     "@web-atoms/core": "^1.0.944",
     "@web-atoms/date-time": "^1.0.21",
-    "@web-atoms/module-loader": "^1.0.376",
+    "@web-atoms/module-loader": "^1.0.395",
     "colors": "^1.4.0",
     "ecstatic": "^3.3.2",
     "express": "^4.17.1",

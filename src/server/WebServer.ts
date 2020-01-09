@@ -15,22 +15,21 @@ class WebServer {
 
     private mountRoutes(): void {
 
+        // this.express.use();
         this.express.use(RootPage);
 
         this.express.use(ModuleFilesPage);
 
-        // this.express.use();
-
         this.express.use(e({
-            root: "./",
-            baseDir: "_files",
+            root: __dirname + "/../../",
+            baseDir: "_dev",
             showdir: true,
             cache: 1
         }));
 
         this.express.use(e({
-            root: __dirname + "/../../",
-            baseDir: "_dev",
+            root: "./",
+            baseDir: "",
             showdir: true,
             cache: 1
         }));

@@ -29,22 +29,23 @@ function prepareHtml(req: Request, res: Response, viewPath: string, autoRefresh:
     const d = json.dependencies || {};
 
     const da: string[] = [];
-    for (const key in d) {
-        if (d.hasOwnProperty(key)) {
-            const element = key;
-            if (element === "reflect-metadata") {
-                da.push(`\t\t\t\tUMD.map("reflect-metadata","/_files/node_modules/reflect-metadata/Reflect.js");`);
-            } else {
-                da.push(`\t\t\t\tUMD.map("${element}","/_files/node_modules/${element}");`);
-            }
-        }
-    }
+    // for (const key in d) {
+    //     if (d.hasOwnProperty(key)) {
+    //         const element = key;
+    //         if (element === "reflect-metadata") {
+    //             da.push(`\t\t\t\tUMD.map("reflect-metadata","/node_modules/reflect-metadata/Reflect.js");`);
+    //         } else {
+    //             da.push(`\t\t\t\tUMD.map("${element}","/node_modules/${element}");`);
+    //         }
+    //     }
+    // }
 
     const refresh = autoRefresh ? `<script src="${devServer}/refresh.js"></script>` : "";
 
     const body = `
             ${da.join("\r\n")}
-            UMD.map("${current}","/_files/");
+            UMD.setupRoot("${current}","");
+            UMD.map("${current}","");
             UMD.map("@web-atoms/dev-server", "${devServer}");
             UMD.map("qrcode", "${devServer}/node_modules/qrcode");
             UMD.lang = "en-US";
@@ -65,7 +66,7 @@ function prepareHtml(req: Request, res: Response, viewPath: string, autoRefresh:
 
         <meta name="viewport"   content="width=device-width"/>
         <title>Web Atoms - </title>
-        <script src="/_files/node_modules/@web-atoms/module-loader/umd.js"></script>
+        <script src="/node_modules/@web-atoms/module-loader/umd.js"></script>
         <style>
         html, body {
             margin: 0;
