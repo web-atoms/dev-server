@@ -11,5 +11,6 @@ export default interface IFilePath {
     urlDesignModePacked: string;
     visible: boolean;
     packed?: boolean;
+    module?: string;
 
 }

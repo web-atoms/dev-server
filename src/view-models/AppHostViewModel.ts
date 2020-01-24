@@ -54,7 +54,6 @@ export default class AppHostViewModel extends AtomViewModel {
     @Load({ init: true, watch: true })
     public async loadFiles(): Promise<any> {
 
-        const cl = this.navigationService.location;
         let s = this.search;
         if (s) {
             s = s.toLowerCase();
@@ -97,8 +96,7 @@ export default class AppHostViewModel extends AtomViewModel {
     }
 
     public openUrl(data: IFilePath): void {
-        const url = this.navigationService.location;
-        url.path = data.url;
-        this.navigationService.location = url;
+        this.app.runAsync(() =>
+            this.navigationService.openPage(data.module, null, { clearHistory: true }));
     }
 }
