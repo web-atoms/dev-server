@@ -18,14 +18,14 @@ export default class Index extends AtomXFContentPage {
                 hasUnevenRows={true}
                 rowHeight={70}
                 itemsSource={Bind.oneWay(() => this.viewModel.files)}>
-                <XF.ListView.ItemTemplate>
+                <XF.ListView.itemTemplate>
                     <XF.DataTemplate>
                         <XF.ViewCell>
                     <XF.StackLayout padding={10}>
-                        <XF.StackLayout.GestureRecognizers>
+                        <XF.StackLayout.gestureRecognizers>
                             <XF.TapGestureRecognizer
                                 command={Bind.event((x) => this.viewModel.openUrl(x.data))}/>
-                        </XF.StackLayout.GestureRecognizers>
+                        </XF.StackLayout.gestureRecognizers>
                         <XF.Label
                             text={Bind.oneWay((x) => x.data.name)}
                             fontSize={14}
@@ -37,7 +37,7 @@ export default class Index extends AtomXFContentPage {
                     </XF.StackLayout>
                     </XF.ViewCell>
                     </XF.DataTemplate>
-                </XF.ListView.ItemTemplate>
+                </XF.ListView.itemTemplate>
             </XF.ListView>
         </XF.ContentPage>);
     }
