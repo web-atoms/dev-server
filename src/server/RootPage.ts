@@ -109,4 +109,22 @@ router.get("/_inspect", (req, res) => {
     return res.send(html);
 });
 
+router.get("/_package_server/", (req, res) => {
+
+    const file = "./" + req.path.substr("/_package_server/".length);
+    const script = require(file).default;
+
+    script(req.query, (e, r) => {
+        if (e) {
+            res.statusCode = 500;
+            const t = e.stack ? (e.toString() + "\r\n" + e.stack) : e.toString();
+            res.send(t);
+            return;
+        } else {
+            res.send(r);
+        }
+    });
+
+});
+
 export const RootPage: Router = router;
