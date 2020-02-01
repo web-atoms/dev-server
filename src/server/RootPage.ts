@@ -109,12 +109,12 @@ router.get("/_inspect", (req, res) => {
     return res.send(html);
 });
 
-router.get(/^\/\_package\_server\//, (req, res) => {
+router.post(/^\/\_package\_server\//, (req, res) => {
 
     const file = "./" + req.path.substr("/_package_server/".length);
     const script = require(file).default;
 
-    script(req.query, (e, r) => {
+    script(req.body || req.query, (e, r) => {
         if (e) {
             res.statusCode = 500;
             const t = e.stack ? (e.toString() + "\r\n" + e.stack) : e.toString();
