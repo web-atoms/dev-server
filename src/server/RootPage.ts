@@ -114,6 +114,7 @@ router.post(/^\/\_package\_server\//, (req, res) => {
     const file = "./" + req.path.substr("/_package_server/".length);
     const script = require(path.resolve(file)).default;
 
+    try {
     script((e, r) => {
         if (e) {
             res.statusCode = 500;
@@ -124,6 +125,10 @@ router.post(/^\/\_package\_server\//, (req, res) => {
             res.send(r);
         }
     }, req.body || req.query);
+    } catch (ex) {
+        res.statusCode = 500;
+        res.send(ex.stack ? (ex + "\r\n" + ex.stack) : ex.toString());
+    }
 
 });
 
