@@ -109,7 +109,7 @@ router.get("/_inspect", (req, res) => {
     return res.send(html);
 });
 
-router.get("/_package_server/", (req, res) => {
+router.get(/^\/\_package\_server\//, (req, res) => {
 
     const file = "./" + req.path.substr("/_package_server/".length);
     const script = require(file).default;
