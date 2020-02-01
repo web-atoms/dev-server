@@ -124,7 +124,7 @@ router.post(/^\/\_package\_server\//, (req, res) => {
         } else {
             if (r.type && r.data) {
                 res.type(r.type);
-                res.send(r.data);
+                res.send(Buffer.from(r.data, "base64"));
             } else {
                 res.send(r);
             }
