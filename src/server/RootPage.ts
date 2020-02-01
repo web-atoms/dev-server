@@ -122,7 +122,12 @@ router.post(/^\/\_package\_server\//, (req, res) => {
             res.send(t);
             return;
         } else {
-            res.send(r);
+            if (r.type && r.data) {
+                res.type(r.type);
+                res.send(r.data);
+            } else {
+                res.send(r);
+            }
         }
     }, req.body || req.query);
     } catch (ex) {
