@@ -112,7 +112,7 @@ router.get("/_inspect", (req, res) => {
 router.post(/^\/\_package\_server\//, (req, res) => {
 
     const file = "./" + req.path.substr("/_package_server/".length);
-    const script = require(file).default;
+    const script = require(path.resolve(file)).default;
 
     script(req.body || req.query, (e, r) => {
         if (e) {
