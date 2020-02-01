@@ -114,7 +114,7 @@ router.post(/^\/\_package\_server\//, (req, res) => {
     const file = "./" + req.path.substr("/_package_server/".length);
     const script = require(path.resolve(file)).default;
 
-    script(req.body || req.query, (e, r) => {
+    script((e, r) => {
         if (e) {
             res.statusCode = 500;
             const t = e.stack ? (e.toString() + "\r\n" + e.stack) : e.toString();
@@ -123,7 +123,7 @@ router.post(/^\/\_package\_server\//, (req, res) => {
         } else {
             res.send(r);
         }
-    });
+    }, req.body || req.query);
 
 });
 
