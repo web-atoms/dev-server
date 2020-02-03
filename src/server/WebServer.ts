@@ -16,7 +16,7 @@ class WebServer {
     private mountRoutes(): void {
 
         // this.express.use();
-        this.express.use(express.json());
+        // this.express.use(express.json());
         this.express.use(RootPage);
 
         this.express.use(ModuleFilesPage);
