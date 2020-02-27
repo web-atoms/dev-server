@@ -25,7 +25,7 @@
     "@web-atoms/date-time": "1.0.21",
     "@web-atoms/font-awesome": "^1.0.14",
     "@web-atoms/module-loader": "^1.0.405",
-    "@web-atoms/pack": "^1.0.37",
+    "@web-atoms/pack": "^1.0.38",
     "@web-atoms/xf-controls": "^1.0.92",
     "colors": "^1.4.0",
     "ecstatic": "^3.3.2",
