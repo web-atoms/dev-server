@@ -10,6 +10,7 @@ const state = { running: false };
 
 async function pack() {
     try {
+        FolderWatcher.busy = true;
         state.running = true;
         const p = new Packer();
         await p.run([]);
@@ -18,6 +19,7 @@ async function pack() {
         console.error(e);
     } finally {
         state.running = false;
+        FolderWatcher.busy = false;
     }
 }
 

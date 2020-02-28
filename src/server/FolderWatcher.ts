@@ -1,7 +1,12 @@
 import { existsSync, readdirSync, readFileSync, statSync, watch } from "fs";
 import * as md5 from "md5";
 
+// prevent recursive and wait..
+
+
 export default class FolderWatcher {
+
+    public static busy: boolean = false;
 
     /**
      * Store md5 of previous files...
@@ -9,6 +14,8 @@ export default class FolderWatcher {
     private files: { [key: string]: string } = {};
 
     private watch: any;
+
+    private last: any;
 
     /**
      *
@@ -21,7 +28,18 @@ export default class FolderWatcher {
             path,
             { recursive: true },
             (e, filename) => {
+
+            if (FolderWatcher.busy) {
+                if (this.last) {
+                    clearTimeout(this.last);
+                    this.last = null;
+                }
+                this.last = setTimeout(() => {
+                    this.onFileChange(filename);
+                }, 500);
+            } else {
                 this.onFileChange(filename);
+            }
         });
     }
 
@@ -36,7 +54,7 @@ export default class FolderWatcher {
         const old = this.files[filename];
         if (!existsSync(filename)) {
             // tslint:disable-next-line: no-console
-            console.log(`File ${filename} deleted`);
+            // console.log(`File ${filename} deleted`);
             delete this.files[filename];
             return;
         }
