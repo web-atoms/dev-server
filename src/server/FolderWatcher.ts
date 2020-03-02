@@ -11,7 +11,7 @@ export default class FolderWatcher {
     /**
      * Store md5 of previous files...
      */
-    private files: { [key: string]: string } = {};
+    private static files: { [key: string]: string } = {};
 
     private watch: any;
 
@@ -51,11 +51,11 @@ export default class FolderWatcher {
 
     private onFileChange(f: string): void {
         const filename = `${this.path}/${f}`;
-        const old = this.files[filename];
+        const old = FolderWatcher.files[filename];
         if (!existsSync(filename)) {
             // tslint:disable-next-line: no-console
             // console.log(`File ${filename} deleted`);
-            delete this.files[filename];
+            delete FolderWatcher.files[filename];
             return;
         }
 
@@ -70,7 +70,7 @@ export default class FolderWatcher {
                 return;
             }
         }
-        this.files[filename] = n;
+        FolderWatcher.files[filename] = n;
         this.callback();
     }
 
@@ -82,7 +82,10 @@ export default class FolderWatcher {
             if (s.isDirectory()) {
                 this.readFiles(filePath);
             } else {
-                this.files[filePath] = md5(readFileSync(filePath));
+                if (FolderWatcher.files[filePath]) {
+                    continue;
+                }
+                FolderWatcher.files[filePath] = md5(readFileSync(filePath));
             }
         }
     }

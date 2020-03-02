@@ -85,20 +85,31 @@ export default class WSServerClient {
         }
     }
 
+    private async resolveMaps(msg: string): Promise<string> {
+        // msg = msg.replace(/(http|https)\:\/\/()+/i, "");
+        return msg;
+    }
+
     private logMessage(payLoad: ILogPayload): void {
         switch (payLoad.type) {
             case "error":
-                // tslint:disable-next-line:no-console
-                console.log(colors.red(payLoad.message));
+                this.resolveMaps(payLoad.message).then((m) => {
+                    // tslint:disable-next-line: no-console
+                    console.log(colors.red(m));
+                });
                 break;
             case "warn":
             case "warning":
-                // tslint:disable-next-line:no-console
-                console.log(colors.yellow(payLoad.message));
+                this.resolveMaps(payLoad.message).then((m) => {
+                    // tslint:disable-next-line: no-console
+                    console.log(colors.yellow(m));
+                });
                 break;
             case "log":
-                // tslint:disable-next-line:no-console
-                console.log(colors.gray(payLoad.message));
+                this.resolveMaps(payLoad.message).then((m) => {
+                    // tslint:disable-next-line: no-console
+                    console.log(colors.gray(m));
+                });
                 break;
         }
     }
