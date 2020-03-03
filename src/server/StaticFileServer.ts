@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { join, resolve, isAbsolute } from "path";
 import { existsSync, readFileSync } from "fs";
+import { RSA_NO_PADDING } from "constants";
 
 export default class StaticFileServer {
 
@@ -46,6 +47,14 @@ export default class StaticFileServer {
                     const text = readFileSync(path, { encoding: "utf-8" });
                     res.charset = "utf-8";
                     res.set("Content-Type", "application/json");
+                    res.send(text);
+                    return;
+                }
+
+                if (/\.ts$/i.test(path)) {
+                    const text = readFileSync(path, { encoding: "utf-8"});
+                    res.charset = "utf-8";
+                    res.set("Content-Type", "application/x-typescrip");
                     res.send(text);
                     return;
                 }
