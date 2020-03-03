@@ -1,7 +1,6 @@
 import { Router } from "express";
-import { join, resolve, isAbsolute } from "path";
 import { existsSync, readFileSync } from "fs";
-import { RSA_NO_PADDING } from "constants";
+import { isAbsolute, join, resolve } from "path";
 
 export default class StaticFileServer {
 
@@ -18,8 +17,10 @@ export default class StaticFileServer {
     }): Router {
         const router = Router();
 
-        if (!baseDir.startsWith("/")) {
-            baseDir = "/" + baseDir;
+        if (baseDir) {
+            if (!baseDir.startsWith("/")) {
+                baseDir = "/" + baseDir;
+            }
         }
 
         router.use((req, res, next) => {
@@ -31,9 +32,6 @@ export default class StaticFileServer {
                     return;
                 }
                 path = path.substr(baseDir.length);
-                // if (path.startsWith("/")) {
-                //     path = path.substr(1);
-                // }
             }
             path = join(root, path);
             if (!isAbsolute(path)) {
