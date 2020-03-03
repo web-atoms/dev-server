@@ -31,9 +31,9 @@ export default class StaticFileServer {
                     return;
                 }
                 path = path.substr(baseDir.length);
-                if (path.startsWith("/")) {
-                    path = path.substr(1);
-                }
+                // if (path.startsWith("/")) {
+                //     path = path.substr(1);
+                // }
             }
             path = join(root, path);
             if (!isAbsolute(path)) {
