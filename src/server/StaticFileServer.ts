@@ -41,6 +41,8 @@ export default class StaticFileServer {
             }
             if (existsSync(path)) {
 
+                res.set("Cache-Control", "no-cache");
+
                 // since map fails
                 if (/\.map$/i.test(path)) {
 
