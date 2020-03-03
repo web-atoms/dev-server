@@ -6,9 +6,9 @@ if (!existsSync("./dist")) {
     mkdirSync("./dist");
 }
 
-const state = { running: false };
+const state = { running: false, timeout: null };
 
-async function pack() {
+async function _pack() {
     try {
         FolderWatcher.busy = true;
         state.running = true;
@@ -21,6 +21,17 @@ async function pack() {
         state.running = false;
         FolderWatcher.busy = false;
     }
+}
+
+function pack() {
+    if (state.timeout) {
+        clearTimeout(state.timeout);
+        state.timeout = null;
+    }
+    state.timeout = setTimeout(() => {
+        _pack();
+        state.timeout = null;
+    }, 500);
 }
 
 const fw = new FolderWatcher("./dist", () => {
