@@ -31,7 +31,7 @@ function pack() {
     state.timeout = setTimeout(() => {
         _pack();
         state.timeout = null;
-    }, 500);
+    }, 1000);
 }
 
 const fw = new FolderWatcher("./dist", () => {
