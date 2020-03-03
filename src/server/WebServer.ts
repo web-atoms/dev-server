@@ -1,8 +1,7 @@
 import * as express from "express";
-
-import * as e from "ecstatic";
 import { ModuleFilesPage } from "./ModuleFilesPage";
 import { RootPage } from "./RootPage";
+import StaticFileServer from "./StaticFileServer";
 
 class WebServer {
 
@@ -21,14 +20,14 @@ class WebServer {
 
         this.express.use(ModuleFilesPage);
 
-        this.express.use(e({
+        this.express.use(StaticFileServer.route({
             root: __dirname + "/../../",
             baseDir: "_dev",
             showdir: true,
             cache: "no-cache"
         }));
 
-        this.express.use(e({
+        this.express.use(StaticFileServer.route({
             root: "./",
             baseDir: "",
             showdir: true,
