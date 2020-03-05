@@ -1,6 +1,9 @@
 import DateTime from "@web-atoms/date-time/dist/DateTime";
 import * as vm from "vm";
 import * as W from "ws";
+import * as deasync from "deasync";
+import { rejects } from "assert";
+import { resolve } from "dns";
 export default class DebugServer {
 
     public static configure(ws: W.Server): void {
@@ -54,9 +57,14 @@ interface IRDefineProperty extends IRTarget {
     name: string;
 }
 
+interface IEval {
+    script: string;
+    location: string;
+}
+
 interface IRJSOperation {
     sid: string;
-    eval?: string;
+    eval?: IEval;
     createArray?: IRValue[];
     createObject: number;
     get: IRProperty;
@@ -118,9 +126,8 @@ class DebugClient {
             const d = JSON.parse(data.toString()) as IRJSOperation;
 
             if (d.parentSid) {
-                const a = this.pendingCalls[d.parentSid] as SharedArrayBuffer;
-                a[1] = this.nativeValue(d.result);
-                a[0] = 1;
+                const a = this.pendingCalls[d.parentSid] as { resolve: any, reject };
+                a.resolve(this.nativeValue(d.result));
                 return;
             }
 
@@ -136,8 +143,8 @@ class DebugClient {
 
     }
 
-    private eval(text: string): any {
-        const s = this.evals[text] || (this.evals[text] = new vm.Script(text));
+    private eval(text: string, filename: string): any {
+        const s = this.evals[text] || (this.evals[text] = new vm.Script(text, { filename }));
         return s.runInContext(this.global);
     }
 
@@ -251,7 +258,7 @@ class DebugClient {
         const ev = op.eval;
         if (ev) {
             // tslint:disable-next-line: no-eval
-            return this.toRemoteValue(this.eval(ev));
+            return this.toRemoteValue(this.eval(ev.script, ev.location));
         }
         const g = op.get;
         if (g) {
@@ -277,8 +284,6 @@ class DebugClient {
 
     private createFunction(): IRValue {
         const f = ( ... args: any[] ) => {
-            const s = new SharedArrayBuffer(4);
-            const i = new Int32Array(s);
 
             const op = {
                 parentSid: callID++,
@@ -288,16 +293,18 @@ class DebugClient {
                 }
             };
 
-            this.pendingCalls[op.parentSid] = s;
+            const fx = () => {
+                return new Promise((resolve, reject) => {
+                    this.pendingCalls[op.parentSid] = { resolve, reject };
+                    this.client.send(JSON.stringify(op), (e) => {
+                        if (e) { reject(e); }
+                    });
+                });
+            };
 
-            while (Atomics.wait(i, 0, 0, 100) === "not-equal") {
-                // do nothing..
-                if (s[0] !== 0) {
-                    break;
-                }
-            }
+            const fx2 = deasync(fx);
 
-            return s[1];
+            return fx2();
 
         };
         return this.toRemoteValue(f);

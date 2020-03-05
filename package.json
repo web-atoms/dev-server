@@ -28,6 +28,7 @@
     "@web-atoms/pack": "^1.0.38",
     "@web-atoms/xf-controls": "^1.0.115",
     "colors": "^1.4.0",
+    "deasync": "^0.1.19",
     "express": "^4.17.1",
     "http-proxy-middleware": "^0.19.1",
     "md5": "^2.2.1",
