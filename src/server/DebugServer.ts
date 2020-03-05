@@ -277,7 +277,7 @@ class DebugClient {
 
     private createFunction(): IRValue {
         const f = ( ... args: any[] ) => {
-            const s = new SharedArrayBuffer(2);
+            const s = new SharedArrayBuffer(4);
             const i = new Int32Array(s);
 
             const op = {
