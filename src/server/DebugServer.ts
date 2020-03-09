@@ -10,7 +10,7 @@ export default class DebugServer {
         ws.on("connection", (w, req) => {
             const wx = new DebugClient(w);
             w.on("close", (code, reason) => {
-                // wx.dispose();
+                wx.dispose();
             });
         });
     }
@@ -78,6 +78,7 @@ interface IRJSOperation {
     eventInvoke: IRInvoke;
     defineProperty: IRDefineProperty;
     result: IRValue;
+    error: string;
 }
 
 const sid = Symbol();
@@ -86,10 +87,9 @@ const wrapper = Symbol();
 
 let refID = 1;
 
-let callID = 1000000000;
+let callID = 1;
 
 class DebugClient {
-
     private global: any;
 
     private map: Map<any, any>;
@@ -119,23 +119,64 @@ class DebugClient {
             s.runInContext(this.global);
         });
 
+        client.on("error", (e) => {
+            // tslint:disable-next-line: no-console
+            console.error(e);
+            this.dispose();
+        });
+
+        client.on("unexpected-response", (c, r) => {
+            // tslint:disable-next-line: no-console
+            console.error(r);
+            this.dispose();
+        });
+
+    }
+
+    public dispose() {
+        for (const key in this.pendingCalls) {
+            if (this.pendingCalls.hasOwnProperty(key)) {
+                const element = this.pendingCalls[key];
+                try {
+                    element.reject("disposeing");
+                } catch (e) {
+                    // ignore...
+                }
+            }
+        }
     }
 
     public onClientMessage(data) {
         try {
             const d = JSON.parse(data.toString()) as IRJSOperation;
-
-            if (d.parentSid) {
-                const a = this.pendingCalls[d.parentSid] as { resolve: any, reject };
-                a.resolve(this.nativeValue(d.result));
+            const id = d.parentSid;
+            if (id) {
+                console.log(`Result from ${id}`);
+                const a = this.pendingCalls[id] as { resolve: any, reject };
+                if (d.result) {
+                    a.resolve(this.nativeValue(d.result));
+                } else {
+                    a.reject(d.error);
+                }
+                delete this.pendingCalls[id];
                 return;
             }
 
-            const r = this.onMessage(d);
-            this.client.send(JSON.stringify({ sid: d.sid, result: r }), (e) => {
-                // tslint:disable-next-line: no-console
-                if (e) { console.error(e); }
-            });
+            try {
+                const r = this.onMessage(d);
+                this.client.send(JSON.stringify({ sid: d.sid, result: r }), (e) => {
+                    // tslint:disable-next-line: no-console
+                    if (e) { console.error(e); }
+                });
+            } catch (ex) {
+                this.client.send(JSON.stringify({
+                    sid: d.sid,
+                    error: ex.stack ? (ex.toString() + "\r\n" + ex.stack) : ex.toString()
+                }), (e) => {
+                    // tslint:disable-next-line: no-console
+                    if (e) { console.error(e); }
+                });
+            }
         } catch (e1) {
             // tslint:disable-next-line: no-console
             console.error(e1);
@@ -293,12 +334,21 @@ class DebugClient {
                 }
             };
 
-            const fx = () => {
-                return new Promise((resolve, reject) => {
-                    this.pendingCalls[op.parentSid] = { resolve, reject };
-                    this.client.send(JSON.stringify(op), (e) => {
-                        if (e) { reject(e); }
-                    });
+            const fx = (cb: (error: any, result?: any) => void) => {
+                const s = JSON.stringify(op);
+                console.log(`Invoking ${s}`);
+                this.pendingCalls[op.parentSid] = {
+                    resolve: (r: any) => {
+                        cb(null, r);
+                    },
+                    reject: (e: any) => {
+                        // tslint:disable-next-line: no-console
+                        console.error(e);
+                        cb(e);
+                    }
+                };
+                this.client.send(s, (e) => {
+                    if (e) { cb(e); }
                 });
             };
 
