@@ -1,19 +1,7 @@
 import DateTime from "@web-atoms/date-time/dist/DateTime";
 import * as vm from "vm";
+import { parentPort } from "worker_threads";
 import * as W from "ws";
-
-export default class DebugServer {
-
-    public static configure(ws: W.Server): void {
-        ws.on("connection", (w, req) => {
-            const wx = new DebugClient(w);
-            w.on("close", (code, reason) => {
-                wx.dispose();
-            });
-        });
-    }
-
-}
 
 const valueType = {
     reference: 0b1000_0000,
@@ -96,7 +84,9 @@ class DebugClient {
 
     private evals: { [key: string]: vm.Script };
 
-    constructor(private client: W) {
+    private s: vm.Script;
+
+    constructor() {
 
         this.global = {  ____client: this };
 
@@ -110,27 +100,15 @@ class DebugClient {
 
         vm.createContext(this.global);
 
-        const s = new vm.Script(`____client.onClientMessage(____msg)`, { });
+        this.s = new vm.Script(`____client.onClientMessage(____msg)`, { });
 
-        client.on("message", (data) => {
-            process.nextTick(() => {
-                this.global.____msg = data;
-                s.runInContext(this.global);
-            });
+    }
+
+    public onProcessMessage(data: any) {
+        process.nextTick(() => {
+            this.global.____msg = data;
+            this.s.runInContext(this.global);
         });
-
-        client.on("error", (e) => {
-            // tslint:disable-next-line: no-console
-            console.error(e);
-            this.dispose();
-        });
-
-        client.on("unexpected-response", (c, r) => {
-            // tslint:disable-next-line: no-console
-            console.error(r);
-            this.dispose();
-        });
-
     }
 
     public dispose() {
@@ -164,17 +142,11 @@ class DebugClient {
 
             try {
                 const r = this.onMessage(d);
-                this.client.send(JSON.stringify({ sid: d.sid, result: r }), (e) => {
-                    // tslint:disable-next-line: no-console
-                    if (e) { console.error(e); }
-                });
+                parentPort.postMessage({ sid: d.sid, result: r });
             } catch (ex) {
-                this.client.send(JSON.stringify({
+                parentPort.postMessage({
                     sid: d.sid,
                     error: ex.stack ? (ex.toString() + "\r\n" + ex.stack) : ex.toString()
-                }), (e) => {
-                    // tslint:disable-next-line: no-console
-                    if (e) { console.error(e); }
                 });
             }
         } catch (e1) {
@@ -361,3 +333,9 @@ class DebugClient {
     }
 
 }
+
+const c = new DebugClient();
+
+parentPort.on("message", (v) => {
+    c.onProcessMessage(v);
+});
