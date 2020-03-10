@@ -1,5 +1,6 @@
 import DateTime from "@web-atoms/date-time/dist/DateTime";
 import { readFileSync, unlinkSync } from "fs";
+import * as Sync from "sync";
 import * as vm from "vm";
 import { parentPort } from "worker_threads";
 import * as W from "ws";
@@ -13,7 +14,8 @@ const valueType = {
     string: 2,
     number: 3,
     boolean: 4,
-    date: 4
+    date: 5,
+    global: 0b1111_0000
 };
 interface IRValue {
     type: number;
@@ -59,8 +61,8 @@ interface IRJSOperation {
     invoke: IRInvoke;
     deleteProperty: IRProperty;
     createInstance: IRInvoke;
-    createFunction: number;
-    createWrapper: number;
+    createFunction: string;
+    createWrapper: string;
     parentSid: string;
     eventInvoke: IRInvoke;
     defineProperty: IRDefineProperty;
@@ -89,7 +91,18 @@ class DebugClient {
 
     constructor() {
 
-        this.global = {  ____client: this };
+        this.global = {
+            ____client: this,
+            setTimeout,
+            setInterval,
+            clearTimeout,
+            clearInterval
+        };
+
+        // tslint:disable-next-line: only-arrow-functions
+        // this.global.setTimeout = (function(a, b) {
+        //     return setTimeout(a.bind(this), b);
+        // }).bind(this.global);
 
         this.map = new Map();
 
@@ -127,23 +140,20 @@ class DebugClient {
 
     public onClientMessage(d: IRJSOperation) {
         try {
-            const id = d.parentSid;
-            if (id) {
-                // tslint:disable-next-line: no-console
-                console.log(`Result from ${id}`);
-                const a = this.pendingCalls[id] as { resolve: any, reject };
-                if (d.result) {
-                    a.resolve(this.nativeValue(d.result));
-                } else {
-                    a.reject(d.error);
-                }
-                delete this.pendingCalls[id];
-                return;
-            }
-
             try {
-                const r = this.onMessage(d);
-                parentPort.postMessage({ sid: d.sid, result: r });
+                if (d.parentSid) {
+                    const {resolve, reject } = this.pendingCalls[d.parentSid];
+                    if (d.error) {
+                        reject(d.error);
+                    } else {
+                        resolve(d.result);
+                    }
+                    return;
+                }
+                Sync(() => {
+                    const r = this.onMessage(d);
+                    parentPort.postMessage({ sid: d.sid, result: r });
+                });
             } catch (ex) {
                 // tslint:disable-next-line: no-console
                 console.error(ex);
@@ -159,9 +169,20 @@ class DebugClient {
 
     }
 
-    private eval(text: string, filename: string): any {
-        const s = this.evals[text] || (this.evals[text] = new vm.Script(text, { filename }));
-        return s.runInContext(this.global);
+    private eval(text: string, filename: string, cb: any): void {
+        // const s = this.evals[text] || (this.evals[text] = new vm.Script(text, { filename }));
+        this.global.____cb = cb;
+        this.global.Sync = Sync;
+        // make this async...
+        const s = new vm.Script(`Sync((function() { return (${text});
+        }).async(), ____cb);`, { filename, timeout: 5000 });
+        try {
+            s.runInContext(this.global);
+        } catch (ex) {
+            // tslint:disable-next-line: no-console
+            console.error(ex);
+            throw ex;
+        }
     }
 
     private toRemoteValue(o: any): IRValue {
@@ -170,6 +191,9 @@ class DebugClient {
         }
         if (o === null) {
             return { type: valueType.null };
+        }
+        if (o === this.global) {
+            return { type: valueType.global };
         }
         switch (typeof o) {
             case "number":
@@ -202,13 +226,13 @@ class DebugClient {
     }
 
     private nativeValue(s: IRValue) {
-        if (s === null) {
+        if (s === null || s === undefined) {
             return s;
         }
-        if (s === undefined) {
+        const vt = s.type;
+        if (vt === valueType.global) {
             return this.global;
         }
-        const vt = s.type;
         if (vt === valueType.undefined) { return undefined; }
         if (vt === valueType.null) { return null; }
         if (vt === valueType.reference || vt === valueType.array || vt === valueType.wrapped) {
@@ -228,7 +252,7 @@ class DebugClient {
         }
         const cf = op.createFunction;
         if (cf) {
-            return this.createFunction();
+            return this.createFunction(cf);
         }
         const ci = op.createInstance;
         if (ci) {
@@ -240,7 +264,7 @@ class DebugClient {
         }
         if (op.createWrapper) {
             const o = {};
-            o[wrapper] = true;
+            o[wrapper] = op.createWrapper;
             return this.toRemoteValue(o);
         }
         const dp = op.defineProperty;
@@ -274,7 +298,7 @@ class DebugClient {
         const ev = op.eval;
         if (ev) {
             // tslint:disable-next-line: no-eval
-            return this.toRemoteValue(this.eval(ev.script, ev.location));
+            return this.toRemoteValue((this.eval.bind(this) as any).sync(null, ev.script, ev.location));
         }
         const g = op.get;
         if (g) {
@@ -298,44 +322,54 @@ class DebugClient {
         }
     }
 
-    private createFunction(): IRValue {
+    private createFunction(name: string): IRValue {
         const f = ( ... args: any[] ) => {
 
             try {
 
-                const a = new SharedArrayBuffer(32);
-                const ua = new Int32Array(a);
+                // const a = new SharedArrayBuffer(32);
+                // const ua = new Int32Array(a);
 
                 const op = {
                     parentSid: callID++,
                     eventInvoke: {
                         target: this.toRemoteValue(f),
                         args: args.map((a1) => this.toRemoteValue(a1))
-                    },
-                    sharedArray: ua
+                    }
+                };
+
+                const af = (cb) => {
+                    this.pendingCalls[op.parentSid] = {
+                        resolve: (r) => cb(null, r),
+                        reject: (e) => cb(e)
+                    };
                 };
 
                 // tslint:disable-next-line: no-console
-                console.log(`Invoking ${op.parentSid}`);
+                console.log(`Invoking ${name}`);
                 parentPort.postMessage(op);
 
-                Atomics.wait(ua, 0, 0);
+                const r = (af as any).sync(null);
 
-                const id = ua[1];
-
-                const fileName = `./tmpRemoteResult${id}.json`;
-
-                const r = JSON.parse(readFileSync(fileName, { encoding: "utf-8"}));
-                unlinkSync(fileName);
-
+                // deasync.loopWhile(() => {
+                //     deasync.sleep(100);
+                //     return ua[0] === 0;
+                // });
                 // tslint:disable-next-line: no-console
-                console.log(`Invoke ${op.parentSid} success`);
+                console.log(`Invoke success ${name}`);
 
-                if (r.error) {
-                    throw r.error;
-                }
+                // const id = ua[1];
 
-                return this.nativeValue(r.result);
+                // const fileName = `./tmpRemoteResult${id}.json`;
+
+                // const r = JSON.parse(readFileSync(fileName, { encoding: "utf-8"}));
+                // unlinkSync(fileName);
+
+                // if (r.error) {
+                //     throw r.error;
+                // }
+
+                return this.nativeValue(r);
             } catch (ex) {
                 // tslint:disable-next-line: no-console
                 console.error(ex);
