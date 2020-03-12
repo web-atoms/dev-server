@@ -101,11 +101,11 @@ function listen(port, ssl) {
     }
     var server = ssl ? https.createServer(createCert(), app.default) : http.createServer(app.default);
 
-    // var wss = new WebSocketServer({ server: server, path: "/listen" });
+    var wss = new WebSocketServer({ server: server, path: "/listen" });
 
-    const dss = new WebSocketServer({ server: server, path: "/__debug" });
-    DebugServer.configure(dss);
-    // WSServer.configure(wss);    
+    // const dss = new WebSocketServer({ server: server, path: "/__debug" });
+    // DebugServer.configure(dss);
+    WSServer.configure(wss);    
 
     server.listen(port,(err) => {
         if(err) {

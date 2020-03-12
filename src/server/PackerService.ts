@@ -29,7 +29,13 @@ function pack() {
         state.timeout = null;
     }
     state.timeout = setTimeout(() => {
-        _pack();
+        _pack().then((a) => {
+            // tslint:disable-next-line: no-console
+            console.log("Files packed");
+        }).catch((e) => {
+            // tslint:disable-next-line: no-console
+            console.error(e);
+        });
         state.timeout = null;
     }, 1000);
 }
