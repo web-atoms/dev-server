@@ -3,7 +3,6 @@ import * as md5 from "md5";
 
 // prevent recursive and wait..
 
-
 export default class FolderWatcher {
 
     public static busy: boolean = false;
