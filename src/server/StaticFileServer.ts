@@ -45,24 +45,21 @@ export default class StaticFileServer {
                 if (/\.map$/i.test(path)) {
 
                     const text = readFileSync(path, { encoding: "utf-8" });
-                    res.charset = "utf-8";
-                    res.set("Content-Type", "application/json");
+                    res.set("Content-Type", "application/json; charset=utf-8");
                     res.send(text);
                     return;
                 }
 
                 if (/\.ts$/i.test(path)) {
                     const text = readFileSync(path, { encoding: "utf-8"});
-                    res.charset = "utf-8";
-                    res.set("Content-Type", "application/x-typescript");
+                    res.set("Content-Type", "application/x-typescript; charset=utf-8");
                     res.send(text);
                     return;
                 }
 
                 if (/\.js$/i.test(path)) {
                     const text = readFileSync(path, { encoding: "utf-8"});
-                    res.charset = "utf-8";
-                    res.set("Content-Type", "application/javascript");
+                    res.set("Content-Type", "application/javascript; charset=utf-8");
                     res.send(text);
                     return;
                 }
