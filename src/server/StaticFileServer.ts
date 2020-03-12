@@ -54,7 +54,15 @@ export default class StaticFileServer {
                 if (/\.ts$/i.test(path)) {
                     const text = readFileSync(path, { encoding: "utf-8"});
                     res.charset = "utf-8";
-                    res.set("Content-Type", "application/x-typescrip");
+                    res.set("Content-Type", "application/x-typescript");
+                    res.send(text);
+                    return;
+                }
+
+                if (/\.js$/i.test(path)) {
+                    const text = readFileSync(path, { encoding: "utf-8"});
+                    res.charset = "utf-8";
+                    res.set("Content-Type", "application/javascript");
                     res.send(text);
                     return;
                 }
