@@ -35,7 +35,7 @@ export default class FolderWatcher {
                 }
                 this.last = setTimeout(() => {
                     this.onFileChange(filename, true);
-                }, 500);
+                }, 1000);
             } else {
                 this.onFileChange(filename);
             }

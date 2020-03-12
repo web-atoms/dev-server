@@ -3,7 +3,7 @@ import { join } from "path";
 import { MessageChannel, Worker } from "worker_threads";
 import * as W from "ws";
 
-let fileResultID = 1;
+// let fileResultID = 1;
 
 export default class DebugServer {
 

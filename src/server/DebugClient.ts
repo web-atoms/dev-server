@@ -1,9 +1,11 @@
 import DateTime from "@web-atoms/date-time/dist/DateTime";
 import { readFileSync, unlinkSync } from "fs";
-import * as Sync from "sync";
+// import * as Sync from "sync";
 import * as vm from "vm";
 import { parentPort } from "worker_threads";
 import * as W from "ws";
+
+declare var Sync;
 
 const valueType = {
     reference: 0b1000_0000,
@@ -340,7 +342,7 @@ class DebugClient {
 
                 const af = (cb) => {
                     this.pendingCalls[op.parentSid] = {
-                        resolve: (r) => cb(null, r),
+                        resolve: (r1) => cb(null, r1),
                         reject: (e) => cb(e)
                     };
                 };
