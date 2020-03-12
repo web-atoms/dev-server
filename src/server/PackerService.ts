@@ -40,8 +40,9 @@ function pack() {
     }, 1000);
 }
 
-const fw = new FolderWatcher("./dist", () => {
+const fw = new FolderWatcher("./dist", (d) => {
     if (state.running) { return; }
+    if (d) { return; }
     pack();
 });
 

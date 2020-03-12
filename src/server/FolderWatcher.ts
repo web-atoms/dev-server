@@ -22,7 +22,7 @@ export default class FolderWatcher {
      */
     constructor(
         private readonly path: string,
-        private readonly callback: () => void) {
+        private readonly callback: (delayed?: boolean) => void) {
         this.readFiles(path);
         this.watch = watch(
             path,
@@ -35,7 +35,7 @@ export default class FolderWatcher {
                     this.last = null;
                 }
                 this.last = setTimeout(() => {
-                    this.onFileChange(filename);
+                    this.onFileChange(filename, true);
                 }, 500);
             } else {
                 this.onFileChange(filename);
@@ -49,7 +49,7 @@ export default class FolderWatcher {
         }
     }
 
-    private onFileChange(f: string): void {
+    private onFileChange(f: string, delayed?: boolean): void {
         const filename = `${this.path}/${f}`;
         const old = FolderWatcher.files[filename];
         if (!existsSync(filename)) {
@@ -71,7 +71,7 @@ export default class FolderWatcher {
             }
         }
         FolderWatcher.files[filename] = n;
-        this.callback();
+        this.callback(delayed);
     }
 
     private readFiles(path: string): void {
