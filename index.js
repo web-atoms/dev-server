@@ -13,7 +13,9 @@ var fs = require("fs");
 var netFaces = os.networkInterfaces();
 var crypto = require("crypto");
 
-require("./dist/server/PackerService");
+if (process.argv.indexOf("--pack"))  {
+    require("./dist/server/PackerService");
+}
 
 function createCert() {
 
