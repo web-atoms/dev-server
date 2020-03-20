@@ -84,7 +84,7 @@ function listen(port, ssl) {
 
     if (proxyHost) {
         var apiProxy = proxy(
-            (pathName) => pathName !== "/__debug",
+            (pathName) => pathName !== "/__debug" && pathName !== "/__listen",
             {
                 target: proxyHost,
                 changeOrigin: true,
@@ -103,7 +103,7 @@ function listen(port, ssl) {
     }
     var server = ssl ? https.createServer(createCert(), app.default) : http.createServer(app.default);
 
-    var wss = new WebSocketServer({ server: server, path: "/listen" });
+    var wss = new WebSocketServer({ server: server, path: "/__listen" });
 
     // const dss = new WebSocketServer({ server: server, path: "/__debug" });
     // DebugServer.configure(dss);

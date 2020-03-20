@@ -1,5 +1,5 @@
 const wsp = /https/i.test(location.protocol) ? "wss" : "ws";
-const w = new WebSocket(`${wsp}://${location.host}/listen`);
+const w = new WebSocket(`${wsp}://${location.host}/__listen`);
 
 w.onmessage = (evt) => {
     var msg = JSON.parse(evt.data);
