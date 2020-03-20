@@ -13,7 +13,7 @@ var fs = require("fs");
 var netFaces = os.networkInterfaces();
 var crypto = require("crypto");
 
-if (process.argv.indexOf("--pack"))  {
+if (process.argv.indexOf("--pack") !== -1)  {
     require("./dist/server/PackerService");
 }
 
