@@ -80,7 +80,7 @@ function createCert() {
 
 function listen(port, ssl) {
 
-    var proxyHost = process.argv[2];
+    var proxyHost = process.argv.find((s) => /^(http|https)\:\/\//.test(s));
 
     if (proxyHost) {
         var apiProxy = proxy(
