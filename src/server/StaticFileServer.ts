@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { existsSync, readFileSync } from "fs";
 import { isAbsolute, join, resolve } from "path";
+import Packed from "./Packed";
 
 export default class StaticFileServer {
 
@@ -37,6 +38,16 @@ export default class StaticFileServer {
             if (!isAbsolute(path)) {
                 path = resolve(path);
             }
+
+            if (Packed.checkPacked(path)) {
+                // check...
+                Packed.packAndDeliver(baseDir, path, res).catch((e) => {
+                    res.statusCode = 500;
+                    res.send( e.stack ? (e.message + "\r\n" + e.stack) : e.toString());
+                });
+                return;
+            }
+
             if (existsSync(path)) {
 
                 res.set("Cache-Control", "no-cache");

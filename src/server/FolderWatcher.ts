@@ -28,6 +28,11 @@ export default class FolderWatcher {
             { recursive: true },
             (e, filename) => {
 
+            // ignore .pack.js files...
+            if (/\.pack\.js$/i.test(filename)) {
+                return;
+            }
+
             if (FolderWatcher.busy) {
                 if (this.last) {
                     clearTimeout(this.last);
