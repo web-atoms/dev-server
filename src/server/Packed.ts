@@ -1,7 +1,10 @@
 import FilePacker from "@web-atoms/pack/dist/FilePacker";
-import { existsSync, readFileSync, statSync } from "fs";
+import PackageVersion from "@web-atoms/pack/dist/PackageVersion";
+import { existsSync, readFileSync, statSync, utimesSync } from "fs";
 
 const r = /\.pack\.js$/i;
+
+PackageVersion.isV2 = true;
 
 export default class Packed {
 
@@ -42,7 +45,7 @@ export default class Packed {
 
         try {
 
-            const original = path.substr(0, 8) + ".js";
+            const original = path.substr(0, path.length - 8);
 
             const pkg = JSON.parse(readFileSync(baseDir + "/package.json", { encoding: "utf-8" }));
 
@@ -51,11 +54,19 @@ export default class Packed {
             await fp.pack();
 
             const text = readFileSync(path, { encoding: "utf-8"});
-            res.set("Content-Type", "application/javascript; charset=utf-8");
-            res.send(text);
+
+            // update modified time...
+            // const sp = statSync(path);
+            // utimesSync(path, sp.atime, new Date());
+
+            // res.set("Content-Type", "application/javascript; charset=utf-8");
+            // res.send(text);
+            res.sendFile(path);
         } catch (e) {
             // tslint:disable-next-line: no-console
-            console.error(`Generating packed file failed ${e.stack ? ( e.message + "\r\n" + e.stack) : e}`);
+            console.error(`Generating packed file failed for ${baseDir}, ${path}
+${e.stack ? ( e.message + "\r\n" + e.stack) : e}`);
+            throw e;
         }
     }
 
