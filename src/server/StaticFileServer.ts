@@ -41,7 +41,7 @@ export default class StaticFileServer {
 
             if (Packed.checkPacked(path)) {
                 // check...
-                Packed.packAndDeliver(baseDir, path, res).catch((e) => {
+                Packed.packAndDeliver(root, path, res).catch((e) => {
                     res.statusCode = 500;
                     res.send( e.stack ? (e.message + "\r\n" + e.stack) : e.toString());
                 });
