@@ -7,6 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 0",
     "postversion": "git push --follow-tags"
   },
+  "preferGlobal": true,
+  "bin": {
+    "wads": "./bin/wads"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/web-atoms/dev-server.git"
