@@ -11,6 +11,7 @@ import { IWSMessage } from "../models/IWSMessage";
 import { ModuleFiles } from "../ModuleFiles";
 import ClipboardService from "../services/ClipboardService";
 import FileService from "../services/FileService";
+import { CancelToken } from "@web-atoms/core/dist/core/types";
 
 declare var bridge: any;
 
@@ -51,15 +52,15 @@ export default class AppHostViewModel extends AtomViewModel {
         }
     }
 
-    @Load({ init: true, watch: true })
-    public async loadFiles(): Promise<any> {
+    @Load({ init: true, watch: true, watchDelayMS: 500 })
+    public async loadFiles(ct: CancelToken): Promise<any> {
 
         let s = this.search;
         if (s) {
             s = s.toLowerCase();
         }
 
-        const urls = (await this.fileService.getModules()).files;
+        const urls = (await this.fileService.getModules(ct)).files;
         for (const iterator of urls) {
             iterator.url = `/uiv/$CURRENT$/${replaceSrc(iterator.dir)}/${iterator.name}`;
             iterator.urlDesignMode = `/uiv/$CURRENT$/${replaceSrc(iterator.dir)}/${iterator.name}?designMode=true`;
