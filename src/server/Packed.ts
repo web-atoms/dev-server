@@ -44,7 +44,7 @@ export default class Packed {
 
             const original = path.substr(0, 8) + ".js";
 
-            const pkg = JSON.parse(readFileSync(baseDir + "/package.json", "r"));
+            const pkg = JSON.parse(readFileSync(baseDir + "/package.json", { encoding: "utf-8" }));
 
             const fp = new FilePacker(baseDir, original, pkg);
 
