@@ -1,5 +1,6 @@
 import FilePacker from "@web-atoms/pack/dist/FilePacker";
 import PackageVersion from "@web-atoms/pack/dist/PackageVersion";
+import * as colors from "colors/safe";
 import { existsSync, readFileSync, statSync, utimesSync } from "fs";
 
 const r = /\.pack\.js$/i;
@@ -23,7 +24,7 @@ export default class Packed {
         if (!existsSync(name)) {
             // packed file should be generated...
             // tslint:disable-next-line: no-console
-            console.log(`No packed file for ${name}, it will be generated`);
+            console.log(colors.yellow(`No packed file for ${name}, it will be generated`));
             return true;
         }
 
@@ -33,11 +34,11 @@ export default class Packed {
         if (o.mtimeMs > p.mtimeMs) {
             // packed file should be generated...
             // tslint:disable-next-line: no-console
-            console.log(`Original file for ${name} is not same, it will be generated`);
+            console.log(colors.yellow(`Original file for ${name} is not same, it will be generated`));
             return true;
         }
         // tslint:disable-next-line: no-console
-        console.log(`Original file for ${name} is same, it will not be generated`);
+        console.log(colors.green(`Original file for ${name} is same, it will not be generated`));
         return false;
     }
 
@@ -53,7 +54,7 @@ export default class Packed {
 
             await fp.pack();
 
-            const text = readFileSync(path, { encoding: "utf-8"});
+            // const text = readFileSync(path, { encoding: "utf-8"});
 
             // update modified time...
             // const sp = statSync(path);
@@ -64,8 +65,8 @@ export default class Packed {
             res.sendFile(path);
         } catch (e) {
             // tslint:disable-next-line: no-console
-            console.error(`Generating packed file failed for ${baseDir}, ${path}
-${e.stack ? ( e.message + "\r\n" + e.stack) : e}`);
+            console.error(colors.red(`Generating packed file failed for ${baseDir}, ${path}
+${e.stack ? ( e.message + "\r\n" + e.stack) : e}`));
             throw e;
         }
     }

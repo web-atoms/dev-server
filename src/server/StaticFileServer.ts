@@ -1,3 +1,4 @@
+import * as colors from "colors/safe";
 import { Router } from "express";
 import { existsSync, readFileSync } from "fs";
 import { isAbsolute, join, resolve } from "path";
@@ -78,7 +79,7 @@ export default class StaticFileServer {
                 res.sendFile(path, {  }, (e) => {
                     if (e) {
                         // tslint:disable-next-line: no-console
-                        console.error(`Failed: ${e}`);
+                        console.error(colors.red(`Failed: ${e}`));
                     }
                 });
                 return;
