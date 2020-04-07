@@ -48,6 +48,8 @@ export default class FolderWatcher {
 
         if (!FolderWatcher.prefixes[path]) {
 
+            // tslint:disable-next-line: no-console
+            console.log(colors.grey(`Reading hash of path ${path}`));
             FolderWatcher.readFiles(path)
                 .catch((e) => {
                     // tslint:disable-next-line: no-console
@@ -55,6 +57,8 @@ export default class FolderWatcher {
                     FolderWatcher.ready[path] = true;
                 }).then(() => {
                     FolderWatcher.ready[path] = true;
+                    // tslint:disable-next-line: no-console
+                    console.log(colors.grey(`Reading hash of path ${path} finished.`));
                 });
         }
         this.watch = watch(
