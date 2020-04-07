@@ -8,7 +8,7 @@ var https = require("https");
 var WSServer = require("./dist/server/WSServerClient").default;
 var DebugServer = require("./dist/server/DebugServer").default;
 var WebSocketServer = require("ws").Server;
-var proxy = require('http-proxy-middleware');
+var { createProxyMiddleware } = require('http-proxy-middleware');
 var fs = require("fs");
 var netFaces = os.networkInterfaces();
 var crypto = require("crypto");
@@ -79,7 +79,7 @@ function listen(port, ssl) {
     var proxyHost = process.argv.find((s) => /^(http|https)\:\/\//.test(s));
 
     if (proxyHost) {
-        var apiProxy = proxy(
+        var apiProxy = createProxyMiddleware(
             (pathName) => pathName !== "/__debug" && pathName !== "/__listen",
             {
                 target: proxyHost,
@@ -88,8 +88,8 @@ function listen(port, ssl) {
                 cookieDomainRewrite: "",
                 onProxyRes: (proxyReq, req, res) => {
 
-                    if (res.statusCode > 300) {
-                        console.error(colors.red(`HTTP STATUS ${res.statusCode} for ${req.url}`));
+                    if (proxyReq.statusCode > 300) {
+                        console.error(colors.red(`HTTP STATUS ${proxyReq.statusCode} for ${proxyHost}${req.url}`));
                     }
 
                     var cookie = proxyReq.headers["set-cookie"];
