@@ -13,12 +13,6 @@ var fs = require("fs");
 var netFaces = os.networkInterfaces();
 var crypto = require("crypto");
 
-if (process.argv.indexOf("--pack") !== -1)  {
-    // require("./dist/server/PackerService");
-
-    
-}
-
 function createCert() {
 
     var certPath = "./generated-cert-1";
@@ -93,6 +87,11 @@ function listen(port, ssl) {
                 ws: true,
                 cookieDomainRewrite: "",
                 onProxyRes: (proxyReq, req, res) => {
+
+                    if (res.statusCode > 300) {
+                        console.error(colors.red(`HTTP STATUS ${res.statusCode} for ${req.url}`));
+                    }
+
                     var cookie = proxyReq.headers["set-cookie"];
                     if (cookie) {
                         cookie = cookie.map((s) => s.replace("secure;", "") );
@@ -120,16 +119,16 @@ function listen(port, ssl) {
             netFaces[dev].forEach(function (details) {
               if (details.family === 'IPv4') {
                   if (ssl) {
-                    console.log(('  https://' + details.address + ':' + colors.green(port.toString())));
+                    console.log(('  https://' + details.address + ':' + colors.cyan(port.toString())));
                   } else {
-                    console.log(('  http://' + details.address + ':' + colors.green(port.toString())));
+                    console.log(('  http://' + details.address + ':' + colors.cyan(port.toString())));
                   }
               }
             });
           });
         
         
-        return console.log("Server has started ");
+        return console.log(colors.green("Server has started "));
     });
 }
 

@@ -35,11 +35,13 @@
     "express": "^4.17.1",
     "http-proxy-middleware": "^0.19.1",
     "md5": "^2.2.1",
+    "md5-file": "^5.0.0",
     "node-forge": "^0.8.5",
     "os": "^0.1.1",
     "portfinder": "^1.0.25",
     "qrcode": "^1.4.4",
     "reflect-metadata": "^0.1.13",
     "ws": "^6.2.1"
-  }
+  },
+  "devDependencies": {}
 }

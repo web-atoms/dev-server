@@ -9,8 +9,12 @@ class Once {
     public run(fx: ((... p: any[]) => any)): void {
         if (this.timeout) {
             clearTimeout(this.timeout);
+            this.timeout = undefined;
         }
-        this.timeout = setTimeout(fx, 1000);
+        this.timeout = setTimeout(() => {
+            fx();
+            this.timeout = undefined;
+        }, 1000);
     }
 }
 

@@ -1,11 +1,10 @@
-import { existsSync, readdirSync, readFileSync, statSync, watch } from "fs";
-import * as md5 from "md5";
+import { existsSync, readdirSync, readFileSync, statSync, watch, Stats } from "fs";
+import * as colors from "colors/safe";
+import * as md5 from "md5-file";
 
 // prevent recursive and wait..
 
 export default class FolderWatcher {
-
-    public static busy: boolean = false;
 
     /**
      * Store md5 of previous files...
@@ -14,7 +13,7 @@ export default class FolderWatcher {
 
     private watch: any;
 
-    private last: any;
+    private ready: any;
 
     /**
      *
@@ -22,7 +21,14 @@ export default class FolderWatcher {
     constructor(
         private readonly path: string,
         private readonly callback: (delayed?: boolean) => void) {
-        this.readFiles(path);
+        this.readFiles(path)
+            .catch((e) => {
+                // tslint:disable-next-line: no-console
+                console.error(colors.red(e.stack ? e.message + "\r\n" + e.stack : e));
+                this.ready = true;
+            }).then(() => {
+                this.ready = true;
+            });
         this.watch = watch(
             path,
             { recursive: true },
@@ -33,17 +39,10 @@ export default class FolderWatcher {
                 return;
             }
 
-            if (FolderWatcher.busy) {
-                if (this.last) {
-                    clearTimeout(this.last);
-                    this.last = null;
-                }
-                this.last = setTimeout(() => {
-                    this.onFileChange(filename, true);
-                }, 1000);
-            } else {
-                this.onFileChange(filename);
+            if (!this.ready) {
+                return;
             }
+            this.onFileChange(filename);
         });
     }
 
@@ -68,7 +67,7 @@ export default class FolderWatcher {
         if (s.isDirectory()) {
             return;
         }
-        const n = md5(readFileSync(filename));
+        const n = md5.sync(filename);
         if (old) {
             if (n === old) {
                 return;
@@ -78,19 +77,25 @@ export default class FolderWatcher {
         this.callback(delayed);
     }
 
-    private readFiles(path: string): void {
+    private async readFiles(path: string) {
         const files = readdirSync(path);
+        const all = [];
+
         for (const iterator of files) {
             const filePath = `${path}/${iterator}`;
             const s = statSync(filePath);
             if (s.isDirectory()) {
-                this.readFiles(filePath);
+                await this.readFiles(filePath);
             } else {
-                if (FolderWatcher.files[filePath]) {
-                    continue;
-                }
-                FolderWatcher.files[filePath] = md5(readFileSync(filePath));
+                all.push((async () => {
+                    if (FolderWatcher.files[filePath]) { return; }
+                    FolderWatcher.files[filePath] = await md5(filePath);
+                })());
             }
+        }
+
+        if (all.length) {
+            await Promise.all(all);
         }
     }
 
