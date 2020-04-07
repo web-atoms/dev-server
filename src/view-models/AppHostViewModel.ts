@@ -69,13 +69,7 @@ export default class AppHostViewModel extends AtomViewModel {
                 iterator.urlPacked = `/`;
             }
         }
-        this.files = urls.filter( (f) => {
-            f.visible = true;
-            if (s) {
-                f.visible = f.name.toLowerCase().indexOf(s) !== -1;
-            }
-            return true;
-        } );
+        this.files = urls.filter( (f) =>  f.name.toLowerCase().indexOf(s) !== -1);
     }
 
     public async copyUrl(url: string) {

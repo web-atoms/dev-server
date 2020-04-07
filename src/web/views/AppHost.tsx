@@ -59,7 +59,6 @@ export default class AppHost extends AtomGridView {
 					value={Bind.twoWays((x) => x.viewModel.url)}
 					for="table">
 					<tr
-						styleDisplay={Bind.oneWay((x) => x.data.visible ? '' : 'none')}
 						template="itemTemplate">
 						<td>
 							<div
@@ -73,26 +72,30 @@ export default class AppHost extends AtomGridView {
 							</div>
 						</td>
 						<Links
+							cellWidth={150}
 							label="Open"
 							showQrCode={true}
 							url={Bind.oneTime((x) => x.data.url)}>
 						</Links>
 						<Links
+							cellWidth={200}
 							label="Open (Design)"
 							showQrCode={true}
 							url={Bind.oneTime((x) => x.data.urlDesignMode)}>
 						</Links>
 						<Links
+							cellWidth={120}
 							label="Open Packed"
 							showQrCode={true}
 							url={Bind.oneTime((x) => x.data.urlPacked)}>
 						</Links>
 						<Links
+							cellWidth={220}
 							label="Open Packed (Design)"
 							showQrCode={true}
 							url={Bind.oneTime((x) => x.data.urlDesignModePacked)}>
 						</Links>
-						<td>
+						<td  style="width: 100px">
 							<a
 								class="button"
 								href={Bind.oneTime((x) => x.viewModel.inspect(x.data.url))}
@@ -100,7 +103,7 @@ export default class AppHost extends AtomGridView {
 								Inspect 
 							</a>
 						</td>
-						<td>
+						<td style="width: 200px">
 							<a
 								class="button"
 								href={Bind.oneTime((x) => x.viewModel.inspect(x.data.urlDesignMode))}
