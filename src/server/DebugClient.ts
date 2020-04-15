@@ -2,7 +2,15 @@ import DateTime from "@web-atoms/date-time/dist/DateTime";
 import { existsSync, readFileSync, unlinkSync, writeFileSync } from "fs";
 import * as lockfile from "proper-lockfile";
 import * as vm from "vm";
-import { parentPort } from "worker_threads";
+// import { parentPort } from "worker_threads";
+
+import * as readline from "readline";
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+    terminal: false
+});
 
 const empty = [];
 
@@ -122,7 +130,7 @@ class DebugClient {
             if (!existsSync(m.lockFileName)) {
                 return empty;
             }
-            const r = lockfile.lockSync(m.lockFileName);
+            const r = lockfile.lockSync(m.lockFileName, { realpath: false });
             if (existsSync(m.dataFile)) {
                 const t = readFileSync(m.dataFile, "utf-8");
                 if (t) {
@@ -134,11 +142,18 @@ class DebugClient {
             return empty;
         } catch (e) {
             // tslint:disable-next-line: no-console
-            console.error(e);
-            parentPort.postMessage({
+            // console.error(e);
+            this.send({
                 error: e.stack ? (e.toString() + "\r\n" + e.stack) : e.toString()
             });
+            // parentPort.postMessage({
+            //     error: e.stack ? (e.toString() + "\r\n" + e.stack) : e.toString()
+            // });
         }
+    }
+
+    public send(o) {
+        rl.write(JSON.stringify(o));
     }
 
     public processIncomingMessages() {
@@ -339,7 +354,8 @@ class DebugClient {
 
                 // tslint:disable-next-line: no-console
                 console.log(`Invoking ${name}`);
-                parentPort.postMessage(op);
+                // parentPort.postMessage(op);
+                this.send(op);
 
                 // now read all messages here..
                 // till you get response for
@@ -373,6 +389,10 @@ class DebugClient {
 
 const c = new DebugClient();
 
-parentPort.on("message", (v) => {
-    c.begin(v);
+// parentPort.on("message", (v) => {
+//     c.begin(v);
+// });
+
+rl.on("line", (line) => {
+    c.begin(line);
 });

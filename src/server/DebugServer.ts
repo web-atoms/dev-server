@@ -1,7 +1,8 @@
 import * as fs from "fs";
 import { join } from "path";
 import * as lockfile from "proper-lockfile";
-import { MessageChannel, Worker } from "worker_threads";
+import * as child_process from "child_process";
+import * as readline from "readline";
 import * as W from "ws";
 
 let clientID = 1;
@@ -26,17 +27,29 @@ export default class DebugServer {
 
                 const pendingCalls: {[key: string]: Int32Array} = {};
 
-                const wx = new Worker(join( __dirname , "DebugClient.js"));
+                // const wx = new Worker(join( __dirname , "DebugClient.js"));
+                const scriptPath = join( __dirname , "DebugClient.js");
+                const wx = child_process.exec(`node --inspect ${scriptPath}`);
 
-                wx.on("message", (d) => {
-                    w.send(JSON.stringify(d));
+                const rl = readline.createInterface({
+                    input: wx.stdout,
+                    output: wx.stdin,
+                    terminal: false
                 });
 
-                const ping = {
+                rl.on("line", (d) => {
+                    w.send(d);
+                });
+
+                // wx.on("message", (d) => {
+                //     w.send(JSON.stringify(d));
+                // });
+
+                const ping = JSON.stringify({
                     id,
                     lockFileName,
                     dataFile
-                };
+                });
 
                 // wx.postMessage(ping);
 
@@ -45,7 +58,7 @@ export default class DebugServer {
                     if (!result) { return; }
                     const msg = result;
                     let msgList;
-                    const r = lockfile.lockSync(lockFileName);
+                    const r = lockfile.lockSync(lockFileName, { realpath: false });
                     if (fs.existsSync(dataFile)) {
                         msgList = fs.readFileSync(dataFile, "utf-8");
                         msgList += `,${msg}`;
@@ -54,12 +67,14 @@ export default class DebugServer {
                     }
                     fs.writeFileSync(dataFile, msgList);
                     r();
-                    wx.postMessage(ping);
+                    rl.write(ping);
+                    // wx.postMessage(ping);
                 });
                 w.on("error", (e) => {
                     // tslint:disable-next-line: no-console
                     console.error(e);
-                    wx.terminate();
+                    // wx.terminate();
+                    wx.kill();
                 });
                 w.on("close", (code, reason) => {
                     for (const key in pendingCalls) {
