@@ -22,8 +22,8 @@
   },
   "homepage": "https://github.com/web-atoms/dev-server#readme",
   "dependencies": {
-    "@types/express": "^4.17.4",
-    "@types/node": "^10.17.18",
+    "@types/express": "^4.17.6",
+    "@types/node": "^10.17.19",
     "@types/ws": "^6.0.4",
     "@web-atoms/core": "^1.1.119",
     "@web-atoms/date-time": "1.0.21",
@@ -39,6 +39,7 @@
     "node-forge": "^0.8.5",
     "os": "^0.1.1",
     "portfinder": "^1.0.25",
+    "proper-lockfile": "^4.1.1",
     "qrcode": "^1.4.4",
     "reflect-metadata": "^0.1.13",
     "ws": "^6.2.1"

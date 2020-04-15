@@ -1,9 +1,10 @@
 import DateTime from "@web-atoms/date-time/dist/DateTime";
-import { readFileSync, unlinkSync } from "fs";
-// import * as Sync from "sync";
+import { existsSync, readFileSync, unlinkSync, writeFileSync } from "fs";
+import * as lockfile from "proper-lockfile";
 import * as vm from "vm";
 import { parentPort } from "worker_threads";
-import * as W from "ws";
+
+const empty = [];
 
 declare var Sync;
 
@@ -65,7 +66,7 @@ interface IRJSOperation {
     createInstance: IRInvoke;
     createFunction: string;
     createWrapper: string;
-    parentSid: string;
+    parentSid: number;
     eventInvoke: IRInvoke;
     defineProperty: IRDefineProperty;
     result: IRValue;
@@ -91,6 +92,8 @@ class DebugClient {
 
     private s: vm.Script;
 
+    private clientInfo: { id: string, dataFile: string, lockFileName: string };
+
     constructor() {
 
         this.global = {
@@ -101,18 +104,11 @@ class DebugClient {
             clearInterval
         };
 
-        // tslint:disable-next-line: only-arrow-functions
-        // this.global.setTimeout = (function(a, b) {
-        //     return setTimeout(a.bind(this), b);
-        // }).bind(this.global);
-
         this.map = new Map();
 
         this.pendingCalls = new Map();
 
         this.evals = {};
-
-        // this.global.global = this.global;
 
         vm.createContext(this.global);
 
@@ -120,11 +116,49 @@ class DebugClient {
 
     }
 
+    public readMessages(): IRJSOperation[] {
+        try {
+            const m = this.clientInfo;
+            if (!existsSync(m.lockFileName)) {
+                return empty;
+            }
+            const r = lockfile.lockSync(m.lockFileName);
+            if (existsSync(m.dataFile)) {
+                const t = readFileSync(m.dataFile, "utf-8");
+                if (t) {
+                    return JSON.parse(`[${t}]`);
+                }
+                writeFileSync(m.dataFile, "");
+            }
+            r();
+            return empty;
+        } catch (e) {
+            // tslint:disable-next-line: no-console
+            console.error(e);
+            parentPort.postMessage({
+                error: e.stack ? (e.toString() + "\r\n" + e.stack) : e.toString()
+            });
+        }
+    }
+
+    public processIncomingMessages() {
+        const r = this.readMessages();
+        if (!r) {
+            return;
+        }
+        for (const iterator of r) {
+            this.onMessage(iterator);
+        }
+    }
+
+    public begin(m) {
+        this.clientInfo = m;
+        this.processIncomingMessages();
+    }
+
     public onProcessMessage(data: any) {
-        process.nextTick(() => {
-            this.global.____msg = data;
-            this.s.runInContext(this.global);
-        });
+        this.global.____msg = data;
+        this.s.runInContext(this.global);
     }
 
     public dispose() {
@@ -140,46 +174,10 @@ class DebugClient {
         }
     }
 
-    public onClientMessage(d: IRJSOperation) {
+    private eval(text: string, filename: string): void {
+        const s = new vm.Script(text, { filename, timeout: 5000 });
         try {
-            try {
-                if (d.parentSid) {
-                    const {resolve, reject } = this.pendingCalls[d.parentSid];
-                    if (d.error) {
-                        reject(d.error);
-                    } else {
-                        resolve(d.result);
-                    }
-                    return;
-                }
-                Sync(() => {
-                    const r = this.onMessage(d);
-                    parentPort.postMessage({ sid: d.sid, result: r });
-                });
-            } catch (ex) {
-                // tslint:disable-next-line: no-console
-                console.error(ex);
-                parentPort.postMessage({
-                    sid: d.sid,
-                    error: ex.stack ? (ex.toString() + "\r\n" + ex.stack) : ex.toString()
-                });
-            }
-        } catch (e1) {
-            // tslint:disable-next-line: no-console
-            console.error(e1);
-        }
-
-    }
-
-    private eval(text: string, filename: string, cb: any): void {
-        // const s = this.evals[text] || (this.evals[text] = new vm.Script(text, { filename }));
-        this.global.____cb = cb;
-        this.global.Sync = Sync;
-        // make this async...
-        const s = new vm.Script(`Sync((function() { return (${text});
-        }).async(), ____cb);`, { filename, timeout: 5000 });
-        try {
-            s.runInContext(this.global);
+            return s.runInContext(this.global);
         } catch (ex) {
             // tslint:disable-next-line: no-console
             console.error(ex);
@@ -299,8 +297,7 @@ class DebugClient {
         }
         const ev = op.eval;
         if (ev) {
-            // tslint:disable-next-line: no-eval
-            return this.toRemoteValue((this.eval.bind(this) as any).sync(null, ev.script, ev.location));
+            return this.toRemoteValue(this.eval(ev.script, ev.location));
         }
         const g = op.get;
         if (g) {
@@ -340,38 +337,28 @@ class DebugClient {
                     }
                 };
 
-                const af = (cb) => {
-                    this.pendingCalls[op.parentSid] = {
-                        resolve: (r1) => cb(null, r1),
-                        reject: (e) => cb(e)
-                    };
-                };
-
                 // tslint:disable-next-line: no-console
                 console.log(`Invoking ${name}`);
                 parentPort.postMessage(op);
 
-                const r = (af as any).sync(null);
+                // now read all messages here..
+                // till you get response for
+                // current call id
+                let result;
+                const r = this.readMessages();
+                for (const iterator of r) {
+                    if (iterator.parentSid === op.parentSid) {
+                        // we found the result...
+                        result = this.nativeValue(iterator.result);
+                    } else {
+                        this.onMessage(iterator);
+                    }
+                }
 
-                // deasync.loopWhile(() => {
-                //     deasync.sleep(100);
-                //     return ua[0] === 0;
-                // });
                 // tslint:disable-next-line: no-console
                 console.log(`Invoke success ${name}`);
 
-                // const id = ua[1];
-
-                // const fileName = `./tmpRemoteResult${id}.json`;
-
-                // const r = JSON.parse(readFileSync(fileName, { encoding: "utf-8"}));
-                // unlinkSync(fileName);
-
-                // if (r.error) {
-                //     throw r.error;
-                // }
-
-                return this.nativeValue(r);
+                return result;
             } catch (ex) {
                 // tslint:disable-next-line: no-console
                 console.error(ex);
@@ -387,5 +374,5 @@ class DebugClient {
 const c = new DebugClient();
 
 parentPort.on("message", (v) => {
-    c.onProcessMessage(v);
+    c.begin(v);
 });

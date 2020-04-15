@@ -5,6 +5,7 @@ var os = require("os");
 var colors = require("colors/safe");
 var http = require("http");
 var https = require("https");
+const url = require('url');
 var WSServer = require("./dist/server/WSServerClient").default;
 var DebugServer = require("./dist/server/DebugServer").default;
 var WebSocketServer = require("ws").Server;
@@ -104,11 +105,29 @@ function listen(port, ssl) {
     }
     var server = ssl ? https.createServer(createCert(), app.default) : http.createServer(app.default);
 
-    var wss = new WebSocketServer({ server: server, path: "/__listen" });
+    var wss = new WebSocketServer({ noServer: true });
 
-    // const dss = new WebSocketServer({ server: server, path: "/__debug" });
-    // DebugServer.configure(dss);
-    WSServer.configure(wss);    
+    const dss = new WebSocketServer({ noServer: true });
+
+    DebugServer.configure(dss);
+    WSServer.configure(wss);
+
+    server.on("upgrade", function upgrade(request, socket, head) {
+        const pathname = url.parse(request.url).pathname;
+
+        if (pathname === '/__debug') {
+            dss.handleUpgrade(request, socket, head, function done(ws) {
+                dss.emit('connection', ws, request);
+            });
+        } else if (pathname === '/__listen') {
+            wss.handleUpgrade(request, socket, head, function done(ws) {
+                wss.emit('connection', ws, request);
+            });
+        } else {
+            console.error("No upgrade for " + pathname);
+        socket.destroy();
+        }
+    });
 
     server.listen(port,(err) => {
         if(err) {
