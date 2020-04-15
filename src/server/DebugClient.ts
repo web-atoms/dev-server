@@ -6,11 +6,11 @@ import * as vm from "vm";
 
 import * as readline from "readline";
 
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-    terminal: false
-});
+// const rl = readline.createInterface({
+//     input: process.stdin,
+//     output: process.stdout,
+//     terminal: false
+// });
 
 const empty = [];
 
@@ -120,6 +120,10 @@ class DebugClient {
 
         vm.createContext(this.global);
 
+        if (typeof this.global.global === "undefined") {
+            this.global.global = this.global;
+        }
+
         this.s = new vm.Script(`____client.onClientMessage(____msg)`, { });
 
     }
@@ -127,33 +131,38 @@ class DebugClient {
     public readMessages(): IRJSOperation[] {
         try {
             const m = this.clientInfo;
-            if (!existsSync(m.lockFileName)) {
-                return empty;
+            let msg = empty;
+            let r = null;
+            while (true) {
+                try {
+                    r = lockfile.lockSync(m.lockFileName, { realpath: false });
+                    break;
+                } catch (ex) {
+                    continue;
+                }
             }
-            const r = lockfile.lockSync(m.lockFileName, { realpath: false });
             if (existsSync(m.dataFile)) {
                 const t = readFileSync(m.dataFile, "utf-8");
                 if (t) {
-                    return JSON.parse(`[${t}]`);
+                    msg = JSON.parse(`[${t}]`);
                 }
                 writeFileSync(m.dataFile, "");
             }
             r();
-            return empty;
+            return msg;
+
         } catch (e) {
-            // tslint:disable-next-line: no-console
-            // console.error(e);
+            console.error(e);
             this.send({
                 error: e.stack ? (e.toString() + "\r\n" + e.stack) : e.toString()
             });
-            // parentPort.postMessage({
-            //     error: e.stack ? (e.toString() + "\r\n" + e.stack) : e.toString()
-            // });
         }
     }
 
     public send(o) {
-        rl.write(JSON.stringify(o));
+        // debugger;
+        // rl.write(`json:${JSON.stringify(o)}\n`);
+        process.send(JSON.stringify(o));
     }
 
     public processIncomingMessages() {
@@ -162,7 +171,7 @@ class DebugClient {
             return;
         }
         for (const iterator of r) {
-            this.onMessage(iterator);
+            this.invoke(iterator);
         }
     }
 
@@ -171,10 +180,10 @@ class DebugClient {
         this.processIncomingMessages();
     }
 
-    public onProcessMessage(data: any) {
-        this.global.____msg = data;
-        this.s.runInContext(this.global);
-    }
+    // public onProcessMessage(data: any) {
+    //     this.global.____msg = data;
+    //     this.s.runInContext(this.global);
+    // }
 
     public dispose() {
         for (const key in this.pendingCalls) {
@@ -336,6 +345,20 @@ class DebugClient {
         }
     }
 
+    private invoke(d: IRJSOperation) {
+        try {
+            const r = this.onMessage(d);
+            this.send({ sid: d.sid, result: r });
+        } catch (ex) {
+            // tslint:disable-next-line: no-console
+            console.error(ex);
+            this.send({
+                sid: d.sid,
+                error: ex.stack ? (ex.toString() + "\r\n" + ex.stack) : ex.toString()
+            });
+        }
+    }
+
     private createFunction(name: string): IRValue {
         const f = ( ... args: any[] ) => {
 
@@ -353,7 +376,7 @@ class DebugClient {
                 };
 
                 // tslint:disable-next-line: no-console
-                console.log(`Invoking ${name}`);
+                // console.log(`Invoking ${name}`);
                 // parentPort.postMessage(op);
                 this.send(op);
 
@@ -367,12 +390,14 @@ class DebugClient {
                         // we found the result...
                         result = this.nativeValue(iterator.result);
                     } else {
-                        this.onMessage(iterator);
+                        setTimeout(() => {
+                            this.invoke(iterator);
+                        }, 1);
                     }
                 }
 
                 // tslint:disable-next-line: no-console
-                console.log(`Invoke success ${name}`);
+                // console.log(`Invoke success ${name}`);
 
                 return result;
             } catch (ex) {
@@ -393,6 +418,11 @@ const c = new DebugClient();
 //     c.begin(v);
 // });
 
-rl.on("line", (line) => {
-    c.begin(line);
+// rl.on("line", (line) => {
+//     debugger;
+//     c.begin(JSON.parse(line));
+// });
+
+process.on("message", (line) => {
+    c.begin(JSON.parse(line));
 });

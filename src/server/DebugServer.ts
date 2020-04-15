@@ -22,28 +22,35 @@ export default class DebugServer {
                 const dataFile = `./data-${id}.json`;
 
                 if (fs.existsSync(dataFile)) {
-                    fs.unlinkSync(dataFile);
+                    fs.writeFileSync(dataFile, "");
                 }
 
                 const pendingCalls: {[key: string]: Int32Array} = {};
 
                 // const wx = new Worker(join( __dirname , "DebugClient.js"));
                 const scriptPath = join( __dirname , "DebugClient.js");
-                const wx = child_process.exec(`node --inspect ${scriptPath}`);
+                // const wx = child_process.exec(`node --inspect ${scriptPath}`);
+                const wx = child_process.fork(
+                    scriptPath,
+                    [],
+                    { execArgv: ["--inspect"] });
 
-                const rl = readline.createInterface({
-                    input: wx.stdout,
-                    output: wx.stdin,
-                    terminal: false
-                });
-
-                rl.on("line", (d) => {
-                    w.send(d);
-                });
-
-                // wx.on("message", (d) => {
-                //     w.send(JSON.stringify(d));
+                // const rl = readline.createInterface({
+                //     input: wx.stdout,
+                //     output: wx.stdin,
+                //     terminal: false
                 // });
+
+                // rl.on("line", (d) => {
+                //     console.log(`From Child: ${d}`);
+                //     if (/^json\:/.test(d)) {
+                //         w.send(d.substr(5));
+                //     }
+                // });
+
+                wx.on("message", (d) => {
+                     w.send(d);
+                });
 
                 const ping = JSON.stringify({
                     id,
@@ -58,17 +65,28 @@ export default class DebugServer {
                     if (!result) { return; }
                     const msg = result;
                     let msgList;
-                    const r = lockfile.lockSync(lockFileName, { realpath: false });
+                    let r = null;
+                    while (true) {
+                        try {
+                            r = lockfile.lockSync(lockFileName, { realpath: false });
+                            break;
+                        } catch (ex) {
+                            continue;
+                        }
+                    }
                     if (fs.existsSync(dataFile)) {
                         msgList = fs.readFileSync(dataFile, "utf-8");
-                        msgList += `,${msg}`;
+                        if (msgList) {
+                            msgList += `,${msg}`;
+                        } else {
+                            msgList = msg;
+                        }
                     } else {
                         msgList = msg;
                     }
                     fs.writeFileSync(dataFile, msgList);
                     r();
-                    rl.write(ping);
-                    // wx.postMessage(ping);
+                    wx.send(ping);
                 });
                 w.on("error", (e) => {
                     // tslint:disable-next-line: no-console
@@ -84,7 +102,7 @@ export default class DebugServer {
                     }
                     // tslint:disable-next-line: no-console
                     console.log(`Client disconnected`);
-                    wx.terminate();
+                    wx.kill();
                 });
             } catch (e) {
                 // tslint:disable-next-line: no-console
