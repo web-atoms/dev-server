@@ -1,20 +1,10 @@
 import DateTime from "@web-atoms/date-time/dist/DateTime";
 import { existsSync, readFileSync, unlinkSync, writeFileSync } from "fs";
-import * as lockfile from "proper-lockfile";
 import * as vm from "vm";
-// import { parentPort } from "worker_threads";
 
-import * as readline from "readline";
-
-// const rl = readline.createInterface({
-//     input: process.stdin,
-//     output: process.stdout,
-//     terminal: false
-// });
+import locker from "./locker";
 
 const empty = [];
-
-declare var Sync;
 
 const valueType = {
     reference: 0b1000_0000,
@@ -132,19 +122,14 @@ class DebugClient {
         try {
             const m = this.clientInfo;
             let msg = empty;
-            let r = null;
-            while (true) {
-                try {
-                    r = lockfile.lockSync(m.lockFileName, { realpath: false });
-                    break;
-                } catch (ex) {
-                    continue;
-                }
-            }
+            // console.log(`Locking`);
+            const r = locker(m.lockFileName);
+            // console.log(`Reading`);
             if (existsSync(m.dataFile)) {
                 const t = readFileSync(m.dataFile, "utf-8");
                 if (t) {
                     msg = JSON.parse(`[${t}]`);
+                    // console.log(`Returning [${t}]`);
                 }
                 writeFileSync(m.dataFile, "");
             }
@@ -180,11 +165,6 @@ class DebugClient {
         this.processIncomingMessages();
     }
 
-    // public onProcessMessage(data: any) {
-    //     this.global.____msg = data;
-    //     this.s.runInContext(this.global);
-    // }
-
     public dispose() {
         for (const key in this.pendingCalls) {
             if (this.pendingCalls.hasOwnProperty(key)) {
@@ -198,10 +178,16 @@ class DebugClient {
         }
     }
 
-    private eval(text: string, filename: string): void {
-        const s = new vm.Script(text, { filename, timeout: 5000 });
+    private eval(text: string, filename: string): any {
+        // console.log(`Running eval ${text}`);
+        const s = new vm.Script(text, {
+            filename: filename || "vm",
+            timeout: 5000
+        });
         try {
-            return s.runInContext(this.global);
+            const r = s.runInContext(this.global);
+            // console.log(`Result  ${r}`);
+            return r;
         } catch (ex) {
             // tslint:disable-next-line: no-console
             console.error(ex);
@@ -424,5 +410,6 @@ const c = new DebugClient();
 // });
 
 process.on("message", (line) => {
+    // console.log(`Received Ping`);
     c.begin(JSON.parse(line));
 });

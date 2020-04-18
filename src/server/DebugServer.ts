@@ -1,11 +1,14 @@
+import * as child_process from "child_process";
 import * as fs from "fs";
 import { join } from "path";
-import * as lockfile from "proper-lockfile";
-import * as child_process from "child_process";
-import * as readline from "readline";
 import * as W from "ws";
+import locker from "./locker";
 
 let clientID = 1;
+
+if (!fs.existsSync("./tmp")) {
+    fs.mkdirSync("./tmp");
+}
 
 export default class DebugServer {
 
@@ -18,8 +21,8 @@ export default class DebugServer {
 
                 const id = clientID++;
 
-                const lockFileName = `./lock-${id}-l1`;
-                const dataFile = `./data-${id}.json`;
+                const lockFileName = `./tmp/lock-${id}-l1`;
+                const dataFile = `./tmp/data-${id}.json`;
 
                 if (fs.existsSync(dataFile)) {
                     fs.writeFileSync(dataFile, "");
@@ -61,32 +64,31 @@ export default class DebugServer {
                 // wx.postMessage(ping);
 
                 w.on("message", (d: W.Data) => {
-                    const result = d.toString();
-                    if (!result) { return; }
-                    const msg = result;
-                    let msgList;
-                    let r = null;
-                    while (true) {
-                        try {
-                            r = lockfile.lockSync(lockFileName, { realpath: false });
-                            break;
-                        } catch (ex) {
-                            continue;
-                        }
-                    }
-                    if (fs.existsSync(dataFile)) {
-                        msgList = fs.readFileSync(dataFile, "utf-8");
-                        if (msgList) {
-                            msgList += `,${msg}`;
+                    try {
+                        const result = d.toString();
+                        if (!result) { return; }
+                        const msg = result;
+                        let msgList;
+                        // console.log(`S: Locking`);
+                        const r = locker(lockFileName);
+                        // console.log(`S: Writing`);
+                        if (fs.existsSync(dataFile)) {
+                            msgList = fs.readFileSync(dataFile, "utf-8");
+                            if (msgList) {
+                                msgList += `,${msg}`;
+                            } else {
+                                msgList = msg;
+                            }
                         } else {
                             msgList = msg;
                         }
-                    } else {
-                        msgList = msg;
+                        fs.writeFileSync(dataFile, msgList);
+                        r();
+                        // console.log(`S: Sending Ping`);
+                        wx.send(ping);
+                    } catch (e) {
+                        console.error(e);
                     }
-                    fs.writeFileSync(dataFile, msgList);
-                    r();
-                    wx.send(ping);
                 });
                 w.on("error", (e) => {
                     // tslint:disable-next-line: no-console
