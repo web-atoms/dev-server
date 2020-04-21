@@ -7,6 +7,8 @@ const r = /\.pack\.js$/i;
 
 PackageVersion.isV2 = true;
 
+const generatedOnce: {[key: string]: boolean } = {};
+
 export default class Packed {
 
     public static checkPacked(name: string): boolean {
@@ -37,6 +39,13 @@ export default class Packed {
             console.log(colors.yellow(`Original file for ${name} is not same, it will be generated`));
             return true;
         }
+
+        if (!generatedOnce[original]) {
+            generatedOnce[original] = true;
+            console.log(colors.yellow(`Since it is first request for ${name}, it will be generated`));
+            return true;
+        }
+
         // tslint:disable-next-line: no-console
         console.log(colors.green(`Original file for ${name} is same, it will not be generated`));
         return false;
