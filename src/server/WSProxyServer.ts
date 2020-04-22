@@ -1,6 +1,6 @@
 import * as child_process from "child_process";
+import * as open from "open";
 import * as W from "ws";
-import * as openurl from "openurl";
 
 interface IClientMap {
     [key: string]: W;
@@ -34,28 +34,24 @@ export default class WSProxyServer {
             const xid = queries.id;
 
             if (xid) {
+
+                const server = req.connection.localAddress.split(":").pop();
+                const serverPort = req.connection.localPort;
+
                 // this is Browser connecting...
                 xClients[xid] = w;
-                const inspector = "devtools://devtools/bundled/inspector.html";
+                const inspector = `http://${server}:${serverPort}/_cdt/inspector.html`;
+                const wsUrl = `${server}:${serverPort}/__debug/${xid}`;
                 const url =
-                    `${inspector}?experiments=true&v8only=true&ws=127.0.0.1:${port}/__debug/${xid}`;
+                    `${inspector}?experiments=true&v8only=true&ws=${encodeURIComponent(wsUrl)}`;
 
-                console.log("Open This Link");
+                console.log("Open This Link if browser fails to open");
                 console.log(url);
 
-                // openurl.open(url, () => {
-                //     w.close();
-                // });
-                // const httpUrl = `http://127.0.0.1:${port}/__go?url=${encodeURIComponent(url)}`;
-
-                // const cp = child_process.exec(`start ${httpUrl}`);
-                // xProcesses[xid] = cp;
-                // cp.on("close", () => {
-                //     delete xProcesses[xid];
-                // });
+                open(url);
 
                 w.on("message", (data) => {
-                    xBrowsers[xid].send(data);
+                    xBrowsers[xid].send(data.toString());
                 });
 
                 w.on("close", () => {
@@ -66,12 +62,14 @@ export default class WSProxyServer {
                 return;
             }
 
+            console.log(`${req.url} connected from browser`);
             // this is tid
-            const tid = req.url.split("/__debug/")[0];
+            const tid = req.url.substr("/__debug/".length);
             if (tid) {
+                console.log(`${tid} connected from browser, forwarding request`);
                 xBrowsers[tid] = w;
                 w.on("message", (data) => {
-                    xClients[tid].send(data);
+                    xClients[tid].send(data.toString());
                 });
                 w.on("close", () => {
                     if (xClients[tid]) {

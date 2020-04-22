@@ -1,0 +1,10 @@
+{
+    "dependencies": [
+    ],
+    "scripts": [],
+    "modules": [
+        "platform.js",
+        "utilities.js",
+        "string-utilities.js"
+    ]
+}

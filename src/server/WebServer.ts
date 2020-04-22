@@ -21,17 +21,27 @@ class WebServer {
         this.express.use(ModuleFilesPage);
 
         this.express.use(StaticFileServer.route({
+            root: __dirname + "/../../cdt",
+            baseDir: "_cdt",
+            showdir: true,
+            cache: "no-cache",
+            checkPacked: false
+        }));
+
+        this.express.use(StaticFileServer.route({
             root: __dirname + "/../../",
             baseDir: "_dev",
             showdir: true,
-            cache: "no-cache"
+            cache: "no-cache",
+            checkPacked: false
         }));
 
         this.express.use(StaticFileServer.route({
             root: "./",
             baseDir: "",
             showdir: true,
-            cache: "no-cache"
+            cache: "no-cache",
+            checkPacked: true
         }));
     }
 

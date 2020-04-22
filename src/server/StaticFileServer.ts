@@ -10,12 +10,14 @@ export default class StaticFileServer {
         root,
         baseDir,
         showdir,
-        cache
+        cache,
+        checkPacked
     }: {
         root: string,
         baseDir: string,
         showdir: boolean,
-        cache: string
+        cache: string,
+        checkPacked: boolean
     }): Router {
         const router = Router();
 
@@ -40,13 +42,15 @@ export default class StaticFileServer {
                 path = resolve(path);
             }
 
-            if (Packed.checkPacked(path)) {
-                // check...
-                Packed.packAndDeliver(root, path, res).catch((e) => {
-                    res.statusCode = 500;
-                    res.send( e.stack ? (e.message + "\r\n" + e.stack) : e.toString());
-                });
-                return;
+            if (checkPacked) {
+                if (Packed.checkPacked(path)) {
+                    // check...
+                    Packed.packAndDeliver(root, path, res).catch((e) => {
+                        res.statusCode = 500;
+                        res.send( e.stack ? (e.message + "\r\n" + e.stack) : e.toString());
+                    });
+                    return;
+                }
             }
 
             if (existsSync(path)) {
