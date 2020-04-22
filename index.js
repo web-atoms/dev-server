@@ -7,7 +7,7 @@ var http = require("http");
 var https = require("https");
 const url = require('url');
 var WSServer = require("./dist/server/WSServerClient").default;
-var DebugServer = require("./dist/server/DebugServer").default;
+var WSProxyServer = require("./dist/server/WSProxyServer").default;
 var WebSocketServer = require("ws").Server;
 var { createProxyMiddleware } = require('http-proxy-middleware');
 var fs = require("fs");
@@ -109,13 +109,13 @@ function listen(port, ssl) {
 
     const dss = new WebSocketServer({ noServer: true });
 
-    DebugServer.configure(dss);
+    WSProxyServer.configure(dss, port);
     WSServer.configure(wss);
 
     server.on("upgrade", function upgrade(request, socket, head) {
         const pathname = url.parse(request.url).pathname;
 
-        if (pathname === '/__debug') {
+        if (pathname === "/__debug" || pathname.startsWith('/__debug/')) {
             dss.handleUpgrade(request, socket, head, function done(ws) {
                 dss.emit('connection', ws, request);
             });

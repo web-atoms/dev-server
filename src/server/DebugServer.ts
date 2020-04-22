@@ -12,12 +12,14 @@ if (!fs.existsSync("./tmp")) {
 
 export default class DebugServer {
 
-    public static configure(ws: W.Server): void {
+    public static configure(ws: W.Server, port: number): void {
         ws.on("connection", (w, req) => {
             try {
 
                 // tslint:disable-next-line: no-console
                 console.log(`Client connected`);
+
+                // check if we have an inverse websocket connection request...
 
                 const id = clientID++;
 
