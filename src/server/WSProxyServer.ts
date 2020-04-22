@@ -69,6 +69,7 @@ export default class WSProxyServer {
             // this is tid
             const tid = req.url.split("/__debug/")[0];
             if (tid) {
+                xBrowsers[tid] = w;
                 w.on("message", (data) => {
                     xClients[tid].send(data);
                 });
