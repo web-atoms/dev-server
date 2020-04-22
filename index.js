@@ -81,7 +81,7 @@ function listen(port, ssl) {
 
     if (proxyHost) {
         var apiProxy = createProxyMiddleware(
-            (pathName) => pathName !== "/__debug" && pathName !== "/__listen",
+            (pathName) => pathName !== "/__debug" && pathName.startsWith("/__debug/") && pathName !== "/__listen",
             {
                 target: proxyHost,
                 changeOrigin: true,
