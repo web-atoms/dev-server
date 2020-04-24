@@ -2,6 +2,7 @@ import FilePacker from "@web-atoms/pack/dist/FilePacker";
 import PackageVersion from "@web-atoms/pack/dist/PackageVersion";
 import * as colors from "colors/safe";
 import { existsSync, readFileSync, statSync, utimesSync } from "fs";
+import { isAbsolute, resolve } from "path";
 
 const r = /\.pack\.js$/i;
 
@@ -71,6 +72,9 @@ export default class Packed {
 
             // res.set("Content-Type", "application/javascript; charset=utf-8");
             // res.send(text);
+            if (!isAbsolute(path)) {
+                path = resolve(path);
+            }
             res.sendFile(path);
         } catch (e) {
             // tslint:disable-next-line: no-console

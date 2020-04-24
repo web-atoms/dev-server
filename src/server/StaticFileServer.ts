@@ -38,9 +38,6 @@ export default class StaticFileServer {
                 path = path.substr(baseDir.length);
             }
             path = join(root, path);
-            if (!isAbsolute(path)) {
-                path = resolve(path);
-            }
 
             if (checkPacked) {
                 if (Packed.checkPacked(path)) {
@@ -51,6 +48,10 @@ export default class StaticFileServer {
                     });
                     return;
                 }
+            }
+
+            if (!isAbsolute(path)) {
+                path = resolve(path);
             }
 
             if (existsSync(path)) {
