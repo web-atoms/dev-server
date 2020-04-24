@@ -1,6 +1,7 @@
 import * as child_process from "child_process";
 import * as open from "open";
 import * as W from "ws";
+import * as colors from "colors/safe";
 
 interface IClientMap {
     [key: string]: W;
@@ -45,8 +46,8 @@ export default class WSProxyServer {
                 const url =
                     `${inspector}?experiments=true&v8only=true&ws=${encodeURIComponent(wsUrl)}`;
 
-                console.log("Open This Link if browser fails to open");
-                console.log(url);
+                console.log(colors.yellow("\tOpen This Link if browser fails to open"));
+                console.log(colors.green(`\t${url}`));
 
                 open(url);
 
@@ -62,11 +63,11 @@ export default class WSProxyServer {
                 return;
             }
 
-            console.log(`${req.url} connected from browser`);
+            // console.log(`${req.url} connected from browser`);
             // this is tid
             const tid = req.url.substr("/__debug/".length);
             if (tid) {
-                console.log(`${tid} connected from browser, forwarding request`);
+                // console.log(`${tid} connected from browser, forwarding request`);
                 xBrowsers[tid] = w;
                 w.on("message", (data) => {
                     xClients[tid].send(data.toString());
