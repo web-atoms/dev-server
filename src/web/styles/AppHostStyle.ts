@@ -53,8 +53,11 @@ export default class AppHostStyle extends AtomStyle {
                         },
                         " .topnav-right": {
                             float: "right",
-                            marginTop: "3px",
                             subclasses: {
+                                " > *": {
+                                    marginLeft: "5px",
+                                    marginRight: "5px"
+                                },
                                 " a": {
                                     backgroundColor: "#168eea",
                                     borderRadius: "3px",

@@ -3,6 +3,7 @@ import Bind from "@web-atoms/core/dist/core/Bind"
 import XNode from "@web-atoms/core/dist/core/XNode"
 import {BindableProperty} from "@web-atoms/core/dist/core/BindableProperty";
 import {AtomItemsControl} from "@web-atoms/core/dist/web/controls/AtomItemsControl";
+import { AtomToggleButtonBar } from "@web-atoms/core/dist/web/controls/AtomToggleButtonBar";
 import {AtomGridView} from "@web-atoms/core/dist/web/controls/AtomGridView";
 
     import AppHostViewModel from "../../view-models/AppHostViewModel";
@@ -14,6 +15,8 @@ import {AtomGridView} from "@web-atoms/core/dist/web/controls/AtomGridView";
 
 
 export default class AppHost extends AtomGridView {
+
+	public viewModel: AppHostViewModel;
 
 	public create(): void {
 		this.viewModel =  this.resolve(AppHostViewModel) ;
@@ -33,21 +36,16 @@ export default class AppHost extends AtomGridView {
 				</input>
 				<div
 					class="topnav-right">
-					{/* e4
+					<AtomToggleButtonBar
+						items={this.viewModel.fileTypes}
+						value={Bind.twoWays(() => this.viewModel.type)}
+						/>
 
-					//  <a href="[$viewModel.url]" target="_tab">Open New Tab</a>
-
-					//             <a href="[$viewModel.inspect($viewModel.url)]">Inspect</a>  */}
 					<a
-						eventClick={Bind.event((x) => (x.viewModel).refreshUrl())}>
+						eventClick={Bind.event(() => this.viewModel.refreshUrl())}>
 						Refresh
 					</a>
 				</div>
-				{/* e7
-
-				//  <button event-click="{ () => $viewModel.refreshUrl() }">Refresh</button>
-
-				//         <a href="[$viewModel.inspect($viewModel.url)]" target="_tab">Inspect</a>  */}
 			</header>
 			<div
 				style="overflow: auto; width: 100%; height: 100%"
@@ -75,27 +73,30 @@ export default class AppHost extends AtomGridView {
 							cellWidth={150}
 							label="Open"
 							showQrCode={true}
-							url={Bind.oneTime((x) => x.data.url)}>
+							designMode={false}>
 						</Links>
 						<Links
 							cellWidth={200}
 							label="Open (Design)"
 							showQrCode={true}
-							url={Bind.oneTime((x) => x.data.urlDesignMode)}>
+							designMode={true}>
 						</Links>
 						<Links
-							cellWidth={120}
+							cellWidth={200}
 							label="Open Packed"
 							showQrCode={true}
-							url={Bind.oneTime((x) => x.data.urlPacked)}>
+							designMode={false}
+							packed={Bind.oneWay((x) => x.data.packed )}>
 						</Links>
 						<Links
-							cellWidth={220}
+							cellWidth={200}
 							label="Open Packed (Design)"
 							showQrCode={true}
-							url={Bind.oneTime((x) => x.data.urlDesignModePacked)}>
+							designMode={true}
+							packed={Bind.oneWay((x) => x.data.packed )}>
 						</Links>
-						<td  style="width: 100px">
+						<td style="width: 200px" text=" "></td>
+						{/* <td  style="width: 100px">
 							<a
 								class="button"
 								href={Bind.oneTime((x) => x.viewModel.inspect(x.data.url))}
@@ -110,7 +111,7 @@ export default class AppHost extends AtomGridView {
 								target="_tab">
 								Inspect (Design Mode) 
 							</a>
-						</td>
+						</td> */}
 					</tr>
 				</AtomItemsControl>
 			</div>

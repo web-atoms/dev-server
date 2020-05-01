@@ -21,19 +21,31 @@ export interface IPackedFile extends ParsedPath {
     packed?: boolean;
     xf?: boolean;
     module?: string;
+    package?: string;
+    hostUrl?: string;
 }
 
 router.get("/flat-modules", (req: Request, res: Response) => {
+    const search = (req.query.search as string || "").toLowerCase();
+    const packed = req.query.packed as string === "true";
 
-    const files: ParsedPath [] = [];
-    populate("./", files);
+    const files: IPackedFile [] = [];
+    populate("./", files, search, packed);
     res.setHeader("cache-control", "no-cache");
+
+    const server = req.connection.localAddress.split(":").pop();
+    const serverPort = req.connection.localPort;
+
+    for (const iterator of files) {
+        iterator.hostUrl = `http://${server}:${serverPort}`;
+        iterator.package = packageConfig.name;
+    }
 
     return res.send({ files });
 
 });
 
-function populate(dir: string, files: ParsedPath[]): void {
+function populate(dir: string, files: ParsedPath[], search: string, packed: boolean): void {
     for (const iterator of readdirSync(dir)) {
         if (iterator === "node_modules") {
             continue;
@@ -44,14 +56,21 @@ function populate(dir: string, files: ParsedPath[]): void {
             p.module = [packageConfig.name, replaceSrc(p.dir), p.name]
                 .filter((x) => x)
                 .join("/");
-            const packedFile = path.join(dir, `${p.name}.pack.js`);
-            p.packed = existsSync(packedFile);
+            const fp = path.join(dir, `${p.name}${p.ext}`);
+            const t = readFileSync(fp, "utf-8");
+            p.packed = /\/\/\s*\@web\-atoms\-pack\:\s*true/.test(t);
+            if (packed && !p.packed) {
+                continue;
+            }
+            if (search && p.module.toLowerCase().indexOf(search) === -1 ) {
+                continue;
+            }
             files.push(p);
             continue;
         }
         const s = statSync(filePath);
         if (s.isDirectory()) {
-            populate(filePath, files);
+            populate(filePath, files, search, packed);
         }
     }
 }

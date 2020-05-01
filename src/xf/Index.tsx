@@ -2,6 +2,7 @@ import Bind from "@web-atoms/core/dist/core/Bind";
 import XNode from "@web-atoms/core/dist/core/XNode";
 import XF from "@web-atoms/xf-controls/dist/clr/XF";
 import AtomXFContentPage from "@web-atoms/xf-controls/dist/pages/AtomXFContentPage";
+import AtomXFToggleButtonBar from "@web-atoms/xf-controls/dist/toggle-button-bar/AtomXFToggleButtonBar";
 import AppHostViewModel from "../view-models/AppHostViewModel";
 
 export default class Index extends AtomXFContentPage {
@@ -19,11 +20,21 @@ export default class Index extends AtomXFContentPage {
                     <XF.RowDefinition height="auto"/>
                     <XF.RowDefinition/>
                 </XF.Grid.rowDefinitions>
+                <XF.Grid.columnDefinitions>
+                    <XF.ColumnDefinition/>
+                    <XF.ColumnDefinition width="auto"/>
+                </XF.Grid.columnDefinitions>
                 <XF.SearchBar
                     text={Bind.twoWays(() => this.viewModel.search)}
                     />
+                <AtomXFToggleButtonBar
+                    { ... XF.Grid.column(1) }
+                    items={() => this.viewModel.fileTypes}
+                    value={Bind.twoWays(() => this.viewModel.type)}
+                    />
                 <XF.ListView
-                    { ...  XF.Grid.row(1)}
+                    { ... XF.Grid.row(1)}
+                    { ... XF.Grid.columnSpan(2)}
                     cachingStrategy="RecycleElement"
                     hasUnevenRows={true}
                     rowHeight={70}

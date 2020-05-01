@@ -12,6 +12,7 @@ import { IWSMessage } from "../models/IWSMessage";
 import { ModuleFiles } from "../ModuleFiles";
 import ClipboardService from "../services/ClipboardService";
 import FileService from "../services/FileService";
+import { AtomUri } from "@web-atoms/core/dist/core/AtomUri";
 
 declare var bridge: any;
 
@@ -35,6 +36,13 @@ export default class AppHostViewModel extends AtomViewModel {
 
     public search: string = "";
 
+    public fileTypes = [
+        { label: "Packed", value: "packed"},
+        { label: "All", value: "all"}
+    ];
+
+    public type: string = "packed";
+
     public platforms = [
         { label: "Web", value: "web" },
         { label: "XF", value: "xf" }
@@ -52,34 +60,55 @@ export default class AppHostViewModel extends AtomViewModel {
         }
     }
 
+    public resetPacked() {
+        this.type = "all";
+    }
+
     @Load({ init: true, watch: true, watchDelayMS: 500 })
     public async loadFiles(ct: CancelToken): Promise<any> {
 
         let s = this.search;
+        const packed = this.type === "packed";
         if (s) {
             s = s.toLowerCase();
         }
 
-        const urls = (await this.fileService.getModules(ct)).files;
+        const urls = (await this.fileService.getModules(s, packed, ct)).files;
         for (const iterator of urls) {
             iterator.url = `/uiv/$CURRENT$/${replaceSrc(iterator.dir)}/${iterator.name}`;
-            iterator.urlDesignMode = `/uiv/$CURRENT$/${replaceSrc(iterator.dir)}/${iterator.name}?designMode=true`;
             iterator.visible = true;
-            if (iterator.packed) {
-                iterator.urlPacked = `/`;
+        }
+        if (packed) {
+            if (urls.length === 0) {
+                this.app.callLater(() => this.resetPacked());
             }
         }
-        this.files = urls.filter( (f) =>  f.name.toLowerCase().indexOf(s) !== -1);
+        this.files = urls;
     }
 
-    public async copyUrl(url: string) {
-        url = this.toAbsoluteUrl(url);
+    public async copyUrl(file: IFilePath, designMode: boolean, packed: boolean) {
+        const url = this.toAbsoluteUrl(file, designMode, packed);
         await this.clipboardService.copy(url);
         this.navigationService.notify(Markdown.from(`Url "${url}"\ncopied to clipboard successfully`));
     }
 
-    public toAbsoluteUrl(url: string): string {
-        return `${location.protocol}//${location.host}${url}`;
+    public toAbsoluteUrl(file: IFilePath, designMode: boolean, packed: boolean, qrCode: boolean = false): string {
+        if (!qrCode) {
+            let url = file.url;
+            if (designMode) {
+                url += "&designMode=true";
+            }
+            return `${location.protocol}//${location.host}${url}`;
+        }
+        const uri = new AtomUri("http://debug.webatoms.in/_go");
+        uri.query.hostUrl = file.hostUrl;
+        uri.query.package = file.packed;
+        uri.query.view = file.module;
+        if (designMode) {
+            uri.query.design = true;
+        }
+        uri.query.debugUrl = `${location.protocol}//${location.port}}/__debug`;
+        return uri.toString();
     }
 
     public refreshUrl(): void {

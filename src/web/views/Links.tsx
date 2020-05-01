@@ -6,51 +6,63 @@ import {AtomPageLink} from "@web-atoms/core/dist/web/controls/AtomPageLink";
 import {AtomControl} from "@web-atoms/core/dist/web/controls/AtomControl";
 
     import QRCodeView from "./qr/QRCodeView";
+import AppHostViewModel from "../../view-models/AppHostViewModel";
+import IFilePath from "../../models/IFilePath";
 
 
 
 export default class Links extends AtomControl {
+
+	public viewModel: AppHostViewModel;
+
+	public data: IFilePath;
 	
 	constructor(app: any, e: any) {
 		super(app, e || document.createElement("td"));
 	}
 
-	@BindableProperty
 	public label: string ;
 
-	@BindableProperty
-	public url: string ;
+	public designMode: boolean ;
 
-	@BindableProperty
 	public showQrCode: boolean ;
 
 	public cellWidth: number;
 
+	public url: string;
+
+	public packed: boolean;
+
+	public show: boolean;
+
 	public create(): void {
 		
 		this.label = 'Open';
-		this.url = null;
+		this.show = true;
+		this.designMode = false;
 		this.showQrCode = false;
 		this.cellWidth = null;
+		this.packed = false;
 		this.render(
 		<div
+			show={Bind.oneWay(() => this.packed ? this.data.packed : true)}
 			styleWidth={Bind.oneTime(() => this.cellWidth + "px")}>
 			<a
-				styleDisplay={Bind.oneWay(() => this.url ? '' : 'none')}
+				styleDisplay={Bind.oneWay(() => this.show ? '' : 'none')}
 				class="button"
-				href={Bind.oneWay(() => this.url)}
+				href={Bind.oneWay(() => this.viewModel.toAbsoluteUrl(this.data, this.designMode, this.packed))}
 				target="_tab"
 				text={Bind.oneWay(() => this.label)}>
 			</a>
 			<i
-				styleDisplay={Bind.oneWay(() => this.url ? '' : 'none')}
+				styleDisplay={Bind.oneWay(() => this.show ? '' : 'none')}
 				class="fas fa-copy"
 				title="Copy Url"
 				style="margin: 5px; cursor: pointer;"
-				eventClick={Bind.event((x) => this.viewModel.copyUrl(((x.data) ? x.data.url : undefined)))}>
+				eventClick={Bind.event(() => this.viewModel.copyUrl(this.data, this.designMode, this.packed))}>
 			</i>
 			<AtomPageLink
-				styleDisplay={Bind.oneWay(() => (this.url && this.showQrCode) ? '' : 'none')}
+				styleDisplay={Bind.oneWay(() => (this.show && this.showQrCode) ? '' : 'none')}
 				style="margin: 5px; cursor: pointer;"
 				class="fas fa-qrcode"
 				title="QR Code"
@@ -58,7 +70,7 @@ export default class Links extends AtomControl {
 				<div
 					template="page">
 					<QRCodeView
-						code={Bind.oneTime((x) => x.viewModel.parent.toAbsoluteUrl(x.data.url))}>
+						code={Bind.oneTime(() => this.viewModel.toAbsoluteUrl(this.data, this.designMode, this.packed, true))}>
 					</QRCodeView>
 				</div>
 			</AtomPageLink>
