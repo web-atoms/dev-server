@@ -1,5 +1,6 @@
 import { App } from "@web-atoms/core/dist/App";
 import { Atom } from "@web-atoms/core/dist/Atom";
+import { AtomUri } from "@web-atoms/core/dist/core/AtomUri";
 import Markdown from "@web-atoms/core/dist/core/Markdown";
 import { CancelToken } from "@web-atoms/core/dist/core/types";
 import { Inject } from "@web-atoms/core/dist/di/Inject";
@@ -12,7 +13,6 @@ import { IWSMessage } from "../models/IWSMessage";
 import { ModuleFiles } from "../ModuleFiles";
 import ClipboardService from "../services/ClipboardService";
 import FileService from "../services/FileService";
-import { AtomUri } from "@web-atoms/core/dist/core/AtomUri";
 
 declare var bridge: any;
 

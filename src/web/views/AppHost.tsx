@@ -89,13 +89,13 @@ export default class AppHost extends AtomGridView {
 							packed={Bind.oneWay((x) => x.data.packed )}>
 						</Links>
 						<Links
-							cellWidth={200}
+							cellWidth={250}
 							label="Open Packed (Design)"
 							showQrCode={true}
 							designMode={true}
 							packed={Bind.oneWay((x) => x.data.packed )}>
 						</Links>
-						<td style="width: 200px" text=" "></td>
+						<td style="width: 300px" text=" "></td>
 						{/* <td  style="width: 100px">
 							<a
 								class="button"
