@@ -41,7 +41,14 @@ export default class AppHostViewModel extends AtomViewModel {
         { label: "All", value: "all"}
     ];
 
+    public debugTypes = [
+        { label: "Yes", value: "true" },
+        { label: "No", value: "false" }
+    ];
+
     public type: string = "packed";
+
+    public debug: string = "true";
 
     public platforms = [
         { label: "Web", value: "web" },
@@ -107,7 +114,11 @@ export default class AppHostViewModel extends AtomViewModel {
         if (designMode) {
             uri.query.design = true;
         }
-        uri.query.debugUrl = `${location.protocol}//${location.port}}/__debug`;
+        if (file.packed) {
+            uri.query.packed = file.packed;
+        }
+        uri.query.debug = this.debug;
+        // uri.query.debugUrl = `${location.protocol}//${location.host}/__debug`;
         return uri.toString();
     }
 

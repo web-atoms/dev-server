@@ -14,6 +14,10 @@ import {AtomGridView} from "@web-atoms/core/dist/web/controls/AtomGridView";
 
 
 
+
+// @web-atoms-pack: true
+
+
 export default class AppHost extends AtomGridView {
 
 	public viewModel: AppHostViewModel;
@@ -36,6 +40,12 @@ export default class AppHost extends AtomGridView {
 				</input>
 				<div
 					class="topnav-right">
+					Enable Debugging?
+					<AtomToggleButtonBar
+						items={this.viewModel.debugTypes}
+						value={Bind.twoWays(() => this.viewModel.debug)}
+						/>
+
 					<AtomToggleButtonBar
 						items={this.viewModel.fileTypes}
 						value={Bind.twoWays(() => this.viewModel.type)}

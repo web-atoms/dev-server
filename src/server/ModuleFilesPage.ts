@@ -18,7 +18,7 @@ function replaceSrc(src: string): string {
 }
 
 export interface IPackedFile extends ParsedPath {
-    packed?: boolean;
+    packed?: string;
     xf?: boolean;
     module?: string;
     package?: string;
@@ -58,7 +58,9 @@ function populate(dir: string, files: ParsedPath[], search: string, packed: bool
                 .join("/");
             const fp = path.join(dir, `${p.name}${p.ext}`);
             const t = readFileSync(fp, "utf-8");
-            p.packed = /\/\/\s*\@web\-atoms\-pack\:\s*true/gi.test(t);
+            if (/\/\/\s*\@web\-atoms\-pack\:\s*true/gi.test(t)) {
+                p.packed = path.join(dir, `${p.name}.pack.js`).split("\\").join("/").replace("src/", "dist/");
+            }
             if (packed && !p.packed) {
                 continue;
             }
