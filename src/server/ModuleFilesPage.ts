@@ -58,7 +58,7 @@ function populate(dir: string, files: ParsedPath[], search: string, packed: bool
                 .join("/");
             const fp = path.join(dir, `${p.name}${p.ext}`);
             const t = readFileSync(fp, "utf-8");
-            p.packed = /\/\/\s*\@web\-atoms\-pack\:\s*true/.test(t);
+            p.packed = /\/\/\s*\@web\-atoms\-pack\:\s*true/gi.test(t);
             if (packed && !p.packed) {
                 continue;
             }

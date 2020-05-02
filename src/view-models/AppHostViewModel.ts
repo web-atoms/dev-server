@@ -102,7 +102,7 @@ export default class AppHostViewModel extends AtomViewModel {
         }
         const uri = new AtomUri("http://debug.webatoms.in/_go");
         uri.query.hostUrl = file.hostUrl;
-        uri.query.package = file.packed;
+        uri.query.package = file.package;
         uri.query.view = file.module;
         if (designMode) {
             uri.query.design = true;
