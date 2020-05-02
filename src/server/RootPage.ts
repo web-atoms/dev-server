@@ -99,6 +99,23 @@ router.get("/", (req: Request, res: Response) => {
     const pf = req.query.platform || "web";
 
     const html = prepareHtml(req, res, `@web-atoms/dev-server/dist/${pf}/views/AppHost`, false);
+
+    // const html = `<!DOCTYPE html>
+    // <html>
+    // <head>
+    //     <meta name="viewport"   content="width=device-width"/>
+    //     <title>Web Atoms - Dev Server</title>
+    //     <style>
+    //     html, body { margin: 0; padding: 0; }
+    //     </style>
+    //     <script src="/_dev/refresh.js"></script>
+    // </head>
+    // <body>
+    //     <script src="/_dev/dist/${pf}/views/AppHost.pack.js">
+    //     </script>
+    // </body>
+    // </html>`;
+
     res.setHeader("cache-control", "no-cache");
     return res.send(html);
 });
