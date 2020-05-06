@@ -7,15 +7,9 @@ interface IClientMap {
     [key: string]: ProxyClient;
 }
 
-interface IProcessMap {
-    [key: string]: child_process.ChildProcess;
-}
-
 const xClients: IClientMap = {};
 
 const xBrowsers: IClientMap = {};
-
-const xProcesses: IProcessMap = {};
 
 class ProxyClient {
 
