@@ -4,7 +4,7 @@ import * as open from "open";
 import * as W from "ws";
 
 interface IClientMap {
-    [key: string]: W;
+    [key: string]: ProxyClient;
 }
 
 interface IProcessMap {
@@ -16,6 +16,47 @@ const xClients: IClientMap = {};
 const xBrowsers: IClientMap = {};
 
 const xProcesses: IProcessMap = {};
+
+class ProxyClient {
+
+    constructor(
+        private id: string,
+        private from: W,
+        private self: IClientMap,
+        private other: IClientMap) {
+
+        from.on("message", (data) => {
+            try {
+                const a = this.other[this.id];
+                if (a) {
+                    a.from.send(data);
+                }
+            } catch (e) {
+                console.error(colors.yellow(e));
+            }
+        });
+
+        from.on("error", (e) => {
+            try {
+                // remove self...
+                delete this.self[id];
+            } catch (e1) {
+                console.error(colors.yellow(e1));
+            }
+            console.error(colors.red(e.stack ? e.stack : e.toString()));
+        });
+
+        from.on("close", (n, r) => {
+            try {
+                delete this.self[id];
+            } catch (e) {
+                console.error(colors.yellow(e));
+            }
+        });
+
+    }
+
+}
 
 export default class WSProxyServer {
 
@@ -40,7 +81,7 @@ export default class WSProxyServer {
                 const serverPort = req.connection.localPort;
 
                 // this is Browser connecting...
-                xClients[xid] = w;
+                xClients[xid] = new ProxyClient(xid, w, xClients, xBrowsers);
                 const inspector = `http://${server}:${serverPort}/_cdt/inspector.html`;
                 const wsUrl = `${server}:${serverPort}/__debug/${xid}`;
                 const url =
@@ -50,24 +91,6 @@ export default class WSProxyServer {
                 console.log(colors.green(`\t${url}`));
 
                 open(url);
-
-                w.on("message", (data) => {
-                    try {
-                        const xb = xBrowsers[xid];
-                        if (xb) {
-                            xb.send(data.toString());
-                        }
-                    } catch (e) {
-                        console.error(colors.yellow(e));
-                    }
-                });
-
-                w.on("close", () => {
-                    if (xBrowsers[xid]) {
-                        xBrowsers[xid].close();
-                        delete xBrowsers[xid];
-                    }
-                });
                 return;
             }
 
@@ -76,23 +99,7 @@ export default class WSProxyServer {
             const tid = req.url.substr("/__debug/".length);
             if (tid) {
                 // console.log(`${tid} connected from browser, forwarding request`);
-                xBrowsers[tid] = w;
-                w.on("message", (data) => {
-                    try {
-                        const xc = xClients[tid];
-                        if (xc) {
-                            xc.send(data.toString());
-                        }
-                    } catch (e) {
-                        console.error(colors.yellow(e));
-                    }
-                });
-                w.on("close", () => {
-                    if (xClients[tid]) {
-                        xClients[tid].close();
-                        delete xClients[tid];
-                    }
-                });
+                xBrowsers[tid] = new ProxyClient(tid, w, xBrowsers, xClients);
             }
 
         });
