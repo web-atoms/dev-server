@@ -1,7 +1,7 @@
 import * as child_process from "child_process";
+import * as colors from "colors/safe";
 import * as open from "open";
 import * as W from "ws";
-import * as colors from "colors/safe";
 
 interface IClientMap {
     [key: string]: W;
@@ -52,12 +52,20 @@ export default class WSProxyServer {
                 open(url);
 
                 w.on("message", (data) => {
-                    xBrowsers[xid].send(data.toString());
+                    try {
+                        const xb = xBrowsers[xid];
+                        if (xb) {
+                            xb.send(data.toString());
+                        }
+                    } catch (e) {
+                        console.error(colors.yellow(e));
+                    }
                 });
 
                 w.on("close", () => {
                     if (xBrowsers[xid]) {
                         xBrowsers[xid].close();
+                        delete xBrowsers[xid];
                     }
                 });
                 return;
@@ -70,11 +78,19 @@ export default class WSProxyServer {
                 // console.log(`${tid} connected from browser, forwarding request`);
                 xBrowsers[tid] = w;
                 w.on("message", (data) => {
-                    xClients[tid].send(data.toString());
+                    try {
+                        const xc = xClients[tid];
+                        if (xc) {
+                            xc.send(data.toString());
+                        }
+                    } catch (e) {
+                        console.error(colors.yellow(e));
+                    }
                 });
                 w.on("close", () => {
                     if (xClients[tid]) {
                         xClients[tid].close();
+                        delete xClients[tid];
                     }
                 });
             }
