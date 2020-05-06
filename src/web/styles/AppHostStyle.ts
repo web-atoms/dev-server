@@ -1,6 +1,6 @@
+import Colors from "@web-atoms/core/dist/core/Colors";
 import { AtomStyle } from "@web-atoms/core/dist/web/styles/AtomStyle";
 import { IStyleDeclaration } from "@web-atoms/core/dist/web/styles/IStyleDeclaration";
-import Colors from "@web-atoms/core/dist/core/Colors";
 
 export default class AppHostStyle extends AtomStyle {
 
@@ -17,7 +17,8 @@ export default class AppHostStyle extends AtomStyle {
                         " tr": {
                             subclasses: {
                                 " td": {
-                                    borderSpacing: "0"
+                                    borderSpacing: "0",
+                                    verticalAlign: "top"
                                 },
                                 ":hover": {
                                     backgroundColor: Colors.lightGreen
@@ -53,10 +54,18 @@ export default class AppHostStyle extends AtomStyle {
                         },
                         " .topnav-right": {
                             float: "right",
+                            textAlign: "left",
                             subclasses: {
                                 " > *": {
                                     marginLeft: "5px",
                                     marginRight: "5px"
+                                },
+                                " > span": {
+                                    textAlign: "right"
+                                },
+                                " > ul": {
+                                    marginRight: "50px",
+                                    paddingInlineStart: "0"
                                 },
                                 " a": {
                                     backgroundColor: "#168eea",

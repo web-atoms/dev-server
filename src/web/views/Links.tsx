@@ -45,6 +45,7 @@ export default class Links extends AtomControl {
 		this.packed = false;
 		this.render(
 		<div
+			designMode={Bind.oneWay(() => this.viewModel.designMode === "true")}
 			show={Bind.oneWay(() => this.packed ? this.data.packed : true)}
 			styleWidth={Bind.oneTime(() => this.cellWidth + "px")}>
 			<a
@@ -61,19 +62,20 @@ export default class Links extends AtomControl {
 				style="margin: 5px; cursor: pointer;"
 				eventClick={Bind.event(() => this.viewModel.copyUrl(this.data, this.designMode, this.packed))}>
 			</i>
-			<AtomPageLink
+			{/* <AtomPageLink
 				styleDisplay={Bind.oneWay(() => (this.show && this.showQrCode) ? '' : 'none')}
 				style="margin: 5px; cursor: pointer;"
 				class="fas fa-qrcode"
 				title="QR Code"
 				for="i">
 				<div
-					template="page">
+					template="page"> */}
 					<QRCodeView
-						code={Bind.oneTime(() => this.viewModel.toAbsoluteUrl(this.data, this.designMode, this.packed, true))}>
+						styleDisplay={Bind.oneWay(() => this.viewModel.showQrCode === "true" ? "" : "none")}
+						code={Bind.oneWay(() => this.viewModel.toAbsoluteUrl(this.data, this.designMode, this.packed, true))}>
 					</QRCodeView>
-				</div>
-			</AtomPageLink>
+				{/* </div>
+			</AtomPageLink> */}
 		</div>
 		);
 	}

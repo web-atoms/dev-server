@@ -46,6 +46,15 @@ export default class AppHostViewModel extends AtomViewModel {
         { label: "No", value: "false" }
     ];
 
+    public designModes = [
+        { label: "Design", value: "true" },
+        { label: "Live", value: "false" }
+    ];
+
+    public designMode = "true";
+
+    public showQrCode = "false";
+
     public type: string = "packed";
 
     public debug: string = "true";
@@ -114,7 +123,7 @@ export default class AppHostViewModel extends AtomViewModel {
         if (designMode) {
             uri.query.design = true;
         }
-        if (file.packed) {
+        if (packed && file.packed) {
             uri.query.packed = file.packed;
         }
         uri.query.debug = this.debug;

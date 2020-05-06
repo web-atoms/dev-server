@@ -40,7 +40,21 @@ export default class AppHost extends AtomGridView {
 				</input>
 				<div
 					class="topnav-right">
-					Enable Debugging?
+
+					<span>Show QRCode</span>
+					<AtomToggleButtonBar
+						items={this.viewModel.debugTypes}
+						value={Bind.twoWays(() => this.viewModel.showQrCode)}
+						/>
+
+
+					<span>Mode</span>
+					<AtomToggleButtonBar
+						items={this.viewModel.designModes}
+						value={Bind.twoWays(() => this.viewModel.designMode)}
+						/>
+
+					<span>Enable Debugging?</span>
 					<AtomToggleButtonBar
 						items={this.viewModel.debugTypes}
 						value={Bind.twoWays(() => this.viewModel.debug)}
@@ -82,46 +96,18 @@ export default class AppHost extends AtomGridView {
 						<Links
 							cellWidth={150}
 							label="Open"
-							showQrCode={true}
-							designMode={false}>
+							showQrCode={true}>
 						</Links>
-						<Links
-							cellWidth={200}
-							label="Open (Design)"
-							showQrCode={true}
-							designMode={true}>
-						</Links>
+						<td style="width:200px">
+							<div></div>
+						</td>
 						<Links
 							cellWidth={200}
 							label="Open Packed"
 							showQrCode={true}
-							designMode={false}
-							packed={Bind.oneWay((x) => x.data.packed )}>
-						</Links>
-						<Links
-							cellWidth={250}
-							label="Open Packed (Design)"
-							showQrCode={true}
-							designMode={true}
 							packed={Bind.oneWay((x) => x.data.packed )}>
 						</Links>
 						<td style="width: 300px" text=" "></td>
-						{/* <td  style="width: 100px">
-							<a
-								class="button"
-								href={Bind.oneTime((x) => x.viewModel.inspect(x.data.url))}
-								target="_tab">
-								Inspect 
-							</a>
-						</td>
-						<td style="width: 200px">
-							<a
-								class="button"
-								href={Bind.oneTime((x) => x.viewModel.inspect(x.data.urlDesignMode))}
-								target="_tab">
-								Inspect (Design Mode) 
-							</a>
-						</td> */}
 					</tr>
 				</AtomItemsControl>
 			</div>
