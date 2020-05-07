@@ -8,8 +8,6 @@ export default class FolderWatcher {
 
     private static ready: any = {};
 
-    private static prefixes: any = {};
-
     /**
      * Store md5 of previous files...
      */
@@ -44,9 +42,9 @@ export default class FolderWatcher {
      */
     constructor(
         private readonly path: string,
-        private readonly callback: (delayed?: boolean) => void) {
+        private readonly callback: (fileName: string, time: number) => void) {
 
-        if (!FolderWatcher.prefixes[path]) {
+        if (!FolderWatcher.ready[path]) {
 
             // tslint:disable-next-line: no-console
             console.log(colors.grey(`Reading hash of path ${path}`));
@@ -67,7 +65,7 @@ export default class FolderWatcher {
             (e, filename) => {
 
             // ignore .pack.js files...
-            if (/\.pack\.js$/i.test(filename)) {
+            if (/\.pack(\.min)?\.js(\.map)?$/i.test(filename)) {
                 return;
             }
 
@@ -106,7 +104,8 @@ export default class FolderWatcher {
             }
         }
         FolderWatcher.files[filename] = n;
-        this.callback(delayed);
+        const st = statSync(filename);
+        this.callback(filename, st.mtimeMs);
     }
 
 }

@@ -30,22 +30,26 @@ class ProxyClient {
             }
         });
 
-        from.on("error", (e) => {
+        const close = () => {
             try {
+                const a = this.other[this.id];
+                if (a) {
+                    a.from.close();
+                }
                 // remove self...
                 delete this.self[id];
             } catch (e1) {
                 console.error(colors.yellow(e1));
             }
+        };
+
+        from.on("error", (e) => {
+            close();
             console.error(colors.red(e.stack ? e.stack : e.toString()));
         });
 
         from.on("close", (n, r) => {
-            try {
-                delete this.self[id];
-            } catch (e) {
-                console.error(colors.yellow(e));
-            }
+            close();
         });
 
     }

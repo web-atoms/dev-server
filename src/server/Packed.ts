@@ -1,14 +1,37 @@
-import FilePacker from "@web-atoms/pack/dist/FilePacker";
+import FilePacker, { IFileLastModifiedMap } from "@web-atoms/pack/dist/FilePacker";
 import PackageVersion from "@web-atoms/pack/dist/PackageVersion";
 import * as colors from "colors/safe";
-import { existsSync, readFileSync, statSync, utimesSync } from "fs";
+import { existsSync, readFileSync, statSync, unlinkSync } from "fs";
 import { isAbsolute, resolve } from "path";
+import FolderWatcher from "./FolderWatcher";
 
 const r = /\.pack\.js$/i;
+
+function fixPathStyle(path: string) {
+    return path.split("\\").join("/");
+}
 
 PackageVersion.isV2 = true;
 
 const generatedOnce: {[key: string]: boolean } = {};
+
+export const fileMap: { [key: string]: IFileLastModifiedMap} = {};
+
+export const fw = new FolderWatcher("./dist", (file, time) => {
+    file = fixPathStyle(file).substr(2);
+    for (const key in fileMap) {
+        if (fileMap.hasOwnProperty(key)) {
+            const element = fileMap[key];
+            const lastModified = element[file];
+            if (lastModified) {
+                element[file] = time;
+                console.log(`File ${file} modified... deleting ${key}`);
+                // delete file...
+                unlinkSync(key);
+            }
+        }
+    }
+});
 
 export default class Packed {
 
@@ -62,7 +85,9 @@ export default class Packed {
 
             const fp = new FilePacker(baseDir, original, pkg);
 
-            await fp.pack();
+            const fm = await fp.pack();
+
+            fileMap["./" + fixPathStyle(path)] = fm;
 
             // const text = readFileSync(path, { encoding: "utf-8"});
 
