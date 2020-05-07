@@ -25,9 +25,11 @@ export const fw = new FolderWatcher("./dist", (file, time) => {
             const lastModified = element[file];
             if (lastModified) {
                 element[file] = time;
-                console.log(`File ${file} modified... deleting ${key}`);
-                // delete file...
-                unlinkSync(key);
+                if (existsSync(key)) {
+                    console.log(`File ${file} modified... deleting ${key}`);
+                    // delete file...
+                    unlinkSync(key);
+                }
             }
         }
     }
