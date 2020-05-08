@@ -1,6 +1,6 @@
 import * as colors from "colors/safe";
 import { existsSync, readdirSync, readFileSync, Stats, statSync, watch } from "fs";
-import * as md5 from "md5-file";
+// import * as md5 from "md5-file";
 
 // prevent recursive and wait..
 
@@ -11,7 +11,7 @@ export default class FolderWatcher {
     /**
      * Store md5 of previous files...
      */
-    private static files: { [key: string]: string } = {};
+    private static files: { [key: string]: number } = {};
 
     private static async readFiles(path: string) {
         const files = readdirSync(path);
@@ -25,7 +25,7 @@ export default class FolderWatcher {
             } else {
                 all.push((async () => {
                     if (FolderWatcher.files[filePath]) { return; }
-                    FolderWatcher.files[filePath] = await md5(filePath);
+                    FolderWatcher.files[filePath] = s.mtimeMs;
                 })());
             }
         }
@@ -97,7 +97,7 @@ export default class FolderWatcher {
         if (s.isDirectory()) {
             return;
         }
-        const n = md5.sync(filename);
+        const n = s.mtimeMs;
         if (old) {
             if (n === old) {
                 return;
