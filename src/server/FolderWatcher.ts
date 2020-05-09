@@ -42,7 +42,8 @@ export default class FolderWatcher {
      */
     constructor(
         private readonly path: string,
-        private readonly callback: (fileName: string, time: number) => void) {
+        private readonly callback: (fileName: string, time: number) => void,
+        private readonly watchDeleted: boolean = false) {
 
         if (!FolderWatcher.ready[path]) {
 
@@ -65,9 +66,9 @@ export default class FolderWatcher {
             (e, filename) => {
 
             // ignore .pack.js files...
-            if (/\.pack(\.min)?\.js(\.map)?$/i.test(filename)) {
-                return;
-            }
+            // if (/\.pack(\.min)?\.js(\.map)?$/i.test(filename)) {
+            //     return;
+            // }
 
             if (!FolderWatcher.ready[path]) {
                 return;
@@ -86,9 +87,12 @@ export default class FolderWatcher {
         const filename = `${this.path}/${f}`;
         const old = FolderWatcher.files[filename];
         if (!existsSync(filename)) {
-            // tslint:disable-next-line: no-console
-            // console.log(`File ${filename} deleted`);
             delete FolderWatcher.files[filename];
+            if (!this.watchDeleted) {
+                return;
+            }
+
+            this.callback(filename, 0);
             return;
         }
 

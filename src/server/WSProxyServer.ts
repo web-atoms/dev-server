@@ -2,6 +2,7 @@ import * as child_process from "child_process";
 import * as colors from "colors/safe";
 import * as open from "open";
 import * as W from "ws";
+import WAClientStore from "./WAClientStore";
 
 interface IClientMap {
     [key: string]: ProxyClient;
@@ -56,6 +57,25 @@ class ProxyClient {
 
 }
 
+const refresh = JSON.stringify(
+    {
+        id: 100000,
+        method: "Runtime.evaluate",
+        params: {
+            awaitPromise: false,
+            contextId: 1,
+            expression: "bridge.refresh()",
+            generatePreview: false,
+            includeCommandLineAPI: true,
+            objectGroup: "console",
+            replMode: true,
+            returnByValue: false,
+            silent: false,
+            userGesture: true
+        }
+    }
+);
+
 export default class WSProxyServer {
 
     public static configure(ws: W.Server, port: number): void {
@@ -73,10 +93,29 @@ export default class WSProxyServer {
 
             const xid = queries.id;
 
+            const noDebug = queries.noDebug;
+
             if (xid) {
 
                 const server = req.connection.localAddress.split(":").pop();
                 const serverPort = req.connection.localPort;
+
+                const d = WAClientStore.instance.register(xid, () => {
+                    try {
+                        console.log(`Requesting refresh ${xid}`);
+                        w.send(refresh);
+                    } catch (e) {
+                        console.error(e);
+                    }
+                });
+                w.on("close", () => {
+                    d.dispose();
+                });
+
+                if (noDebug) {
+                    // only support refreshing...
+                    return;
+                }
 
                 // this is Browser connecting...
                 xClients[xid] = new ProxyClient(xid, w, xClients, xBrowsers);

@@ -35,7 +35,13 @@ export const fw = new FolderWatcher("./dist", (file, time) => {
     }
 });
 
+const handlers = [];
+
 export default class Packed {
+
+    public static watchForChanges(name: string) {
+
+    }
 
     public static checkPacked(name: string): boolean {
         if (!r.test(name)) {
