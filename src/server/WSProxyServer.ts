@@ -88,7 +88,9 @@ export default class WSProxyServer {
                 console.log(colors.yellow("\tOpen This Link if browser fails to open"));
                 console.log(colors.green(`\t${url}`));
 
-                open(url);
+                if (process.argv.indexOf("--no-auto-open") === -1) {
+                    open(url);
+                }
                 return;
             }
 
