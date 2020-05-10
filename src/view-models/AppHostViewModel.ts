@@ -112,6 +112,9 @@ export default class AppHostViewModel extends AtomViewModel {
         if (!qrCode) {
             let url = file.url;
             if (designMode) {
+                if (url.indexOf("?") === -1) {
+                    url += "?";
+                }
                 url += "&designMode=true";
             }
             return `${location.protocol}//${location.host}${url}`;
