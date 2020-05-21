@@ -28,7 +28,7 @@ export default class AppHost extends AtomGridView {
 
 		this.render(
 		<div
-			styleClass={Bind.oneTime(() => this.controlStyle.root)}
+			styleClass={Bind.oneTime(() => this.controlStyle.name)}
 			rows="50, *">
 			<header
 				row="0"
