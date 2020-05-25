@@ -146,8 +146,9 @@ router.post(/^\/\_package\_server\//, (req, res) => {
                 res.send(r);
             }
         }
-    }, JSON.parse(req.body) || req.query);
+    }, req.body || req.query);
     } catch (ex) {
+        console.error(ex);
         res.statusCode = 500;
         res.send(ex.stack ? (ex + "\r\n" + ex.stack) : ex.toString());
     }
