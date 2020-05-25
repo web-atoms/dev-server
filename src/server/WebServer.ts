@@ -20,7 +20,7 @@ class WebServer {
 
         this.express.use(bodyParser.json());
         this.express.use(bodyParser.urlencoded( { extended: true } ));
-        this.express.use(bodyParser.raw());
+        // this.express.use(bodyParser.raw());
 
         this.express.use(RootPage);
 
