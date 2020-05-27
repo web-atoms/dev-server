@@ -1,5 +1,5 @@
-import * as express from "express";
 import * as bodyParser from "body-parser";
+import * as express from "express";
 import { ModuleFilesPage } from "./ModuleFilesPage";
 import { RootPage } from "./RootPage";
 import StaticFileServer from "./StaticFileServer";
