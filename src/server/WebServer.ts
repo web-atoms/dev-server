@@ -2,6 +2,7 @@ import * as bodyParser from "body-parser";
 import * as colors from "colors/safe";
 import * as express from "express";
 import { createProxyMiddleware } from "http-proxy-middleware";
+import * as querystring from "querystring";
 import { ModuleFilesPage } from "./ModuleFilesPage";
 import { RootPage } from "./RootPage";
 import StaticFileServer from "./StaticFileServer";
@@ -12,8 +13,8 @@ class WebServer {
 
     constructor() {
         this.express = express();
-        this.setupProxy();
         this.setupRoutes();
+        this.setupProxy();
     }
 
     public setupProxy(): void {
@@ -27,6 +28,24 @@ class WebServer {
                     changeOrigin: true,
                     ws: true,
                     cookieDomainRewrite: "",
+                    onProxyReq: (proxyReq, req, res) => {
+                        if (!req.body || !Object.keys(req.body).length) {
+                            return;
+                        }
+                        const contentType = proxyReq.getHeader("Content-Type");
+                        const writeBody = (bodyData: string) => {
+                            proxyReq.setHeader("Content-Length", Buffer.byteLength(bodyData));
+                            proxyReq.write(bodyData);
+                        };
+
+                        if (contentType.toString().startsWith("application/json")) {
+                            writeBody(JSON.stringify(req.body));
+                        }
+
+                        if (contentType === "application/x-www-form-urlencoded") {
+                            writeBody(querystring.stringify(req.body));
+                        }
+                    },
                     onProxyRes: (proxyReq, req, res) => {
 
                         if (proxyReq.statusCode > 300) {
