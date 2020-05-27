@@ -77,32 +77,6 @@ function createCert() {
 
 function listen(port, ssl) {
 
-    var proxyHost = process.argv.find((s) => /^(http|https)\:\/\//.test(s));
-
-    if (proxyHost) {
-        var apiProxy = createProxyMiddleware(
-            (pathName) => pathName !== "/__debug" && !pathName.startsWith("/__debug/") && pathName !== "/__listen",
-            {
-                target: proxyHost,
-                changeOrigin: true,
-                ws: true,
-                cookieDomainRewrite: "",
-                onProxyRes: (proxyReq, req, res) => {
-
-                    if (proxyReq.statusCode > 300) {
-                        console.error(colors.red(`HTTP STATUS ${proxyReq.statusCode} for ${proxyHost}${req.url}`));
-                    }
-
-                    var cookie = proxyReq.headers["set-cookie"];
-                    if (cookie) {
-                        cookie = cookie.map((s) => s.replace("secure;", "") );
-                        proxyReq.headers["set-cookie"] = cookie;
-                    }
-                }
-            });
-
-        app.default.use(apiProxy);
-    }
     var server = ssl ? https.createServer(createCert(), app.default) : http.createServer(app.default);
 
     var wss = new WebSocketServer({ noServer: true });

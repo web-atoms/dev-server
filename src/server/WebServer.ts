@@ -1,5 +1,7 @@
 import * as bodyParser from "body-parser";
+import * as colors from "colors/safe";
 import * as express from "express";
+import { createProxyMiddleware } from "http-proxy-middleware";
 import { ModuleFilesPage } from "./ModuleFilesPage";
 import { RootPage } from "./RootPage";
 import StaticFileServer from "./StaticFileServer";
@@ -10,10 +12,39 @@ class WebServer {
 
     constructor() {
         this.express = express();
-        this.mountRoutes();
+        this.setupProxy();
+        this.setupRoutes();
     }
 
-    private mountRoutes(): void {
+    public setupProxy(): void {
+        const proxyHost = process.argv.find((s) => /^(http|https)\:\/\//.test(s));
+
+        if (proxyHost) {
+            const apiProxy = createProxyMiddleware(
+                (pathName) => pathName !== "/__debug" && !pathName.startsWith("/__debug/") && pathName !== "/__listen",
+                {
+                    target: proxyHost,
+                    changeOrigin: true,
+                    ws: true,
+                    cookieDomainRewrite: "",
+                    onProxyRes: (proxyReq, req, res) => {
+
+                        if (proxyReq.statusCode > 300) {
+                            console.error(colors.red(`HTTP STATUS ${proxyReq.statusCode} for ${proxyHost}${req.url}`));
+                        }
+                        let cookie = proxyReq.headers["set-cookie"];
+                        if (cookie) {
+                            cookie = cookie.map((s) => s.replace("secure;", "") );
+                            proxyReq.headers["set-cookie"] = cookie;
+                        }
+                    }
+                });
+
+            this.express.use(apiProxy);
+        }
+    }
+
+    public setupRoutes(): void {
 
         // this.express.use();
         // this.express.use(express.json());
