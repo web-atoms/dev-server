@@ -48,9 +48,9 @@ router.get("/flat-modules", (req: Request, res: Response) => {
 const shortCodes = {};
 const last = 0;
 
-router.get(/^\/\_r\//g, (req: Request, res: Response) => {
+router.get(/^\/\_r\//, (req: Request, res: Response) => {
     let id: number;
-    let url = req.param("url", null);
+    let url = req.query.url as string;
     if (url) {
         const server = req.connection.localAddress.split(":").pop();
         const serverPort = req.connection.localPort;
@@ -61,7 +61,7 @@ router.get(/^\/\_r\//g, (req: Request, res: Response) => {
             shortCodes[id] = url;
         }
         url = `http://${server}:${serverPort}/_r/${id}`;
-        url = `http://debug.webatoms.in/_r/url=${encodeURIComponent(url)}`;
+        url = `http://debug.webatoms.in/_r/a/?url=${encodeURIComponent(url)}`;
         return res.send({ url });
     }
     const rp = req.path.substr("/_r/".length);
