@@ -32,27 +32,30 @@ class WebServer {
                         if (!req.body || !Object.keys(req.body).length) {
                             return;
                         }
-                        const contentType = proxyReq.getHeader("Content-Type");
+                        const contentType = proxyReq.getHeader("Content-Type").toString();
                         const writeBody = (bodyData: string) => {
-                            proxyReq.setHeader("Content-Type", /charset/i.test(contentType.toString())
+                            proxyReq.setHeader("Content-Type", /charset/i.test(contentType)
                                 ? contentType
                                 : (contentType + "; charset=utf-8"));
                             proxyReq.setHeader("Content-Length", Buffer.byteLength(bodyData));
                             proxyReq.write(bodyData);
                         };
 
-                        if (contentType.toString().startsWith("application/json")) {
+                        if (contentType.startsWith("application/json")) {
                             writeBody(JSON.stringify(req.body));
-                        }
-
-                        if (contentType === "application/x-www-form-urlencoded") {
+                        } else if (contentType.startsWith("application/x-www-form-urlencoded")) {
                             writeBody(querystring.stringify(req.body));
+                        } else {
+                            writeBody(req.body);
                         }
                     },
                     onProxyRes: (proxyReq, req, res) => {
 
-                        if (proxyReq.statusCode > 300) {
+                        if (proxyReq.statusCode >= 400) {
                             console.error(colors.red(`HTTP STATUS ${proxyReq.statusCode} for ${proxyHost}${req.url}`));
+                        } else if (proxyReq.statusCode >= 300) {
+                            console.warn(colors.yellow(
+                                `HTTP STATUS ${proxyReq.statusCode} for ${proxyHost}${req.url}`));
                         }
                         let cookie = proxyReq.headers["set-cookie"];
                         if (cookie) {
