@@ -45,6 +45,26 @@ router.get("/flat-modules", (req: Request, res: Response) => {
 
 });
 
+const shortCodes = {};
+const last = 0;
+
+router.get("/_r/a", (req: Request, res: Response) => {
+    let id: number;
+    let url = req.param("url", null);
+    if (url) {
+        id = shortCodes[url];
+        if (!id) {
+            id = last + 1;
+            shortCodes[url] = id;
+            shortCodes[id] = url;
+        }
+        return res.send({id});
+    }
+    id = parseInt(req.param("id", "0"), 10);
+    url = shortCodes[id];
+    res.redirect(url);
+});
+
 function populate(dir: string, files: ParsedPath[], search: string, packed: boolean): void {
     for (const iterator of readdirSync(dir)) {
         if (iterator === "node_modules") {
