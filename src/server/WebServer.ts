@@ -34,6 +34,9 @@ class WebServer {
                         }
                         const contentType = proxyReq.getHeader("Content-Type");
                         const writeBody = (bodyData: string) => {
+                            proxyReq.setHeader("Content-Type", /charset/i.test(contentType.toString())
+                                ? contentType
+                                : (contentType + "; charset=utf-8"));
                             proxyReq.setHeader("Content-Length", Buffer.byteLength(bodyData));
                             proxyReq.write(bodyData);
                         };
