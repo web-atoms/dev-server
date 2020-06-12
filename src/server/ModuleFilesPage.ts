@@ -52,13 +52,17 @@ router.get(/^\/\_r\//g, (req: Request, res: Response) => {
     let id: number;
     let url = req.param("url", null);
     if (url) {
+        const server = req.connection.localAddress.split(":").pop();
+        const serverPort = req.connection.localPort;
         id = shortCodes[url];
         if (!id) {
             id = last + 1;
             shortCodes[url] = id;
             shortCodes[id] = url;
         }
-        return res.send({id});
+        url = `http://${server}:${serverPort}/_r/${id}`;
+        url = `http://debug.webatoms.in/_r/url=${encodeURIComponent(url)}`;
+        return res.send({ url });
     }
     const rp = req.path.substr("/_r/".length);
     id = parseInt(rp, 10);
