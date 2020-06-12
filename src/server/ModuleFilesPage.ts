@@ -48,7 +48,7 @@ router.get("/flat-modules", (req: Request, res: Response) => {
 const shortCodes = {};
 const last = 0;
 
-router.get("/_r/a", (req: Request, res: Response) => {
+router.get(/^\/\_r\//g, (req: Request, res: Response) => {
     let id: number;
     let url = req.param("url", null);
     if (url) {
@@ -60,7 +60,8 @@ router.get("/_r/a", (req: Request, res: Response) => {
         }
         return res.send({id});
     }
-    id = parseInt(req.param("id", "0"), 10);
+    const rp = req.path.substr("/_r/".length);
+    id = parseInt(rp, 10);
     url = shortCodes[id];
     res.redirect(url);
 });
