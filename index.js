@@ -98,8 +98,8 @@ function listen(port, ssl) {
                 wss.emit('connection', ws, request);
             });
         } else {
-            console.error("No upgrade for " + pathname);
-        socket.destroy();
+            console.error("Forwarding further.. " + pathname);
+            // socket.destroy();
         }
     });
 
