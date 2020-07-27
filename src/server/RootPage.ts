@@ -7,15 +7,22 @@ const args = process.argv;
 // Assign router to the express.Router() instance
 const router: Router = Router();
 
-function prepareHtml(req: Request, res: Response, viewPath: string, autoRefresh: boolean): string {
+function prepareHtml(
+    req: Request,
+    res: Response,
+    viewPath: string,
+    autoRefresh: boolean,
+    designMode?: boolean): string {
 
     while (viewPath.startsWith("/")) {
         viewPath = viewPath.substr(1);
     }
 
-    const designMode =
-        req.query.designMode ||
-        (process.argv[2] ? false : true);
+    if (designMode === undefined) {
+        designMode =
+            !!req.query.designMode ||
+            (process.argv[2] ? false : true);
+    }
 
     const devServer = "/_dev";
 
@@ -98,7 +105,7 @@ router.get("/", (req: Request, res: Response) => {
 
     const pf = req.query.platform || "web";
 
-    const html = prepareHtml(req, res, `@web-atoms/dev-server/dist/${pf}/views/AppHost`, false);
+    const html = prepareHtml(req, res, `@web-atoms/dev-server/dist/${pf}/views/AppHost`, false, false);
 
     // const html = `<!DOCTYPE html>
     // <html>
