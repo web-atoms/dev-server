@@ -1,5 +1,5 @@
 import * as colors from "colors/safe";
-import { existsSync, readdirSync, readFileSync, Stats, statSync, watch } from "fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, Stats, statSync, watch } from "fs";
 // import * as md5 from "md5-file";
 
 // prevent recursive and wait..
@@ -44,6 +44,10 @@ export default class FolderWatcher {
         private readonly path: string,
         private readonly callback: (fileName: string, time: number) => void,
         private readonly watchDeleted: boolean = false) {
+
+        if (!existsSync(path)) {
+            mkdirSync(path);
+        }
 
         if (!FolderWatcher.ready[path]) {
 

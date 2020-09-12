@@ -1,4 +1,3 @@
-import { PropertyMap } from "@web-atoms/core/dist/core/PropertyMap";
 export default class PropertyModel {
 
     public static isArray(t: any): boolean {
@@ -17,9 +16,9 @@ export default class PropertyModel {
         }
 
         const list: PropertyModel[] = [];
-        const map = PropertyMap.from(t);
-        const names = map.names.sort( (a, b) => a.localeCompare(b));
-        for (const iterator of names) {
+        // const map = PropertyMap.from(t);
+        // const names = map.names.sort( (a, b) => a.localeCompare(b));
+        for (const iterator of t) {
             if (/^__/i.test(iterator)) {
                 continue;
             }
