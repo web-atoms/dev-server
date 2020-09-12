@@ -25,7 +25,7 @@
     "@types/express": "^4.17.8",
     "@types/node": "^10.17.32",
     "@types/ws": "^6.0.4",
-    "@web-atoms/core": "^1.2.50",
+    "@web-atoms/core": "^1.2.51",
     "@web-atoms/date-time": "^1.0.26",
     "@web-atoms/font-awesome": "^1.0.22",
     "@web-atoms/module-loader": "^1.0.431",
