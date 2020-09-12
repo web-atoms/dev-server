@@ -30,7 +30,7 @@
     "@web-atoms/font-awesome": "^1.0.22",
     "@web-atoms/module-loader": "^1.0.431",
     "@web-atoms/pack": "^1.0.69",
-    "@web-atoms/xf-controls": "^1.1.33",
+    "@web-atoms/xf-controls": "^1.1.35",
     "colors": "^1.4.0",
     "express": "^4.17.1",
     "http-proxy-middleware": "^1.0.5",
