@@ -83,7 +83,8 @@ function populate(dir: string, files: ParsedPath[], search: string, packed: bool
                 .join("/");
             const fp = path.join(dir, `${p.name}${p.ext}`);
             const t = readFileSync(fp, "utf-8");
-            if (/\/\/\s*\@web\-atoms\-pack\:\s*true/gi.test(t)) {
+            if (t.indexOf('import Pack from "@web-atoms/core/dist/Pack";') !== -1
+                || /\/\/\s*\@web\-atoms\-pack\:\s*true/gi.test(t)) {
                 p.packed = path.join(dir, `${p.name}.pack.js`).split("\\").join("/").replace("src/", "dist/");
             }
             if (packed && !p.packed) {
