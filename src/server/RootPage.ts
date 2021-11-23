@@ -54,7 +54,6 @@ function prepareHtml(
         : "";
 
     const body = `
-            ${waSetup}
             ${da.join("\r\n")}
             UMD.setupRoot("${current}","");
             UMD.map("${current}","");
