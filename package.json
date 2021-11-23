@@ -25,12 +25,14 @@
     "@types/express": "^4.17.8",
     "@types/node": "^10.17.32",
     "@types/ws": "^6.0.4",
-    "@web-atoms/core": "^2.0.2",
+    "@web-atoms/core": "^2.1.9",
+    "@web-atoms/entity": "^2.0.1",
     "@web-atoms/date-time": "^1.0.26",
-    "@web-atoms/font-awesome": "^1.0.22",
-    "@web-atoms/module-loader": "^1.0.431",
+    "@web-atoms/font-awesome": "^1.0.25",
+    "@web-atoms/module-loader": "^2.0.36",
+    "@web-atoms/web-controls": "^2.1.1",
+    "@web-atoms/xf-controls": "^2.1.2",
     "@web-atoms/pack": "^1.0.69",
-    "@web-atoms/xf-controls": "^2.0.1",
     "colors": "^1.4.0",
     "express": "^4.17.1",
     "http-proxy-middleware": "^1.0.5",
@@ -40,7 +42,7 @@
     "portfinder": "^1.0.28",
     "qrcode": "^1.4.4",
     "reflect-metadata": "^0.1.13",
-    "ws": "^6.2.1"
+    "ws": "^7.4.6"
   },
   "devDependencies": {}
 }

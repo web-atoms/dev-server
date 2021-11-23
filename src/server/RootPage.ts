@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import { readFileSync } from "fs";
+import { existsSync, readFileSync } from "fs";
 import * as path from "path";
 
 const args = process.argv;
@@ -49,7 +49,12 @@ function prepareHtml(
 
     const refresh = autoRefresh ? `<script src="${devServer}/refresh.js"></script>` : "";
 
+    const waSetup = existsSync("./.vscode/.waSetup.js")
+        ? `<script src="/.vscode/.waSetup.js"></script>`
+        : "";
+
     const body = `
+            ${waSetup}
             ${da.join("\r\n")}
             UMD.setupRoot("${current}","");
             UMD.map("${current}","");
@@ -83,6 +88,7 @@ function prepareHtml(
         ${refresh}
     </head>
     <body>
+        ${waSetup}
         <script>
             ${body}
         </script>
