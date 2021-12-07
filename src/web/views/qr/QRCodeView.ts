@@ -4,7 +4,7 @@ import DISingleton from "@web-atoms/core/dist/di/DISingleton";
 import { BaseService, Get, Query } from "@web-atoms/core/dist/services/http/RestService";
 import { AtomControl } from "@web-atoms/core/dist/web/controls/AtomControl";
 import WebApp from "@web-atoms/core/dist/web/WebApp";
-import * as QRCode from "qrcode/build/qrcode.min.js";
+import * as QRCode from "qrcode/build/qrcode.js";
 
 @DISingleton()
 class UrlService extends BaseService {
