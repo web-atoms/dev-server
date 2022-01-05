@@ -72,7 +72,9 @@ export default class Links extends AtomControl {
 					template="page"> */}
 					<QRCodeView
 						styleDisplay={Bind.oneWay(() => this.viewModel.showQrCode === "true" ? "" : "none")}
-						code={Bind.oneWay(() => this.viewModel.toAbsoluteUrl(this.data, this.designMode, this.packed, true))}>
+						code={Bind.oneWay(() => this.viewModel.showQrCode === "true"
+							? this.viewModel.toAbsoluteUrl(this.data, this.designMode, this.packed, true)
+							: null)}>
 					</QRCodeView>
 				{/* </div>
 			</AtomPageLink> */}
