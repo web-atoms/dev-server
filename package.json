@@ -31,7 +31,6 @@
     "@web-atoms/font-awesome": "^1.0.25",
     "@web-atoms/module-loader": "^2.0.36",
     "@web-atoms/web-controls": "^2.1.1",
-    "@web-atoms/xf-controls": "^2.1.2",
     "@web-atoms/pack": "^1.0.69",
     "colors": "^1.4.0",
     "express": "^4.17.1",
