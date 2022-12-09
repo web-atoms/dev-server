@@ -51,7 +51,7 @@ export default class AppHostViewModel extends AtomViewModel {
         { label: "Live", value: "false" }
     ];
 
-    public designMode = "true";
+    public designMode = "false";
 
     public showQrCode = "false";
 
