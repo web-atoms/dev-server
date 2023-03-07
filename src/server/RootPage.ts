@@ -78,6 +78,7 @@ function prepareHtml(
         <meta name="viewport"   content="width=device-width"/>
         <title>Web Atoms - </title>
         <script src="/node_modules/@web-atoms/module-loader/umd.js"></script>
+        <script>UMD.debug = true;</script>
         <style>
         html, body {
             margin: 0;
