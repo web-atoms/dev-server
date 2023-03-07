@@ -65,10 +65,10 @@ function prepareHtml(
 
     const debug = req.query.debug === undefined ? true : req.query.debug;
 
-    if (req.query.platform === "xf" && debug) {
-        return `${body}
-        bridge.connectDebugger("/listen");`;
-    }
+    // if (req.query.platform === "xf" && debug) {
+    //     return `${body}
+    //     bridge.connectDebugger("/listen");`;
+    // }
 
     return `<!DOCTYPE html>
 
@@ -78,7 +78,7 @@ function prepareHtml(
         <meta name="viewport"   content="width=device-width"/>
         <title>Web Atoms - </title>
         <script src="/node_modules/@web-atoms/module-loader/umd.js"></script>
-        <script>UMD.debug = true;</script>
+        <script>UMD.debug = ${debug ? "true" : "false"};</script>
         <style>
         html, body {
             margin: 0;
