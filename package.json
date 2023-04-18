@@ -9,7 +9,7 @@
   },
   "preferGlobal": true,
   "bin": {
-    "wads": "./bin/wads"
+    "wads": "./bin/wads.js"
   },
   "repository": {
     "type": "git",
