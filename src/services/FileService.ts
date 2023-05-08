@@ -7,8 +7,13 @@ import IFilePathResult from "../models/IFilePathResult";
 @RegisterSingleton
 export default class FileService extends BaseService {
 
+    public async getModules(search: string, packed: boolean, cancelToken: CancelToken) {
+        const result = await this.getRemoteModules(search, packed, cancelToken);
+        return result.files;
+    }
+
     @Get("/flat-modules")
-    public getModules(
+    private getRemoteModules(
         @Query("search") search: string,
         @Query("packed") packed: boolean,
         ct?: CancelToken): Promise<IFilePathResult> {

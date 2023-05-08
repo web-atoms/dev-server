@@ -1,117 +1,173 @@
-// tslint:disable
 import Bind from "@web-atoms/core/dist/core/Bind"
 import XNode from "@web-atoms/core/dist/core/XNode"
-import {BindableProperty} from "@web-atoms/core/dist/core/BindableProperty";
-import {AtomItemsControl} from "@web-atoms/core/dist/web/controls/AtomItemsControl";
-import { AtomToggleButtonBar } from "@web-atoms/core/dist/web/controls/AtomToggleButtonBar";
-import {AtomGridView} from "@web-atoms/core/dist/web/controls/AtomGridView";
+import ToggleButtonBar from "@web-atoms/web-controls/dist/basic/ToggleButtonBar";
+import { AtomControl } from "@web-atoms/core/dist/web/controls/AtomControl";
+import styled from "@web-atoms/core/dist/style/styled";
+import InjectProperty from "@web-atoms/core/dist/core/InjectProperty";
+import FileService from "../../services/FileService";
+import AtomRepeater from "@web-atoms/web-controls/dist/basic/AtomRepeater";
+import IFilePath from "../../models/IFilePath";
+import ClipboardService from "../../services/ClipboardService";
+import { NavigationService } from "@web-atoms/core/dist/services/NavigationService";
 
-    import AppHostViewModel from "../../view-models/AppHostViewModel";
+import "@web-atoms/data-styles/data-styles";
+import { CancelToken } from "@web-atoms/core/dist/core/types";
 
-    import AppHostStyle from "../styles/AppHostStyle";
+	styled.css `
+		:root {
+			--accent-color: orangered;
+			--accent-text-color: white;
+		}
+		html, body {
+			margin: 0;
+			padding: 0;
+			font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+		}
+	`.installGlobal();
 
-    import Links from "./Links";
+	const css = styled.css `
+		position: absolute;
+		left: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		display: grid;
+		grid-template-rows: auto 1fr;
+		gap: 5px;
+
+		& > header {
+			grid-row: 1;
+		}
+		& > div {
+			grid-row: 2;
+			align-items: stretch;
+			justify-self: stretch;
+			overflow: auto;
+		}
+	`.installLocal();
+
+const fileTypes = () => [
+	{ label: "Packed", value: "packed"},
+	{ label: "All", value: "all"}
+];
+
+const designModes = () => [
+	{ label: "Design", value: true },
+	{ label: "Live", value: false }
+];
+
+const toAbsoluteUrl = (file: IFilePath, designMode?: boolean) => {
+	let url = file.url;
+	if (designMode) {
+		if (url.indexOf("?") === -1) {
+			url += "?";
+		}
+		url += "&designMode=true";
+	}
+	return `${location.protocol}//${location.host}${url}`;
+};
 
 
+export default class AppHost extends AtomControl {
 
+	public search: string = "";
 
-// @web-atoms-pack: true
+	public designMode = false;
 
+	public fileType = "packed";
 
-export default class AppHost extends AtomGridView {
+	@InjectProperty
+	private fileService: FileService;
 
-	public viewModel: AppHostViewModel;
-
-	public create(): void {
-		this.viewModel =  this.resolve(AppHostViewModel) ;
-		this.defaultControlStyle = AppHostStyle;
+	public async init() {
 
 		this.render(
 		<div
-			styleClass={Bind.oneTime(() => this.controlStyle.name)}
-			rows="50, *">
+			class={css}>
 			<header
-				row="0"
+				data-layout="row"
+				data-padding="auto"
 				class="header">
 				<input
 					type="search"
-					value={Bind.twoWays((x) => x.viewModel.search, ["change", "keyup", "keydown", "blur"])}
+					value={Bind.twoWaysImmediate(() => this.search)}
 					placeholder="Search...">
 				</input>
-				<div
-					class="topnav-right">
 
-					<span>Show QRCode</span>
-					<AtomToggleButtonBar
-						items={this.viewModel.debugTypes}
-						value={Bind.twoWays(() => this.viewModel.showQrCode)}
-						/>
+				<span>Mode</span>
+				<ToggleButtonBar
+					items={designModes()}
+					value={Bind.twoWays(() => this.designMode)}
+					/>
 
-
-					<span>Mode</span>
-					<AtomToggleButtonBar
-						items={this.viewModel.designModes}
-						value={Bind.twoWays(() => this.viewModel.designMode)}
-						/>
-
-					<span>Enable Debugging?</span>
-					<AtomToggleButtonBar
-						items={this.viewModel.debugTypes}
-						value={Bind.twoWays(() => this.viewModel.debug)}
-						/>
-
-					<AtomToggleButtonBar
-						items={this.viewModel.fileTypes}
-						value={Bind.twoWays(() => this.viewModel.type)}
-						/>
-
-					<a
-						eventClick={Bind.event(() => this.viewModel.refreshUrl())}>
-						Refresh
-					</a>
-				</div>
+				<ToggleButtonBar
+					items={fileTypes()}
+					value={Bind.twoWays(() => this.fileType)}
+					/>
 			</header>
-			<div
-				style="overflow: auto; width: 100%; height: 100%"
-				row="1">
-				<AtomItemsControl
+			<div>
+				<AtomRepeater
 					class="grid"
-					items={Bind.oneWay((x) => x.viewModel.files)}
-					valuePath="url"
-					value={Bind.twoWays((x) => x.viewModel.url)}
-					for="table">
-					<tr
+					items={Bind.oneWayAsync((x, e, cancelToken) =>
+						this.getModules(this.search, this.fileType === "packed", cancelToken))}
+					for="table"
+					itemRenderer={(item: IFilePath) => <tr
 						template="itemTemplate">
 						<td>
 							<div
-								text={Bind.oneTime((x) => x.data.name)}
-								title={Bind.oneTime((x) => x.data.dir)}
+								text={item.name}
+								title={item.dir}
 								style="font-weight: 500;">
 							</div>
 							<div
 								style="font-size: small;"
-								text={Bind.oneTime((x) => x.data.dir)}>
+								text={item.dir}>
 							</div>
 						</td>
-						<Links
-							cellWidth={150}
-							label="Open"
-							showQrCode={true}>
-						</Links>
-						<td style="width:200px">
-							<div></div>
+						<td>
+							<a
+								data-layout="accent-button"
+								data-text-decoration="none"
+								href={Bind.source(item, (x) => toAbsoluteUrl(x.source, this.designMode))}
+								target="_tab"
+								text="Open">
+							</a>
+							<i
+								class="fas fa-copy"
+								title="Copy Url"
+								style="margin: 5px; cursor: pointer;"
+								data-click-event="copy-url"
+								eventClick={() => this.copyUrl(toAbsoluteUrl(item, this.designMode))}>
+							</i>
 						</td>
-						<Links
-							cellWidth={200}
-							label="Open Packed"
-							showQrCode={true}
-							packed={Bind.oneWay((x) => x.data.packed )}>
-						</Links>
-						<td style="width: 300px" text=" "></td>
-					</tr>
-				</AtomItemsControl>
+					</tr> } />
 			</div>
 		</div>
 		);
+	}
+
+	async getModules(search: string, packed: boolean, cancelToken: CancelToken) {
+		const result = await this.fileService.getModules(search, packed, cancelToken);
+		if (!result.length && packed) {
+			this.fileType = "all";
+		}
+		return result;
+	}
+
+	protected preCreate(): void {
+		super.preCreate();
+		(this.app).installStyleSheet({
+            href: "https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css",
+            integrity: "sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=",
+            crossOrigin: "anonymous"
+        });
+		this.runAfterInit(() => this.app.runAsync(() => this.init()));
+	}
+
+	protected async copyUrl(url: string) {
+		const clipboardService = this.resolve(ClipboardService);
+		await clipboardService.copy(url);
+		const navigationService = this.resolve(NavigationService);
+        navigationService.notify(`Url "${url}"\ncopied to clipboard successfully`);
 	}
 }

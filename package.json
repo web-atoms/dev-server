@@ -22,10 +22,10 @@
   },
   "homepage": "https://github.com/web-atoms/dev-server#readme",
   "dependencies": {
-    "@web-atoms/core": "^2.1.9",
-    "@web-atoms/entity": "^2.0.1",
+    "@web-atoms/core": "^2.2.86",
     "@web-atoms/date-time": "^1.0.26",
-    "@web-atoms/module-loader": "^2.0.36",
+    "@web-atoms/module-loader": "^2.1.10",
+    "@web-atoms/data-styles": "^1.0.27",
     "@web-atoms/web-controls": "^2.1.1",
     "@web-atoms/pack": "^1.0.69",
     "colors": "^1.4.0",
@@ -35,7 +35,6 @@
     "open": "^7.2.1",
     "os": "^0.1.1",
     "portfinder": "^1.0.28",
-    "qrcode": "^1.4.4",
     "reflect-metadata": "^0.1.13",
     "ws": "^7.4.6"
   },

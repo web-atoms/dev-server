@@ -4,12 +4,22 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "type": "typescript",
-            "tsconfig": "tsconfig.json",
+            "label": "All Build",
+            "dependsOn":[
+                "TypeScript Build Watch",
+                "Web Atoms Dev Server"
+            ],
+            "problemMatcher": [],
             "group": {
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "label": "TypeScript Build Watch",
+            "type": "typescript",
+            "tsconfig": "tsconfig.json",
+            "option": "watch",
         },
         {
             "label": "Web Atoms Dev Server",
