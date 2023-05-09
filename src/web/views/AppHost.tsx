@@ -43,6 +43,10 @@ import { CancelToken } from "@web-atoms/core/dist/core/types";
 			align-items: stretch;
 			justify-self: stretch;
 			overflow: auto;
+
+			& [data-item-index]:hover {
+				background-color: lightgreen;
+			}
 		}
 	`.installLocal();
 
