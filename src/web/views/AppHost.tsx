@@ -56,8 +56,17 @@ const designModes = () => [
 	{ label: "Live", value: false }
 ];
 
+const replaceSrc = (src: string): string => {
+    src = src.split("\\").join("/");
+    const tokens = src.split("/");
+    if (tokens[0] === "src") {
+        tokens[0] = "dist";
+    }
+    return tokens.join("/");
+}
+
 const toAbsoluteUrl = (file: IFilePath, designMode?: boolean) => {
-	let url = file.url;
+	let url = `/uiv/$CURRENT$/${replaceSrc(file.dir)}/${file.name}`;
 	if (designMode) {
 		if (url.indexOf("?") === -1) {
 			url += "?";
@@ -129,7 +138,7 @@ export default class AppHost extends AtomControl {
 								data-layout="accent-button"
 								data-text-decoration="none"
 								href={Bind.source(item, (x) => toAbsoluteUrl(x.source, this.designMode))}
-								target="_tab"
+								target="_blank"
 								text="Open">
 							</a>
 							<i
