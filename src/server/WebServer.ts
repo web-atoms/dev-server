@@ -29,6 +29,13 @@ class WebServer {
                     ws: true,
                     cookieDomainRewrite: "",
                     onProxyReq: (proxyReq, req, res) => {
+
+                        let r = req.header("referer");
+                        if (r) {
+                            console.log(req.url);
+                            console.log(`Referer: ${r}`);
+                        }
+
                         if (!req.body || !Object.keys(req.body).length) {
                             return;
                         }
