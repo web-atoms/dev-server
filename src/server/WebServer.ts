@@ -30,12 +30,6 @@ class WebServer {
                     cookieDomainRewrite: "",
                     onProxyReq: (proxyReq, req, res) => {
 
-                        let r = req.header("referer");
-                        if (r) {
-                            console.log(req.url);
-                            console.log(`Referer: ${r}`);
-                        }
-
                         if (!req.body || !Object.keys(req.body).length) {
                             return;
                         }
@@ -66,7 +60,9 @@ class WebServer {
                         }
                         let cookie = proxyReq.headers["set-cookie"];
                         if (cookie) {
-                            cookie = cookie.map((s) => s.replace("secure;", "") );
+                            if(!req.secure) {
+                                cookie = cookie.map((s) => s.split(";").filter((c) => c.trim().toLocaleLowerCase() !== "secure").join(";"));
+                            }
                             proxyReq.headers["set-cookie"] = cookie;
                         }
                     }
