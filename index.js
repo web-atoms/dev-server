@@ -86,6 +86,10 @@ function listen(port, ssl) {
     WSProxyServer.configure(dss, port);
     WSServer.configure(wss);
 
+    server.on("error", (error) => {
+        console.error(error);
+    })
+
     server.on("upgrade", function upgrade(request, socket, head) {
         const pathname = url.parse(request.url).pathname;
 
@@ -100,6 +104,7 @@ function listen(port, ssl) {
         } else {
             console.error("Forwarding further.. " + pathname);
             // socket.destroy();
+            socket.on("error", (error) => console.error(error));
         }
     });
 
