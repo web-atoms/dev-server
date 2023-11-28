@@ -27,6 +27,7 @@ class WebServer {
                     target: proxyHost,
                     changeOrigin: true,
                     ws: true,
+                    secure: false,
                     cookieDomainRewrite: "",
                     onProxyReq: (proxyReq, req, res) => {
 
