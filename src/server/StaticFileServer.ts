@@ -3,7 +3,7 @@ import { Router } from "express";
 import { existsSync, readFileSync } from "fs";
 import { isAbsolute, join, resolve } from "path";
 import Packed from "./Packed";
-import WAClientStore from "./WAClientStore";
+// import WAClientStore from "./WAClientStore";
 
 export default class StaticFileServer {
 
@@ -42,10 +42,10 @@ export default class StaticFileServer {
 
             if (checkPacked) {
 
-                const id = req.headers["x-debug-id"] as string;
-                if (id) {
-                    WAClientStore.instance.watch(id, path);
-                }
+                // const id = req.headers["x-debug-id"] as string;
+                // if (id) {
+                //     WAClientStore.instance.watch(id, path);
+                // }
 
                 if (Packed.checkPacked(path)) {
                     // check...
