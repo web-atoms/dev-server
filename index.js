@@ -6,10 +6,7 @@ var colors = require("colors/safe");
 var http = require("http");
 var https = require("https");
 const url = require('url');
-var WSServer = require("./dist/server/WSServerClient").default;
-var WSProxyServer = require("./dist/server/WSProxyServer").default;
 var WebSocketServer = require("ws").Server;
-var { createProxyMiddleware } = require('http-proxy-middleware');
 var fs = require("fs");
 var netFaces = os.networkInterfaces();
 var crypto = require("crypto");
@@ -82,9 +79,6 @@ function listen(port, ssl) {
     var wss = new WebSocketServer({ noServer: true });
 
     const dss = new WebSocketServer({ noServer: true });
-
-    WSProxyServer.configure(dss, port);
-    WSServer.configure(wss);
 
     server.on("error", (error) => {
         console.error(error);
