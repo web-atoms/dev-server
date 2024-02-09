@@ -30,7 +30,7 @@
     "@web-atoms/pack": "^1.0.69",
     "colors": "^1.4.0",
     "express": "^4.17.1",
-    "http-proxy-middleware": "^1.0.5",
+    "http-proxy-middleware": "^2.0.6",
     "node-forge": "^0.10.0",
     "open": "^7.2.1",
     "os": "^0.1.1",
