@@ -75,7 +75,7 @@ function prepareHtml(
     <html>
     <head>
 
-        <meta name="viewport"   content="width=device-width"/>
+        <meta name="viewport" content="width=device-width, shrink-to-fit=YES, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
         <title>Web Atoms - </title>
         <script src="/node_modules/@web-atoms/module-loader/umd.js"></script>
         <script>UMD.debug = ${debug ? "true" : "false"};</script>
